@@ -28,6 +28,7 @@ application.properties
 
 # IntelliJ
 target/*
+lesson-app/target/
 beta.iml
 .idea/
 
