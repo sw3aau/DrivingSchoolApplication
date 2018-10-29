@@ -1,0 +1,23 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"lang="en">
+<head>
+    <title>Home</title>
+</head>
+<body>
+
+    <div layout:fragment="content">
+        <div class="jumbotron main-content">
+            <h1>Welcome to Driving CMS System</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel malesuada sapien, at dignissim est. Maecenas ac tincidunt odio. Donec id lectus sit amet neque pretium mollis. Duis sagittis viverra augue. Duis laoreet mollis fringilla. Vivamus aliquet ultricies justo hendrerit elementum. </p>
+        </div>
+        <div class="container">
+            <h3>What do you want to do?</h3>
+            <ul>
+                <li><a th:href="@{/lessons}">View Lessons</a></li>
+            </ul>
+            <span th:text="${penis}"></span>
+        </div>
+    </div>
+
+</body>
+</html>
