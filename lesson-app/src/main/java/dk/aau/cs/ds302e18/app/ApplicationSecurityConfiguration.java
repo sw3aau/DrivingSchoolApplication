@@ -53,7 +53,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
+                .loginPage("/canvas").permitAll()
                 .and()
                 .logout().invalidateHttpSession(true)
                 .clearAuthentication(true)

@@ -43,6 +43,17 @@ public class LessonController
         return "register-account";
     }
 
+    @GetMapping(value="/canvas")
+    public String getCanvasPage(){
+        return "canvas";
+    }
+
+    @PostMapping(value="/canvas")
+    public String postCanvasPage(@ModelAttribute CanvasModel canvasModel){
+        System.out.println(canvasModel.getDataUrl());
+        return "register";
+    }
+
     @PostMapping(value="/register")
     public String getRegisterPage(@ModelAttribute Student student){
         System.out.println(student.toString());
