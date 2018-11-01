@@ -23,6 +23,7 @@ public class CmsUserPrincipal implements UserDetails{
         this.account = account;
     }
 
+    /* Grants appropriate authorities to the users following the values in the database connected to from authGroups */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(null==authGroups){

@@ -6,7 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+/* Ensures that the table AuthGroup exists in the database and has the following columns.
+   Also provides setters and getters. */
 @Entity
 @Table(name="AUTH_USER_GROUP")
 public class AuthGroup {

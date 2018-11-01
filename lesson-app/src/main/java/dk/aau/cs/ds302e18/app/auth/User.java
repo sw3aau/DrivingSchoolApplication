@@ -1,10 +1,15 @@
 package dk.aau.cs.ds302e18.app.auth;
 
+import dk.aau.cs.ds302e18.app.Student;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.ArrayList;
 
+/* Ensures that the table User exists in the database and has the following columns.
+   Also provides setters and getters. */
 @Entity
 @Table(name="USER")
 public class User {
@@ -17,6 +22,9 @@ public class User {
     private String password;
     @Column(name = "ISACITVE", nullable = false)
     private boolean isActive;
+
+
+
 
     public long getId()
     {
