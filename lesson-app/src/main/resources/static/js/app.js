@@ -101,9 +101,7 @@ savePNGButton.addEventListener("click", function (event) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:8080/test", true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send("{\n" +
-        "\t\"dataUrl\": \"" + dataURL + "\"\n" +
-        "}");
+    xhr.send("{\"dataUrl\":\"" + dataURL + "\"}");
   }
 });
 
