@@ -50,8 +50,15 @@ public class LessonController
 
     @PostMapping(value="/canvas")
     public String postCanvasPage(@ModelAttribute CanvasModel canvasModel){
+        System.out.println("test");
         System.out.println(canvasModel.getDataUrl());
-        return "register";
+        return "canvas";
+    }
+
+    @PostMapping(value="/test")
+    public String postTestPage(@RequestBody CanvasModel canvasModel){
+        System.out.println(canvasModel.getDataUrl());
+        return "register-account";
     }
 
     @PostMapping(value="/register")
