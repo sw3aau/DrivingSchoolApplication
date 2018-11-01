@@ -99,9 +99,11 @@ savePNGButton.addEventListener("click", function (event) {
   } else {
     var dataURL = signaturePad.toDataURL();
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:8080/canvas", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-    xhr.send(dataURL);
+    xhr.open("POST", "http://localhost:8080/test", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send("{\n" +
+        "\t\"dataUrl\": \"" + dataURL + "\"\n" +
+        "}");
   }
 });
 

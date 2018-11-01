@@ -57,7 +57,7 @@ public class LessonController
 
     @PostMapping(value="/test")
     public String postTestPage(@RequestBody CanvasModel canvasModel){
-        System.out.println(canvasModel.getDataUrl());
+        Canvas.upload("p3-project","CoolSignature",canvasModel.getDataUrl());
         return "register-account";
     }
 
