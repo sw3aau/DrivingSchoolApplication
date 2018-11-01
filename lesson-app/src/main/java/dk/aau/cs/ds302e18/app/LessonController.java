@@ -13,7 +13,6 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/")
@@ -46,7 +45,10 @@ public class LessonController
     @PostMapping(value="/register")
     public String getRegisterPage(@ModelAttribute Student student){
         System.out.println(student.toString());
-        return "register-account";
+        new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
+                student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
+                student.getZipCode(), student.getCity());
+        return "login";
     }
 
     @GetMapping(value="/logout-success")
@@ -78,9 +80,9 @@ public class LessonController
     }
 
     @GetMapping(value="/lessons/{id}")
-        @PreAuthorize("hasRole('ROLE_USER')")
-        public String getLesson(Model model, @PathVariable long id){
-            Lesson lesson = this.lessonService.getLesson(id);
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String getLesson(Model model, @PathVariable long id){
+        Lesson lesson = this.lessonService.getLesson(id);
         model.addAttribute("lesson", lesson);
         return "lesson-view";
     }
