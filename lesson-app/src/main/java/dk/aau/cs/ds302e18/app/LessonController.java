@@ -26,47 +26,55 @@ public class LessonController
 
     private final LessonService lessonService;
 
-    public LessonController(LessonService lessonService){
+    public LessonController(LessonService lessonService)
+    {
         super();
         this.lessonService = lessonService;
     }
 
-    @GetMapping(value={"/", "/index"})
-    public String getHomePage(Model model){
+    @GetMapping(value = {"/", "/index"})
+    public String getHomePage(Model model)
+    {
         model.addAttribute("penis", "FUk");
         return "index";
     }
 
-    @GetMapping(value="/login")
-    public String getLoginPage(Model model){
+    @GetMapping(value = "/login")
+    public String getLoginPage(Model model)
+    {
         return "login";
     }
 
-    @GetMapping(value="/register")
-    public String getRegisterPage(){
+    @GetMapping(value = "/register")
+    public String getRegisterPage()
+    {
         return "register-account";
     }
 
-    @GetMapping(value="/canvas")
-    public String getCanvasPage(){
+    @GetMapping(value = "/canvas")
+    public String getCanvasPage()
+    {
         return "canvas";
     }
 
-    @PostMapping(value="/canvas")
-    public String postCanvasPage(@ModelAttribute CanvasModel canvasModel){
+    @PostMapping(value = "/canvas")
+    public String postCanvasPage(@ModelAttribute CanvasModel canvasModel)
+    {
         System.out.println("test");
         System.out.println(canvasModel.getDataUrl());
         return "canvas";
     }
 
-    @PostMapping(value="/test")
-    public String postTestPage(@RequestBody CanvasModel canvasModel){
-        Canvas.upload("p3-project","CoolSignature",canvasModel.getDataUrl());
+    @PostMapping(value = "/test")
+    public String postTestPage(@RequestBody CanvasModel canvasModel)
+    {
+        Canvas.upload("p3-project", "CoolSignature", canvasModel.getDataUrl());
         return "register-account";
     }
 
-    @PostMapping(value="/register")
-    public String getRegisterPage(@ModelAttribute Student student){
+    @PostMapping(value = "/register")
+    public String getRegisterPage(@ModelAttribute Student student)
+    {
         System.out.println(student.toString());
         new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
                 student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
@@ -74,14 +82,16 @@ public class LessonController
         return "login";
     }
 
-    @GetMapping(value="/logout-success")
-    public String getLogoutPage(Model model){
+    @GetMapping(value = "/logout-success")
+    public String getLogoutPage(Model model)
+    {
         return "logout";
     }
 
-    @GetMapping(value="/lessons")
+    @GetMapping(value = "/lessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getLessons(Model model){
+    public String getLessons(Model model)
+    {
         /* Creates an list of lessons from the return value of getAllLessons in LessonService(which is an function that gets lessons
         from the 8100 server and makes them into lesson objects and returns them as an list) */
         List<Lesson> lessons = this.lessonService.getAllLessons();
@@ -89,49 +99,55 @@ public class LessonController
         return "lessons-view";
     }
 
-    @GetMapping(value="/lessons/add")
+    @GetMapping(value = "/lessons/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getAddLessonForm(Model model){
+    public String getAddLessonForm(Model model)
+    {
         return "lesson-view";
     }
 
     /* Posts a newly added lesson in the lessons list on the website */
-    @PostMapping(value="/lessons")
+    @PostMapping(value = "/lessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView addLesson(HttpServletRequest request, Model model, @ModelAttribute LessonModel lessonModel){
+    public ModelAndView addLesson(HttpServletRequest request, Model model, @ModelAttribute LessonModel lessonModel)
+    {
         /* The newly added lesson object is retrieved from the 8100 server.  */
         Lesson lesson = this.lessonService.addLesson(lessonModel);
-        if (lesson.getStudentList().isEmpty() | lesson.getLessonInstructor().isEmpty() | lesson.getLessonLocation().isEmpty()) {
-            if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2) {
+        if (lesson.getStudentList().isEmpty() | lesson.getLessonInstructor().isEmpty() | lesson.getLessonLocation().isEmpty())
+        {
+            if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2)
+            {
                 throw new RuntimeException();
             }
-        model.addAttribute("lesson", lesson);
-        /* RESPONSE_STATUS_ATTRIBUTE checks that the 8100 connection is ready and HttpStatus.TEMPORARY_REDIRECT is a
-           server status send to the put method to signal that the resource has been sent. */
-        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+            model.addAttribute("lesson", lesson);
+
+            request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        }
         return new ModelAndView("redirect:/lessons/" + lesson.getId());
     }
 
-    /* The {id} means that the mapping html should hold for every url with /lessons/x no matter the ID. */
-    @GetMapping(value="/lessons/{id}")
+    @GetMapping(value = "/lessons/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getLesson(Model model, @PathVariable long id){
+    public String getLesson(Model model, @PathVariable long id)
+    {
         Lesson lesson = this.lessonService.getLesson(id);
         model.addAttribute("lesson", lesson);
         return "lesson-view";
     }
 
     /* HTML for updating an lesson */
-    @PostMapping(value="/lessons/{id}")
+    @PostMapping(value = "/lessons/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateLesson(Model model, @PathVariable long id, @ModelAttribute LessonModel lessonModel){
+    public String updateLesson(Model model, @PathVariable long id, @ModelAttribute LessonModel lessonModel)
+    {
         /* Returns an lesson that is read from the 8100 server through updateLesson. */
         Lesson lesson = this.lessonService.updateLesson(id, lessonModel);
         model.addAttribute("lesson", lesson);
         model.addAttribute("lessonModel", new LessonModel());
-        if(lesson.getLessonType() !=1 || lesson.getLessonType() != 2){
+        if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2)
+        {
             throw new RuntimeException();
+        }
         return "lesson-view";
     }
-
 }

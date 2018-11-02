@@ -1,5 +1,6 @@
 package dk.aau.cs.ds302e18.app;
 
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -12,12 +13,24 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 class Canvas
 {
+
+    private static String ACCESS_KEY;
+    private static String SECRET_KEY;
+
+    static // Creating a static constructor for one time initialize authconfig.properties att.
+    {
+        ResourceBundle reader = ResourceBundle.getBundle("authconfig");
+        ACCESS_KEY = reader.getString("aws.accesskey");
+        SECRET_KEY = reader.getString("aws.secretkey");
+    }
+
     static void upload(String bucketName, String imageName, String imageData)
     {
-        AmazonS3 s3 = new AmazonS3Client();
+        AmazonS3 s3 = new AmazonS3Client(new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY));
         Region region = Region.getRegion(Regions.EU_WEST_2);
         s3.setRegion(region);
 
