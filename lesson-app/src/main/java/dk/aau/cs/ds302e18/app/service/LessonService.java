@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+/* Class responsible for reading lesson related data from the 8100 server. */
 @Service
 public class LessonService
 {
@@ -22,6 +23,8 @@ public class LessonService
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    /* Retrieves an list of lessons from the 8100 server and returns it as list of lessons in the format specified in
+       the Lesson class. */
     public List<Lesson> getAllLessons()
     {
         String url = lessonServiceUrl + LESSONS;
@@ -29,6 +32,7 @@ public class LessonService
         return this.restTemplate.exchange(url, HttpMethod.GET, request, new ParameterizedTypeReference<List<Lesson>>() { }).getBody();
     }
 
+    /* Returns an lesson object from the 8100 server that has just been added */
     public Lesson addLesson(LessonModel lessonModel)
     {
         String url = lessonServiceUrl + LESSONS;
