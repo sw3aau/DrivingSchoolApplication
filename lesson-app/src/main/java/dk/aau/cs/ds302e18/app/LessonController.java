@@ -92,6 +92,10 @@ public class LessonController
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addLesson(HttpServletRequest request, Model model, @ModelAttribute LessonModel lessonModel){
         Lesson lesson = this.lessonService.addLesson(lessonModel);
+        if (lesson.getStudentList().isEmpty() | lesson.getLessonInstructor().isEmpty() | lesson.getLessonLocation().isEmpty()) {
+            if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2) {
+                throw new RuntimeException();
+            }
         model.addAttribute("lesson", lesson);
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
         return new ModelAndView("redirect:/lessons/" + lesson.getId());
@@ -111,6 +115,8 @@ public class LessonController
         Lesson lesson = this.lessonService.updateLesson(id, lessonModel);
         model.addAttribute("lesson", lesson);
         model.addAttribute("lessonModel", new LessonModel());
+        if(lesson.getLessonType() !=1 || lesson.getLessonType() != 2){
+            throw new RuntimeException();
         return "lesson-view";
     }
 
