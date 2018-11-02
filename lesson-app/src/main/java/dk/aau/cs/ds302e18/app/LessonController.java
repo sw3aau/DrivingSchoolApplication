@@ -42,6 +42,24 @@ public class LessonController
         return "register-account";
     }
 
+    @GetMapping(value="/canvas")
+    public String getCanvasPage(){
+        return "canvas";
+    }
+
+    @PostMapping(value="/canvas")
+    public String postCanvasPage(@ModelAttribute CanvasModel canvasModel){
+        System.out.println("test");
+        System.out.println(canvasModel.getDataUrl());
+        return "canvas";
+    }
+
+    @PostMapping(value="/test")
+    public String postTestPage(@RequestBody CanvasModel canvasModel){
+        Canvas.upload("p3-project","CoolSignature",canvasModel.getDataUrl());
+        return "register-account";
+    }
+
     @PostMapping(value="/register")
     public String getRegisterPage(@ModelAttribute Student student){
         System.out.println(student.toString());
