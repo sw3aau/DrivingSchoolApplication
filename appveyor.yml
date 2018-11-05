@@ -6,4 +6,4 @@ install:
   - sudo apt-get update
 
 build_script:
-  - mvn install
+  - mvn compile
