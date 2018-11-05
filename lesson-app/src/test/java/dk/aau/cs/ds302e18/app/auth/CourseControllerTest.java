@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class UserManagerTest {
+public class CourseControllerTest {
     private ArrayList<User> userList;
-    private UserManager userManager;
+    private CourseController courseController;
 
     @Before
     public void setUp() throws Exception {
-        userManager = new UserManager();
+        courseController = new CourseController();
         User user1 = new User();
         user1.setUsername("username1");
 
@@ -31,14 +31,14 @@ public class UserManagerTest {
 
     @Test
     public void saveUsernamesAsString() {
-        String combinedUsernames = userManager.saveUsernamesAsString(userList);
+        String combinedUsernames = courseController.saveUsernamesAsString(userList);
         assertEquals("username1:username2:username3:", combinedUsernames);
     }
 
     @Test
     public void saveStringAsUsers() {
-        String combinedUsernames = userManager.saveUsernamesAsString(userList);
-        ArrayList<User> returnedUserList = userManager.saveStringAsUsers(combinedUsernames);
+        String combinedUsernames = courseController.saveUsernamesAsString(userList);
+        ArrayList<User> returnedUserList = courseController.saveStringAsUsers(combinedUsernames);
         /* Checks that the list has 3 objects */
         assertEquals(3, returnedUserList.size());
         /* Checks that every user has the proper username */
@@ -47,5 +47,26 @@ public class UserManagerTest {
             usernamesFromEachAccount += usernames.getUsername() + " ";
         }
         assertEquals("username1 username2 username3 ", usernamesFromEachAccount);
+    }
+
+
+    @Test
+    public void createNewEmptyCourse() {
+        courseController.createEmptyCourse(5);
+    }
+
+    @Test
+    public void createNewCourseWithInitialStudents(){
+        courseController.createEmptyCourse(7,userList);
+    }
+
+    @Test
+    public void addStudent() {
+        courseController.addStudent(7, userList.get(1));
+    }
+
+    @Test
+    public void deleteCourse() {
+        courseController.deleteCourse(3);
     }
 }
