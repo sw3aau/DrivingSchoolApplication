@@ -1,0 +1,9 @@
+version: "{build}"
+
+image: ubuntu1804
+
+install:
+  - sudo apt-get update
+
+build_script:
+  - mvn compile
