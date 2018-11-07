@@ -13,6 +13,7 @@ public class LessonModel
     //This is to prevent lessons from changing type after compeletion.
     //It lesson needs to be changed, a new lesson must be created.
     private boolean isSigned;
+    private int courseId;
 
     public byte getLessonType()
     {
@@ -74,6 +75,16 @@ public class LessonModel
         isSigned = signed;
     }
 
+    public int getCourseId()
+    {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId)
+    {
+        this.courseId = courseId;
+    }
+
     Lesson translateModelToLesson(){
         Lesson lesson = new Lesson();
         lesson.setLessonType(this.lessonType);
@@ -82,6 +93,7 @@ public class LessonModel
         lesson.setLessonDate(this.lessonDate);
         lesson.setLessonLocation(this.lessonLocation);
         lesson.setSigned(this.isSigned);
+        lesson.setCourseId(this.courseId);
         return lesson;
     }
 }

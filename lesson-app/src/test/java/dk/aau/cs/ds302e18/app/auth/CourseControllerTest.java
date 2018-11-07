@@ -1,5 +1,6 @@
 package dk.aau.cs.ds302e18.app.auth;
 
+import dk.aau.cs.ds302e18.app.CourseController;
 import org.junit.Before;
 import org.junit.Test;
 

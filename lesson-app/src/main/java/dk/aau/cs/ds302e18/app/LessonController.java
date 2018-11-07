@@ -150,4 +150,10 @@ public class LessonController
         }
         return "lesson-view";
     }
+
+    @GetMapping(value = "/gdpr")
+    public String getGdprPage()
+    {
+        return "gdpr";
+    }
 }
