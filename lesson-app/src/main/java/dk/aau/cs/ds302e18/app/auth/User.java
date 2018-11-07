@@ -24,8 +24,6 @@ public class User {
     private boolean isActive;
 
 
-
-
     public long getId()
     {
         return id;

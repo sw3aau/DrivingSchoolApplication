@@ -1,4 +1,6 @@
-package dk.aau.cs.ds302e18.app.auth;
+package dk.aau.cs.ds302e18.app;
+import dk.aau.cs.ds302e18.app.auth.User;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;

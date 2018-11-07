@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.app.auth;
+package dk.aau.cs.ds302e18.app;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

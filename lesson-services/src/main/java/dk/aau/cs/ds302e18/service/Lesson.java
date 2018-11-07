@@ -23,6 +23,8 @@ public class Lesson
     private String lessonLocation;
     @Column(name="STATE")
     private boolean isSigned;
+    @Column(name="COURSE_ID")
+    private int courseId;
 
     public Lesson() {
         super();
@@ -96,5 +98,15 @@ public class Lesson
     public void setSigned(boolean signed)
     {
         isSigned = signed;
+    }
+
+    public int getCourseId()
+    {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId)
+    {
+        this.courseId = courseId;
     }
 }
