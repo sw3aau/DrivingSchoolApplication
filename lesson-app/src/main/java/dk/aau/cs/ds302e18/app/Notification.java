@@ -2,12 +2,15 @@ package dk.aau.cs.ds302e18.app;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.MessageAttributeValue;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -30,9 +33,20 @@ public class Notification
 
     protected Notification(String message, String phoneNumber, String emailAddress)
     {
+        Map<String, MessageAttributeValue> smsAttributes =
+                new HashMap<String, MessageAttributeValue>();
+        smsAttributes.put("AWS.SNS.SMS.SenderID", new MessageAttributeValue()
+                .withStringValue("mySenderID") //The sender ID shown on the device.
+                .withDataType("String"));
+        smsAttributes.put("AWS.SNS.SMS.MaxPrice", new MessageAttributeValue()
+                .withStringValue("0.50") //Sets the max price to 0.50 USD.
+                .withDataType("Number"));
+        smsAttributes.put("AWS.SNS.SMS.SMSType", new MessageAttributeValue()
+                .withStringValue("Promotional") //Sets the type to promotional.
+                .withDataType("String"));
         // AWS Send SMS
         AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY));
-        SMSMessage(snsClient, message, phoneNumber);
+        SMSMessage(snsClient, message, phoneNumber, smsAttributes);
 
         // Send Email
         EmailMessage(message, emailAddress);
@@ -40,11 +54,12 @@ public class Notification
 
     // Send SMS to a Phone Number
     private void SMSMessage(AmazonSNSClient snsClient,
-                            String message, String phoneNumber)
+                            String message, String phoneNumber, Map<String, MessageAttributeValue> smsAttributes)
     {
         PublishResult result = snsClient.publish(new PublishRequest()
                 .withMessage(message)
-                .withPhoneNumber(phoneNumber));
+                .withPhoneNumber(phoneNumber)
+                .withMessageAttributes(smsAttributes));
         System.out.println(result); // Prints the message ID.
     }
 
