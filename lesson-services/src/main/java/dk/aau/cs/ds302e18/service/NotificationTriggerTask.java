@@ -28,22 +28,22 @@ public class NotificationTriggerTask extends TimerTask {
         try {
             //Queries the database for lessons in next 24 hour period.
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT `lesson_date`, `lesson_location`, `student_list` " +
+            ResultSet lessonResultSet = st.executeQuery("SELECT `lesson_date`, `lesson_location`, `student_list` " +
                                                 "FROM `lesson` WHERE `lesson_date` < '" + reformatDate(nextDate) + "'");
             //If any lessons was found, runs through them and prepare to send notifications by storing the data from the database in local Strings.
-            while(rs.next()) {
-                String lessonDate = rs.getString("lesson_date");
-                String lessonLocation = rs.getString("lesson_location");
-                String studentList = rs.getString("student_list");
+            while(lessonResultSet.next()) {
+                String lessonDate = lessonResultSet.getString("lesson_date");
+                String lessonLocation = lessonResultSet.getString("lesson_location");
+                String studentList = lessonResultSet.getString("student_list");
                 String[] studentListArray = studentList.split(":");
                 //Queries the database again, but for student's email and phonenumber, based on their username found from a lesson.
                 for(String studentUsername : studentListArray) {
-                    ResultSet rs2 = st.executeQuery("SELECT `email`, `phonenumber` FROM `account` WHERE `username` = '" + studentUsername + "`");
+                    ResultSet usernameResultSet = st.executeQuery("SELECT `email`, `phonenumber` FROM `account` WHERE `username` = '" + studentUsername + "'");
                     //Call Notification to send notifications to the students, based on the data found from the database.
                     //This uses the private helper function "constructNotificationMessage" to construct the actual notification message.
-                    while(rs2.next()) {
-                        String email = rs.getString("email");
-                        String phonenumber = rs.getString("phonenumber");
+                    while(usernameResultSet.next()) {
+                        String email = usernameResultSet.getString("email");
+                        String phonenumber = usernameResultSet.getString("phonenumber");
                         Notification notification = new Notification(constructNotificationMessage(studentUsername, lessonLocation, lessonDate), phonenumber, email);
                     }
                 }

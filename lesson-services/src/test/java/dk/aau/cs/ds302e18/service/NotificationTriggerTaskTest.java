@@ -9,16 +9,16 @@ import static org.junit.Assert.*;
 public class NotificationTriggerTaskTest {
 
     @Test
-    public void dateTest() {
-        Date currdate = new Date(2018,10,5,14,52,40);
+    public void dateFormatTest() {
+        Date date = new Date(2018,10,5,14,52,40);
 
-        String formattetDate = currdate.getYear() + "-" + currdate.getMonth() + "-" + currdate.getDate()
-                + " " + currdate.getHours() + ":" + currdate.getMinutes() + ":" + currdate.getSeconds();
+        String formattetDate = date.getYear() + "-" + date.getMonth() + "-" + date.getDate()
+                + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         assertEquals("2018-10-5 14:52:40", formattetDate);
     }
 
     @Test
-    public void stringSplitTest() {
+    public void splitStringTest() {
         String time = "2018-05-20 15:40:20";
         String[] stringArray = time.split(" ");
         assertEquals("2018-05-20",stringArray[0]);
@@ -35,5 +35,4 @@ public class NotificationTriggerTaskTest {
         String fullMessage = username + " your lesson tomorrow (" + stringArray[0] + ") is at " + lessonLocation + ", at the time: " + stringArray[1] + ".";
         assertEquals("Sembrik your lesson tomorrow (2018-05-20) is at Cassiopeia, at the time: 15:40:20.", fullMessage);
     }
-
 }

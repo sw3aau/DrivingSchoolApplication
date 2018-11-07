@@ -7,7 +7,6 @@ import java.util.Timer;
 public class NotificationTrigger {
     private Timer timer;
 
-
     public NotificationTrigger() {
     }
 
