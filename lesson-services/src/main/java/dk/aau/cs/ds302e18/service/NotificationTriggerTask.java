@@ -23,11 +23,23 @@ public class NotificationTriggerTask extends TimerTask {
         //86400000 is 24 hours in milliseconds.
         Date nextDate = new Date();
         nextDate.setTime(nextDate.getTime() + 86400000);
+        //2 Connections is required since this function will be working with 2 ResultSets. Each ResultSet will have it's own Connection.
         Connection conn = new DBConnector().createConnectionObject();
+        Connection conn2 = new DBConnector().createConnectionObject();
 
         try {
             //Queries the database for lessons in next 24 hour period.
+            //1 Statement for each Connection.
             Statement st = conn.createStatement();
+            Statement st2 = conn2.createStatement();
+            if(st == null) {
+                try {
+                    conn.close();
+                    throw new Exception("Invalid statement.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             ResultSet lessonResultSet = st.executeQuery("SELECT `lesson_date`, `lesson_location`, `student_list` " +
                                                 "FROM `lesson` WHERE `lesson_date` < '" + reformatDate(nextDate) + "'");
             //If any lessons was found, runs through them and prepare to send notifications by storing the data from the database in local Strings.
@@ -38,17 +50,21 @@ public class NotificationTriggerTask extends TimerTask {
                 String[] studentListArray = studentList.split(":");
                 //Queries the database again, but for student's email and phonenumber, based on their username found from a lesson.
                 for(String studentUsername : studentListArray) {
-                    ResultSet usernameResultSet = st.executeQuery("SELECT `email`, `phonenumber` FROM `account` WHERE `username` = '" + studentUsername + "'");
+                    ResultSet usernameResultSet = st2.executeQuery("SELECT `email`, `phonenumber` FROM `account` WHERE `username` = '" + studentUsername + "'");
                     //Call Notification to send notifications to the students, based on the data found from the database.
                     //This uses the private helper function "constructNotificationMessage" to construct the actual notification message.
                     while(usernameResultSet.next()) {
                         String email = usernameResultSet.getString("email");
                         String phonenumber = usernameResultSet.getString("phonenumber");
-                        Notification notification = new Notification(constructNotificationMessage(studentUsername, lessonLocation, lessonDate), phonenumber, email);
+                        //The String before phonenumber is the region code. +45 is for Denmark.
+                        Notification notification = new Notification(constructNotificationMessage(studentUsername, lessonLocation, lessonDate), "+45" + phonenumber, email);
                     }
+                    usernameResultSet.close();
                 }
             }
+            lessonResultSet.close();
             conn.close();
+            conn2.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

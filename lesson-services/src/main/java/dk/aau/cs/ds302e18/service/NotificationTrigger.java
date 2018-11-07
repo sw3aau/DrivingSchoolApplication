@@ -10,19 +10,14 @@ public class NotificationTrigger {
     public NotificationTrigger() {
     }
 
-    //Starts the timer and sets the trigger time to 20:00:00 every day.
-    public void startNotificationSystem() {
-        Date date = new Date();
+    //Starts the timer.
+    //Takes a Date and long as arguments for initializing the timer.
+    //If the date is in the past, then any "missed" executions will be scheduled for immediate "catch up" execution.
+    //https://docs.oracle.com/javase/7/docs/api/java/util/Timer.html#scheduleAtFixedRate(java.util.TimerTask,%20java.util.Date,%20long)
+    public void startNotificationSystem(Date timerStartDate, long taskDelayInMilliseconds) {
         timer = new Timer();
         NotificationTriggerTask task = new NotificationTriggerTask();
-
-        //Sets time of the date to 20:00:00, which is the timer for the notifications to be sent.
-        date.setHours(11);
-        date.setMinutes(0);
-        date.setSeconds(0);
-
-        //86400000 is 24 hours in milliseconds.
-        timer.scheduleAtFixedRate(task, date, 900000);
+        timer.scheduleAtFixedRate(task, timerStartDate, taskDelayInMilliseconds);
     }
 
     //Stops the timer.
