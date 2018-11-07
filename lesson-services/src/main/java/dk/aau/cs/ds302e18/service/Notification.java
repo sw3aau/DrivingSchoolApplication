@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.service;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNSClient;
