@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.service;
+package dk.aau.cs.ds302e18.service.Models;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

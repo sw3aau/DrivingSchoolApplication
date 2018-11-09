@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.service;
+package dk.aau.cs.ds302e18.service.Models;
 
 import java.util.Date;
 
@@ -85,7 +85,7 @@ public class LessonModel
         this.courseId = courseId;
     }
 
-    Lesson translateModelToLesson(){
+    public Lesson translateModelToLesson(){
         Lesson lesson = new Lesson();
         lesson.setLessonType(this.lessonType);
         lesson.setStudentList(this.studentList);
