@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/stores")
+@RequestMapping("/storeadmin")
 public class StoreServicesController
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(StoreServicesController.class);
@@ -53,7 +53,7 @@ public class StoreServicesController
     public ResponseEntity<Store> addStore(@RequestBody StoreModel model){
         /* Translates the input entered in the add store menu into input that can be entered in the database. */
         Store store = this.storeRepository.save(model.translateModelToStore());
-        /* The new store will be placed in the current browser /id , with an id that matches the entered stores ID. */
+        /* The new store will be placed in the current browser /id , with an id that matches the entered storeadmin ID. */
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(store.getId()).toUri();
         /* The connection to the new store is created. */
         return ResponseEntity.created(location).body(store);

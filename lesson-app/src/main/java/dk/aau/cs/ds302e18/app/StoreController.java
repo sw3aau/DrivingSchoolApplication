@@ -28,39 +28,39 @@ public class StoreController
         this.storeService = storeService;
     }
 
-    @GetMapping(value = "/stores")
+    @GetMapping(value = "/storeadmin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getStores(Model model)
     {
-        /** Stores all the requests in the stores ArrayList, and then iterates them through to the list ararylist to only
-        * get the requets with the pending tag.*/
-        List<Store> stores = this.storeService.getAllStoreRequests();
+        /** Stores all the requests in the storeadmin ArrayList, and then iterates them through to the list ararylist to only
+         * get the requets with the pending tag.*/
+        List<Store> storeadmin = this.storeService.getAllStoreRequests();
         List<Store> list = new ArrayList<>();
-        for (Store store : stores) if (store.getState() == 0) list.add(store);
-        model.addAttribute("stores", list);
-        return "stores-view";
+        for (Store store : storeadmin) if (store.getState() == 0) list.add(store);
+        model.addAttribute("storeadmin", list);
+        return "storeadmin-view";
     }
 
-    @GetMapping(value = "/stores/add")
+    @GetMapping(value = "/storeadmin/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddStoreForm(Model model)
     {
         return "store-view";
     }
 
-    /* Posts a newly added store in the stores list on the website */
-    @PostMapping(value = "/stores")
+    /* Posts a newly added store in the storeadmin list on the website */
+    @PostMapping(value = "/storeadmin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addStore(HttpServletRequest request, Model model, @ModelAttribute StoreModel storeModel)
     {
         /* The newly added store object is retrieved from the 8100 server.  */
         Store store = this.storeService.addStoreRequest(storeModel);
-            model.addAttribute("store", store);
-            request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        return new ModelAndView("redirect:/stores/" + store.getId());
+        model.addAttribute("store", store);
+        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new ModelAndView("redirect:/storeadmin/" + store.getId());
     }
 
-    @GetMapping(value = "/stores/{id}")
+    @GetMapping(value = "/storeadmin/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getStore(Model model, @PathVariable long id)
     {
@@ -69,8 +69,8 @@ public class StoreController
         return "store-view";
     }
 
-    /* HTML for updating an stores */
-    @PostMapping(value = "/stores/{id}")
+    /* HTML for updating an storeadmin */
+    @PostMapping(value = "/storeadmin/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateLesson(Model model, @PathVariable long id, @ModelAttribute StoreModel storeModel)
     {
@@ -80,27 +80,32 @@ public class StoreController
         model.addAttribute("storeModel", new StoreModel());
         return "store-view";
     }
-
     @RequestMapping(value="/accept", method=RequestMethod.POST)
-    public RedirectView acceptAppState(@RequestParam("appId") long appId, Model model,
-                                @ModelAttribute StoreModel storeModel) {
+    public RedirectView acceptAppState(@RequestParam("appId") long appId, @RequestParam("courseId") long courseId,
+                                       @RequestParam("studentUsername") String studentUsername, Model model,
+                                       @ModelAttribute StoreModel storeModel) {
         Byte b = 1;
         storeModel.setState(b);
+        storeModel.setCourseId(courseId);
+        storeModel.setStudentUsername(studentUsername);
         Store store = this.storeService.acceptStoreRequest(appId, storeModel);
         model.addAttribute("store", store);
         model.addAttribute("storeModel", new StoreModel());
-        return new RedirectView("stores");
+        return new RedirectView("storeadmin");
     }
 
     @RequestMapping(value="/deny", method=RequestMethod.POST)
-    public RedirectView denyAppState(@RequestParam("appIdDeny") long appIdDeny, Model model,
+    public RedirectView denyAppState(@RequestParam("appIdDeny") long appId, @RequestParam("courseIdDeny") long courseId,
+                                     @RequestParam("studentUsernameDeny") String studentUsername, Model model,
                                      @ModelAttribute StoreModel storeModel) {
         Byte b = 2;
         storeModel.setState(b);
-        Store store = this.storeService.acceptStoreRequest(appIdDeny, storeModel);
+        storeModel.setCourseId(courseId);
+        storeModel.setStudentUsername(studentUsername);
+        Store store = this.storeService.acceptStoreRequest(appId, storeModel);
         model.addAttribute("store", store);
         model.addAttribute("storeModel", new StoreModel());
-        return new RedirectView("stores");
+        return new RedirectView("storeadmin");
     }
 
 }

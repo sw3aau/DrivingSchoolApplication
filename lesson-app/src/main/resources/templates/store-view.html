@@ -8,7 +8,7 @@
 <div layout:fragment="content">
     <div class="container main-content">
         <h3>Store View</h3>
-        <form method="post" action="#" th:action="${store != null} ? '/stores/'+${store.id} : '/stores'" th:object="${storeModel}">
+        <form method="post" action="#" th:action="${store != null} ? '/storeadmin/'+${store.id} : '/storeadmin'" th:object="${storeModel}">
 
             <div class="form-row">
                 <div class="col">
@@ -36,7 +36,7 @@
             </div>
 
         </form>
-        <a th:href="@{/stores}">Return to All Stores</a>
+        <a th:href="@{/storeadmin}">Return to Store Admin</a>
     </div>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>

@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class StoreService
 {
-    private static final String REQUESTS = "/stores";
+    private static final String REQUESTS = "/storeadmin";
     private static final String SLASH = "/";
 
     @Value("http://localhost:8100")
