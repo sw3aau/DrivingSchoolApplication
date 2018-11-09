@@ -1,6 +1,7 @@
-package dk.aau.cs.ds302e18.app.auth;
+package dk.aau.cs.ds302e18.service;
 
-import dk.aau.cs.ds302e18.app.DBConnector;
+import dk.aau.cs.ds302e18.service.DBConnector;
+import dk.aau.cs.ds302e18.service.Student;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,24 +17,26 @@ public class CourseController {
         this.conn = new DBConnector().createConnectionObject();
     }
 
-    public String saveUsernamesAsString(ArrayList<User> userList) {
+    public String saveStudentnamesAsString(ArrayList<String> studentList) {
         String combinedString = "";
-        for (User user : userList) {
-            combinedString += user.getUsername() + ":";
+        for (String student : studentList) {
+            combinedString += student + ":";
         }
         return combinedString;
     }
 
     /* Separates a string into usernames and creates an list of users with those usernames. */
-    public ArrayList<User> saveStringAsUsers(String studentUsernames) {
-        ArrayList<User> userList = new ArrayList<>();
-        String[] parts = studentUsernames.split(":");
+    /*
+    public ArrayList<Student> saveStringAsStudents(String studentStudentnames) {
+        ArrayList<Student> studentList = new ArrayList<>();
+        String[] parts = studentStudentnames.split(":");
         for (int i = 0; i < parts.length; i++) {
-            userList.add(new User());
-            userList.get(i).setUsername(parts[i]);
+            studentList.add(new Student());
+            studentList.get(i).setUsername(parts[i]);
         }
-        return userList;
+        return studentList;
     }
+    */
 
 
     public void createEmptyCourse(int courseID) {
@@ -49,10 +52,10 @@ public class CourseController {
     }
 
     /* Takes an list of student users that will initially be assigned to the course as input */
-    public void createEmptyCourse(int courseID, ArrayList<User> studentList) {
+    public void createEmptyCourse(int courseID, ArrayList<String> studentList) {
         try {
             Statement st = conn.createStatement();
-            String usernamesAsString = saveUsernamesAsString(studentList);
+            String usernamesAsString = saveStudentnamesAsString(studentList);
             st.executeUpdate("INSERT INTO `course`(`course_id`, `student_usernames`) VALUES (" + courseID + ",'" + usernamesAsString + "')");
             conn.close();
         } catch (Exception e) {
@@ -61,7 +64,7 @@ public class CourseController {
     }
 
 
-    public void addStudent(int courseID, User studentUser) {
+    public void addStudent(int courseID, String studentUsername) {
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT `student_usernames` FROM `course` WHERE `course_id` = " + courseID + "");
@@ -69,7 +72,7 @@ public class CourseController {
             /* Finds the current list of students */
             String usernames = rs.getString("student_usernames");
             /* Adds the new student */
-            usernames += studentUser.getUsername() + ":";
+            usernames += studentUsername + ":";
             st.executeUpdate("UPDATE `course` SET`student_usernames`='" + usernames + "' WHERE `course_id` = '" + courseID + "'");
             conn.close();
         } catch (Exception e) {
@@ -77,7 +80,7 @@ public class CourseController {
         }
     }
 
-    public void removeStudent(int courseID, User studentUser) {
+    public void removeStudent(int courseID, String studentUsername) {
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT `student_usernames` FROM `course` WHERE `course_id` = " + courseID + "");
@@ -85,7 +88,7 @@ public class CourseController {
             /* Finds the current list of students */
             String usernames = rs.getString("student_usernames");
             /* Removes the targeted student */
-            String usernamesWithoutStudent = usernames.replace(studentUser.getUsername() + ":", "");
+            String usernamesWithoutStudent = usernames.replace(studentUsername + ":", "");
             st.executeUpdate("UPDATE `course` SET`student_usernames`='" + usernamesWithoutStudent + "' WHERE `course_id` = '" + courseID + "'");
             conn.close();
         } catch (Exception e) {
@@ -109,10 +112,10 @@ public class CourseController {
     /* Still needs number of hours at a time and start date should be the exact time the first lesson starts */
     /* every lesson needs an associated courseID if there are any */
     public void courseAddLessons(Date startDate, ArrayList<Integer> lessonPlacementsFromOffset, int numberLessons, int numberLessonsADay,
-                                 ArrayList<User> userList, int courseID,
+                                 ArrayList<String> studentList, int courseID,
                                  String location, String instructorName, int lessonType) {
 
-        String usernamesString = saveUsernamesAsString(userList);
+        String usernamesString = saveStudentnamesAsString(studentList);
         ArrayList<Date> lessonDates = createLessonDates(startDate, lessonPlacementsFromOffset, numberLessons, numberLessonsADay);
         /* All added lessons will be initialized as active */
         int lessonState = 1;
@@ -159,11 +162,14 @@ public class CourseController {
             currentDayDate = new Date(startDate.getTime() + 86400000 * dayCount);
             if(weekdays.contains(currentDayDate.getDay())) {
                 /* If it is one of the weekdays specified in the weekdays array, add an number of lessons equal to
-                * number lessons a day */
+                 * number lessons a day. Also since it adds a several lessons in a loop it needs to check before each lesson
+                 * is added if the necessary lessons have been distributed. */
                 for(int g = 0; g<numberLessonsADay; g++){
-                    System.out.println(g);
-                    lessonDates.add(new Date(currentDayDate.getTime() + lessonDurationMilliseconds * g));
-                    numberLessonsToDistribute--;
+                    if(numberLessonsToDistribute > 0) {
+                        System.out.println(g);
+                        lessonDates.add(new Date(currentDayDate.getTime() + lessonDurationMilliseconds * g));
+                        numberLessonsToDistribute--;
+                    }
                 }
             }
             //System.out.println(dayCount);
