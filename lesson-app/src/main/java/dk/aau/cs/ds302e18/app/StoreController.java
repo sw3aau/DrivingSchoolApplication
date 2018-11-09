@@ -7,14 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,25 +28,80 @@ public class StoreController
         this.storeService = storeService;
     }
 
-    @PostMapping(value = "/storerequests")
+    @GetMapping(value = "/stores")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView addStoreRequest(HttpServletRequest request, Model model, @ModelAttribute StoreModel storeModel)
+    public String getStores(Model model)
     {
+        /** Stores all the requests in the stores ArrayList, and then iterates them through to the list ararylist to only
+        * get the requets with the pending tag.*/
+        List<Store> stores = this.storeService.getAllStoreRequests();
+        List<Store> list = new ArrayList<>();
+        for (Store store : stores) if (store.getState() == 0) list.add(store);
+        model.addAttribute("stores", list);
+        return "stores-view";
+    }
+
+    @GetMapping(value = "/stores/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getAddStoreForm(Model model)
+    {
+        return "store-view";
+    }
+
+    /* Posts a newly added store in the stores list on the website */
+    @PostMapping(value = "/stores")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView addStore(HttpServletRequest request, Model model, @ModelAttribute StoreModel storeModel)
+    {
+        /* The newly added store object is retrieved from the 8100 server.  */
         Store store = this.storeService.addStoreRequest(storeModel);
-        model.addAttribute("store", store);
-        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        return new ModelAndView("redirect:/store/" + store.getId());
+            model.addAttribute("store", store);
+            request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new ModelAndView("redirect:/stores/" + store.getId());
     }
 
-    @GetMapping(value = "/storerequests")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getStoreRequest(Model model)
+    @GetMapping(value = "/stores/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String getStore(Model model, @PathVariable long id)
     {
-        List<Store> storeList = this.storeService.getAllStoreRequests();
-        model.addAttribute("storerequests", storeList);
-        return"store-request-view";
+        Store store = this.storeService.getStoreRequest(id);
+        model.addAttribute("store", store);
+        return "store-view";
     }
 
+    /* HTML for updating an stores */
+    @PostMapping(value = "/stores/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateLesson(Model model, @PathVariable long id, @ModelAttribute StoreModel storeModel)
+    {
+        /* Returns an lesson that is read from the 8100 server through updateLesson. */
+        Store store = this.storeService.acceptStoreRequest(id, storeModel);
+        model.addAttribute("store", store);
+        model.addAttribute("storeModel", new StoreModel());
+        return "store-view";
+    }
+
+    @RequestMapping(value="/accept", method=RequestMethod.POST)
+    public RedirectView acceptAppState(@RequestParam("appId") long appId, Model model,
+                                @ModelAttribute StoreModel storeModel) {
+        Byte b = 1;
+        storeModel.setState(b);
+        Store store = this.storeService.acceptStoreRequest(appId, storeModel);
+        model.addAttribute("store", store);
+        model.addAttribute("storeModel", new StoreModel());
+        return new RedirectView("stores");
+    }
+
+    @RequestMapping(value="/deny", method=RequestMethod.POST)
+    public RedirectView denyAppState(@RequestParam("appIdDeny") long appIdDeny, Model model,
+                                     @ModelAttribute StoreModel storeModel) {
+        Byte b = 2;
+        storeModel.setState(b);
+        Store store = this.storeService.acceptStoreRequest(appIdDeny, storeModel);
+        model.addAttribute("store", store);
+        model.addAttribute("storeModel", new StoreModel());
+        return new RedirectView("stores");
+    }
 
 }
 

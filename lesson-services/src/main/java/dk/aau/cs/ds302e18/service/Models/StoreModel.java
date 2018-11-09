@@ -36,7 +36,7 @@ public class StoreModel
         this.state = state;
     }
 
-    Store translateModelToStore()
+    public Store translateModelToStore()
     {
         Store store = new Store();
         store.setCourseId(this.courseId);
