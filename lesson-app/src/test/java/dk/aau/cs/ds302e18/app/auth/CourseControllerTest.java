@@ -32,7 +32,7 @@ public class CourseControllerTest {
         userList.add(user1);
         userList.add(user2);
         userList.add(user3);
-        startDate = new Date(2018,11,1,16,0);
+        startDate = new Date(118,11,1,16,0);
     }
 
     @Test
