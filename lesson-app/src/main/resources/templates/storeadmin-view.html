@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layout}"lang="en">
 <head>
     <title>Home</title>
 </head>
@@ -33,8 +33,8 @@
                 <td>
                     <form method="POST" th:action="@{/accept}">
                         <input type="hidden" name="appId" id="appId" th:value="${store.id}"/>
-                        <input type="hidden" name="courseId" id="courseId" th:value="${store.courseId}"/>
-                        <input type="hidden" name="studentUsername" id="studentUsername" th:value="${store.studentUsername}"/>
+                        <input type="hidden" name="courseIdAccept" id="courseIdAccept" th:value="${store.courseId}"/>
+                        <input type="hidden" name="studentUsernameAccept" id="studentUsernameAccept" th:value="${store.studentUsername}"/>
                         <button type="submit" name="submit" value="value" class="btn btn-success">Approve</button>
                     </form>
                 </td>
@@ -50,8 +50,31 @@
             </tbody>
         </table>
     </div>
+    <div width="300" class="main-content float-sm-right">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="#">B Course</a>
+                    </h4>
+                    <h5>$24.99</h5>
+                    <br class="card-text">Start Date : 20/11-2018</br>
+                    End Date : 20/12-2018</p>
+                </div>
+                <div class="card-footer">
+                    <form th:action="@{/apply}" method="post">
+                        <input type="hidden" name="courseId" id="courseId" th:value="123"/>
+                        <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
+                        <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>
 </div>
 </body>
 </html>
+

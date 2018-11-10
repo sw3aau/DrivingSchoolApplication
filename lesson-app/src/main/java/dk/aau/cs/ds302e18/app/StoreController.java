@@ -1,10 +1,13 @@
 package dk.aau.cs.ds302e18.app;
 
+import dk.aau.cs.ds302e18.app.auth.User;
 import dk.aau.cs.ds302e18.app.domain.Store;
 import dk.aau.cs.ds302e18.app.domain.StoreModel;
 import dk.aau.cs.ds302e18.app.service.StoreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,8 +85,8 @@ public class StoreController
         return "store-view";
     }
     @RequestMapping(value="/accept", method=RequestMethod.POST)
-    public RedirectView acceptAppState(@RequestParam("appId") long appId, @RequestParam("courseId") long courseId,
-                                       @RequestParam("studentUsername") String studentUsername, Model model,
+    public RedirectView acceptAppState(@RequestParam("appId") long appId, @RequestParam("courseIdAccept") long courseId,
+                                       @RequestParam("studentUsernameAccept") String studentUsername, Model model,
                                        @ModelAttribute StoreModel storeModel) {
         Byte b = 1;
         storeModel.setState(b);
@@ -107,6 +111,42 @@ public class StoreController
         model.addAttribute("storeModel", new StoreModel());
         return new RedirectView("storeadmin");
     }
+/*
+    @RequestMapping(value="/apply", method=RequestMethod.POST)
+    public RedirectView createAppState(@RequestParam("applyCourseId") long courseId,
+                                     @RequestParam("applyStudentUsername") String studentUsername, Model model,
+                                     @ModelAttribute StoreModel storeModel)
+    {
+        Byte b = 0;
+        storeModel.setState(b);
+        storeModel.setCourseId(courseId);
+        storeModel.setStudentUsername(studentUsername);
+        System.out.println(storeModel.toString());
 
+    //    Store store = this.storeService.acceptStoreRequest(appId, storeModel);
+      //  model.addAttribute("store", store);
+        //model.addAttribute("storeModel", new StoreModel());
+        return new RedirectView("storeadmin");
+    }
+    */
+
+    @PostMapping(value = "/apply")
+    public String createAppState(HttpServletRequest request, Model model, @ModelAttribute StoreModel storeModel)
+    {
+        // Set the state of a lesson to Pending
+        byte b = 0;
+        storeModel.setState(b);
+
+        //Fetches the username from the session
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+
+        storeModel.setStudentUsername(username);
+
+        Store store = this.storeService.addStoreRequest(storeModel);
+        model.addAttribute("store", store);
+        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return "index";
+    }
 }
 
