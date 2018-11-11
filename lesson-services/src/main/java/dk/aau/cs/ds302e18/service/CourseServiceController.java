@@ -41,23 +41,23 @@ public class CourseServiceController {
 
     @GetMapping("/{id}")
     public Course getCourse(@PathVariable Long id){
-        Optional<Course> store = this.courseRepository.findById(id);
-        if(store.isPresent()){
-            return store.get();
+        Optional<Course> course = this.courseRepository.findById(id);
+        if(course.isPresent()){
+            return course.get();
         }
-        throw new CourseNotFoundException("Store not found with id: " + id);
+        throw new CourseNotFoundException("Course not found with id: " + id);
     }
 
     /* Post = responsible for posting new information directly after it has been created to the website, and create fitting
     links to the new information. */
     @PostMapping
     public ResponseEntity<Course> addCourse(@RequestBody CourseModel model){
-        /* Translates the input entered in the add store menu into input that can be entered in the database. */
-        Course store = this.courseRepository.save(model.translateModelToCourse());
-        /* The new store will be placed in the current browser /id , with an id that matches the entered storeadmin ID. */
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(store.getId()).toUri();
-        /* The connection to the new store is created. */
-        return ResponseEntity.created(location).body(store);
+        /* Translates the input entered in the add course menu into input that can be entered in the database. */
+        Course course = this.courseRepository.save(model.translateModelToCourse());
+        /* The new course will be placed in the current browser /id , with an id that matches the entered storeadmin ID. */
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
+        /* The connection to the new course is created. */
+        return ResponseEntity.created(location).body(course);
     }
 
 
@@ -65,16 +65,16 @@ public class CourseServiceController {
     /* Put = responsible for updating existing database entries*/
     @PutMapping("/{id}")
     public Course updateCourse(@PathVariable Long id, @RequestBody CourseModel model){
-        /* Throw an error if the selected store do not exist. */
+        /* Throw an error if the selected course do not exist. */
         Optional<Course> existing = this.courseRepository.findById(id);
         if(!existing.isPresent()){
-            throw new CourseNotFoundException("Store not found with id: " + id);
+            throw new CourseNotFoundException("Course not found with id: " + id);
         }
-        /* Translates input from the interface into an store object */
-        Course store = model.translateModelToCourse();
-        /* Uses the ID the store already had to save the store */
-        store.setId(id);
-        return this.courseRepository.save(store);
+        /* Translates input from the interface into an course object */
+        Course course = model.translateModelToCourse();
+        /* Uses the ID the course already had to save the course */
+        course.setId(id);
+        return this.courseRepository.save(course);
     }
 
     @DeleteMapping("/{id}")

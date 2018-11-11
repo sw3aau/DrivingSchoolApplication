@@ -31,7 +31,7 @@ public class CourseController {
 
     @GetMapping(value = "/course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getLessons(Model model)
+    public String getCourses(Model model)
     {
         /* Creates an list of courses from the return value of getAllLessons in LessonService(which is an function that gets courses
         from the 8100 server and makes them into lesson objects and returns them as an list) */
@@ -42,7 +42,7 @@ public class CourseController {
 
     @GetMapping(value = "/course/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getAddLessonForm(Model model)
+    public String getAddCourseForm(Model model)
     {
         return "course-view";
     }
@@ -61,7 +61,7 @@ public class CourseController {
         model.addAttribute("course", course);
 
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        return new ModelAndView("redirect:/lessons/" + course.getCourseID());
+        return new ModelAndView("redirect:/course/" + course.getCourseID());
     }
 
     @GetMapping(value = "/course/{id}")
