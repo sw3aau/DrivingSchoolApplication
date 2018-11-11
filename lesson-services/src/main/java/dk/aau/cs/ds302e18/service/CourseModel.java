@@ -1,14 +1,14 @@
 package dk.aau.cs.ds302e18.service;
 
 public class CourseModel {
-    private Integer courseID;
+    private long courseID;
     private String studentUsernames;
 
-    public int getCourseID() {
+    public long getCourseID() {
         return courseID;
     }
 
-    public void setCourseID(int courseID) {
+    public void setCourseID(long courseID) {
         this.courseID = courseID;
     }
 

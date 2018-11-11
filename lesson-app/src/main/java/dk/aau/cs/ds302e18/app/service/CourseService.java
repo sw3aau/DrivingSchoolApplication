@@ -17,44 +17,42 @@ import java.util.List;
 @Service
 public class CourseService
 {
-    private static final String COURSE = "/course";
+    private static final String REQUESTS = "/course";
     private static final String SLASH = "/";
 
     @Value("http://localhost:8100")
-    private String courseServiceURL;
+    private String storeServiceUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    /* Retrieves an list of lessons from the 8100 server and returns it as list of lessons in the format specified in
+    /* Retrieves an list of store from the 8100 server and returns it as list of lessons in the format specified in
        the Lesson class. */
-    public List<Lesson> getAllLessons()
+    public List<Course> getAllCourseRequests()
     {
-        String url = courseServiceURL + COURSE;
+        String url = storeServiceUrl + REQUESTS;
         HttpEntity<String> request = new HttpEntity<>(null, null);
-        return this.restTemplate.exchange(url, HttpMethod.GET, request, new ParameterizedTypeReference<List<Lesson>>() { }).getBody();
+        return this.restTemplate.exchange(url, HttpMethod.GET, request, new ParameterizedTypeReference<List<Course>>() { }).getBody();
     }
 
-    /* Returns an lesson object from the 8100 server that has just been added */
-    public Course addCourse(CourseModel lessonModel)
+    /* Returns an store object from the 8100 server that has just been added */
+    public Course addCourseRequest(CourseModel courseModel)
     {
-        String url = courseServiceURL + COURSE;
-        HttpEntity<CourseModel> request = new HttpEntity<>(lessonModel, null);
+        String url = storeServiceUrl + REQUESTS;
+        HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
         return this.restTemplate.exchange(url, HttpMethod.POST, request, Course.class).getBody();
     }
 
 
-    public Lesson getLesson(Integer id) {
-        String url = courseServiceURL + COURSE + SLASH + id;
+    public Course getCourseRequest(long id) {
+        String url = storeServiceUrl + REQUESTS + SLASH + id;
         HttpEntity<String> request = new HttpEntity<>(null, null);
-        return this.restTemplate.exchange(url, HttpMethod.GET, request, Lesson.class).getBody();
+        return this.restTemplate.exchange(url, HttpMethod.GET, request, Course.class).getBody();
     }
 
-    public Course updateCourse(Integer id, CourseModel lessonModel) {
-        System.out.println(lessonModel);
-        /* Hvorfra på hjemmesiden de henter infoen */
-        String url = courseServiceURL + COURSE + SLASH + id;
-        HttpEntity<CourseModel> request = new HttpEntity<>(lessonModel, null);
-        /* PUT = hvad de skal gøre med objectet, i dette tilfælde Lesson.class */
+    public Course acceptCourseRequest(long id, CourseModel storeModel) {
+        System.out.println(storeModel);
+        String url = storeServiceUrl + REQUESTS + SLASH + id;
+        HttpEntity<CourseModel> request = new HttpEntity<>(storeModel, null);
         return this.restTemplate.exchange(url, HttpMethod.PUT, request, Course.class).getBody();
     }
 }

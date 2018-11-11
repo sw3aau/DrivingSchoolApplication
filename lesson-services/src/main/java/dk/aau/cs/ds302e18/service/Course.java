@@ -10,7 +10,7 @@ public class Course
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="COURSE_ID")
-    private Integer id;
+    private long id;
     @Column(name="STUDENT_USERNAMES")
     private String studentUsernames;
 
@@ -18,11 +18,11 @@ public class Course
         super();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
