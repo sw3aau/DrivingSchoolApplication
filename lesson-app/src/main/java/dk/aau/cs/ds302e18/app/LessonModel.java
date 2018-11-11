@@ -1,6 +1,7 @@
 package dk.aau.cs.ds302e18.app;
 
-import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDateTime;
 
 public class LessonModel
 {
@@ -16,7 +17,7 @@ public class LessonModel
 
     private int id;
 
-    public LessonModel(int id, String color, String title, Date start)
+    public LessonModel(int id, String color, String title, LocalDateTime start)
     {
         this.id = id;
         this.color = color;
@@ -49,16 +50,15 @@ public class LessonModel
         return title;
     }
 
-
-    public Date getStart()
+    public LocalDateTime getStart()
     {
         return start;
     }
 
-    public void setStart(Date start)
+    public void setStart(LocalDateTime start)
     {
         this.start = start;
     }
 
-    private Date start;
+    private LocalDateTime start;
 }

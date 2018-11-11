@@ -53,7 +53,7 @@ public class CalendarController
                 {
                     if (username.equals(userDetails.getUsername()))
                     {
-                        LessonModel lessonModel = new LessonModel(i, "red","Lesson", rs.getDate("lesson_date"));
+                        LessonModel lessonModel = new LessonModel(i, "red","Lesson", rs.getTimestamp("lesson_date").toLocalDateTime());
                         lessonModelArrayList.add(lessonModel);
                         ++i;
                     }
