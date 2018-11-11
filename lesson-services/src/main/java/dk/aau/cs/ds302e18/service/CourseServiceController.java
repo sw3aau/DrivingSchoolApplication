@@ -82,7 +82,7 @@ public class CourseServiceController {
     public void deleteStore(@PathVariable Long id){
         Optional<Course> existing = this.courseRepository.findById(id);
         if(!existing.isPresent()){
-            throw new CourseNotFoundException("Store not found with id: " + id);
+            throw new CourseNotFoundException("Course not found with id: " + id);
         }
         this.courseRepository.deleteById(id);
     }

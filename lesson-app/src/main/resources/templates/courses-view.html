@@ -18,13 +18,11 @@
         <table id="table" class="table table-striped table-sm">
             <thead>
             <th scope="col">#</th>
-            <th scope="col">Course ID</th>
             <th scope="col">Student Usernames</th>
             </thead>
             <tbody>
             <tr th:each="course : ${courses}">
-                <th scope="row"><a th:href="@{'/lessons/' + ${course.courseID}}" th:text="${course.courseID}"></a></th>
-                <td th:text="${course.courseID}"></td>
+                <th scope="row"><a th:href="@{'/course/' + ${course.id}}" th:text="${course.id}"></a></th>
                 <td th:text="${course.studentUsernames}"></td>
             </tr>
             </tbody>

@@ -1,15 +1,15 @@
 package dk.aau.cs.ds302e18.service;
 
 public class CourseModel {
-    private long courseID;
+    private long id;
     private String studentUsernames;
 
-    public long getCourseID() {
-        return courseID;
+    public long getId() {
+        return id;
     }
 
-    public void setCourseID(long courseID) {
-        this.courseID = courseID;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getStudentUsernames() {
@@ -23,7 +23,7 @@ public class CourseModel {
 
     public Course translateModelToCourse(){
         Course course = new Course();
-        course.setId(this.courseID);
+        course.setId(this.id);
         course.setStudentUsernames(this.studentUsernames);
         return course;
     }

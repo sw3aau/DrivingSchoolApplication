@@ -1,15 +1,15 @@
 package dk.aau.cs.ds302e18.app.domain;
 
 public class Course {
-    private long courseID;
+    private long id;
     private String studentUsernames;
 
-    public long getCourseID() {
-        return courseID;
+    public long getId() {
+        return id;
     }
 
-    public void setCourseID(long courseID) {
-        this.courseID = courseID;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getStudentUsernames() {

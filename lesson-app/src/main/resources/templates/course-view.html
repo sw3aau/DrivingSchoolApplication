@@ -8,10 +8,10 @@
 <div layout:fragment="content">
     <div class="container main-content">
         <h3>Lesson View</h3>
-        <form method="post" action="#" th:action="${course != null} ? '/course/'+${course.getCourseID()} : '/course'" th:object="${courseModel}">
+        <form method="post" action="#" th:action="${course != null} ? '/course/'+${course.getId()} : '/course'" th:object="${courseModel}">
             <div class="form-row">
                 <div class="col">
-                    <input th:id="courseID" th:name="courseID" type="text" class="form-control" placeholder="Course ID" th:value="${course != null} ? ${course.courseID}"/>
+                    <input th:id="id" th:name="id" type="text" class="form-control" placeholder="id" th:value="${course != null} ? ${course.id}"/>
                 </div>
                 <div class="col">
                     <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${course != null} ? ${course.studentUsernames}"/>

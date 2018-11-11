@@ -6,17 +6,13 @@ import dk.aau.cs.ds302e18.app.domain.CourseModel;
 import dk.aau.cs.ds302e18.app.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 @Controller
 @RequestMapping("/")
@@ -54,14 +50,14 @@ public class CourseController {
     {
         /* The newly added course object is retrieved from the 8100 server.  */
         Course course = this.courseService.addCourseRequest(courseModel);
-        if (course.getStudentUsernames().isEmpty() | course.getCourseID() == 0)
+        if (course.getStudentUsernames().isEmpty() | course.getId() == 0)
         {
             throw new RuntimeException();
         }
         model.addAttribute("course", course);
 
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        return new ModelAndView("redirect:/course/" + course.getCourseID());
+        return new ModelAndView("redirect:/course/" + course.getId());
     }
 
     @GetMapping(value = "/course/{id}")
