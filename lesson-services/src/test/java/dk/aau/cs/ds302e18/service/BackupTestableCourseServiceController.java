@@ -2,18 +2,30 @@ package dk.aau.cs.ds302e18.service;
 
 import dk.aau.cs.ds302e18.service.DBConnector;
 import dk.aau.cs.ds302e18.service.Student;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
+/* Tests the functionality of the controllers class, with SQL statements  */
 
-public class CourseController {
+public class BackupTestableCourseServiceController {
+
     private Connection conn;
+    private static final Logger LOGGER = LoggerFactory.getLogger(LessonServicesController.class);
+    //private final LessonRepository repository;
 
-    public CourseController() {
+    public BackupTestableCourseServiceController(/*LessonRepository repository*/) {
+        //super();
+        //this.repository = repository;
         this.conn = new DBConnector().createConnectionObject();
     }
 
@@ -194,4 +206,10 @@ public class CourseController {
                 + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         return formattetDate;
     }
+
+    //public void springDBTest(){
+    //Long test = new Long(82);
+    //Optional<Lesson> lesson = repository.findById(test);
+    //lesson.toString();
+    //}
 }

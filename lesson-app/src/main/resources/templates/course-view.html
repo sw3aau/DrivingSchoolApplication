@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"lang="en">
+<head>
+    <title>Home</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container main-content">
+        <h3>Lesson View</h3>
+        <form method="post" action="#" th:action="${course != null} ? '/course/'+${course.getCourseID()} : '/course'" th:object="${courseModel}">
+            <div class="form-row">
+                <div class="col">
+                    <input th:id="courseID" th:name="courseID" type="text" class="form-control" placeholder="Course ID" th:value="${course != null} ? ${course.courseID}"/>
+                </div>
+                <div class="col">
+                    <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${course != null} ? ${course.studentUsernames}"/>
+                    <!--input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/-->
+                </div>
+            </div>
+
+            <div class="form-row">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+        <a th:href="@{/lessons}">Return to All Lessons</a>
+    </div>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script th:src="@{/js/table.js}"></script>
+</div>
+</body>
+</html>

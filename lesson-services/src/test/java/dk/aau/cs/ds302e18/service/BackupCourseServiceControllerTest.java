@@ -4,19 +4,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-public class CourseControllerTest {
+public class BackupCourseServiceControllerTest {
     private ArrayList<String> studentList;
-    private CourseController courseController;
+    private BackupTestableCourseServiceController backupTestableCourseServiceController;
     private Date startDate;
 
     @Before
     public void setUp() throws Exception {
-        courseController = new CourseController();
+        backupTestableCourseServiceController = new BackupTestableCourseServiceController();
         String user1 = "username1";
 
         String user2 = "username2";
@@ -33,15 +32,15 @@ public class CourseControllerTest {
 
     @Test
     public void saveStudentnamesAsString() {
-        String combinedStudentnames = courseController.saveStudentnamesAsString(studentList);
+        String combinedStudentnames = backupTestableCourseServiceController.saveStudentnamesAsString(studentList);
         assertEquals("username1:username2:username3:", combinedStudentnames);
     }
 
 
     //@Test
     //public void saveStringAsStudents() {
-    //    String combinedStudentnames = courseController.saveStudentnamesAsString(studentList);
-    //    ArrayList<Student> returnedStudentList = courseController.saveStringAsStudents(combinedStudentnames);
+    //    String combinedStudentnames = backupTestableCourseServiceController.saveStudentnamesAsString(studentList);
+    //    ArrayList<Student> returnedStudentList = backupTestableCourseServiceController.saveStringAsStudents(combinedStudentnames);
     //    /* Checks that the list has 3 objects */
     //    assertEquals(3, returnedStudentList.size());
     //    /* Checks that every user has the proper username */
@@ -55,22 +54,22 @@ public class CourseControllerTest {
 
     @Test
     public void createNewEmptyCourse() {
-        courseController.createEmptyCourse(5);
+        backupTestableCourseServiceController.createEmptyCourse(5);
     }
 
     @Test
     public void createNewCourseWithInitialStudents(){
-        courseController.createEmptyCourse(7, studentList);
+        backupTestableCourseServiceController.createEmptyCourse(7, studentList);
     }
 
     @Test
     public void addStudent() {
-        courseController.addStudent(7, studentList.get(1));
+        backupTestableCourseServiceController.addStudent(7, studentList.get(1));
     }
 
     @Test
     public void deleteCourse() {
-        courseController.deleteCourse(3);
+        backupTestableCourseServiceController.deleteCourse(3);
     }
 
     @Test
@@ -81,7 +80,7 @@ public class CourseControllerTest {
         lessonPlacementsFromOffset.add(6);
         /* An uneven amount of lessons also checks that the if statement in the for loop prevents the loop from creating
            unnecessary extra lessons. */
-        ArrayList<Date> dateList = courseController.createLessonDates(startDate, lessonPlacementsFromOffset,5,2);
+        ArrayList<Date> dateList = backupTestableCourseServiceController.createLessonDates(startDate, lessonPlacementsFromOffset,5,2);
         for(Date date: dateList) {
             System.out.println("lesson date:" + date.getDate() + " weekday: " + date.getDay());
         }
@@ -92,6 +91,10 @@ public class CourseControllerTest {
         ArrayList<Integer> weekdays = new ArrayList<>();
         weekdays.add(0);
         weekdays.add(1);
-        courseController.courseAddLessons(startDate,weekdays,3, 2, studentList, 7,"AAU", "Bin Yang", 1);
+        backupTestableCourseServiceController.courseAddLessons(startDate,weekdays,3, 2, studentList, 7,"AAU", "Bin Yang", 1);
+    }
+
+    @Test public void springDBTest(){
+        //backupTestableCourseServiceController.springDBTest();
     }
 }

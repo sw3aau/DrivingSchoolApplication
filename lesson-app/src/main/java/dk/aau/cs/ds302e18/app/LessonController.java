@@ -135,12 +135,11 @@ public class LessonController
         return "lesson-view";
     }
 
-    /* HTML for updating an lesson */
     @PostMapping(value = "/lessons/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateLesson(Model model, @PathVariable long id, @ModelAttribute LessonModel lessonModel)
     {
-        /* Returns an lesson that is read from the 8100 server through updateLesson. */
+        /* Returns an lesson that is read from the 8100 server through updateCourse. */
         Lesson lesson = this.lessonService.updateLesson(id, lessonModel);
         model.addAttribute("lesson", lesson);
         model.addAttribute("lessonModel", new LessonModel());
