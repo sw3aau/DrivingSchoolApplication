@@ -3,10 +3,7 @@ package dk.aau.cs.ds302e18.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -71,6 +68,20 @@ public class CourseServiceController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @PutMapping("/{id}")
+    public Course updateLesson(@PathVariable Integer id, @RequestBody CourseModel model){
+        /* Throw an error if the selected course do not exist. */
+        Optional<Course> existing = this.courseRepository.findById(id);
+        if(!existing.isPresent()){
+            throw new LessonNotFoundException("Lesson not found with id: " + id);
+        }
+        /* Translates input from the interface into an course object */
+        Course course = model.translateModelToCourse();
+        /* Uses the ID the course already had to save the course */
+        course.setId(id);
+        return this.courseRepository.save(course);
     }
 
 
@@ -206,7 +217,7 @@ public class CourseServiceController {
     }
 
     public void springDBTest(){
-        Long test = new Long(82);
+        Integer test = new Integer(82);
         Optional<Course> lesson = courseRepository.findById(test);
         lesson.toString();
     }
