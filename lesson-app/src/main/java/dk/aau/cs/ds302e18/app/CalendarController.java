@@ -50,7 +50,7 @@ public class CalendarController
         ArrayList<CalendarViewModel> lessonArrayModels = new ArrayList<>();
         for (Lesson lesson : lessons)
         {
-            if (lesson.getStudentList().contains(userDetails.getUsername()))
+            if (lesson.getStudentList().contains(":"+userDetails.getUsername()+":"))
             {
                 String lessonType = "";
                 String lessonColor = "";
