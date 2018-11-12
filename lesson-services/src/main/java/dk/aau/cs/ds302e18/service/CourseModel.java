@@ -13,7 +13,7 @@ public class CourseModel {
     }
 
 
-    Course translateModelToCourse(){
+    public Course translateModelToCourse(){
         Course course = new Course();
         course.setStudentUsernames(this.studentUsernames);
         return course;
