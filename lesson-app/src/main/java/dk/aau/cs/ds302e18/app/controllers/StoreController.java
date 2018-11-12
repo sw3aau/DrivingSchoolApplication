@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.domain.Store;
 import dk.aau.cs.ds302e18.app.domain.StoreModel;

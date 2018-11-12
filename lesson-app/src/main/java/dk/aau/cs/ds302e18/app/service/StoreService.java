@@ -18,7 +18,7 @@ public class StoreService
     private static final String REQUESTS = "/storeadmin";
     private static final String SLASH = "/";
 
-    @Value("http://localhost:8100")
+    @Value("${ds.service.url}")
     private String storeServiceUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();

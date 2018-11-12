@@ -18,7 +18,7 @@ public class LessonService
     private static final String LESSONS = "/lessons";
     private static final String SLASH = "/";
 
-    @Value("http://localhost:8200")
+    @Value("${ds.service.url}")
     private String lessonServiceUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();

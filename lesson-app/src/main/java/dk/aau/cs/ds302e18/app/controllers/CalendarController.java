@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.domain.CalendarViewModel;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
@@ -50,7 +50,8 @@ public class CalendarController
         ArrayList<CalendarViewModel> lessonArrayModels = new ArrayList<>();
         for (Lesson lesson : lessons)
         {
-            if (lesson.getStudentList().contains(":"+userDetails.getUsername()+":"))
+            // Currently a glitch with usernames contained in other usernames, but will be fixed at later time
+            if (lesson.getStudentList().contains(userDetails.getUsername()))
             {
                 String lessonType = "";
                 String lessonColor = "";

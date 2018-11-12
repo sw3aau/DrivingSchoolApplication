@@ -1,9 +1,9 @@
-package dk.aau.cs.ds302e18.service.Controllers;
+package dk.aau.cs.ds302e18.service.controllers;
 
-import dk.aau.cs.ds302e18.service.Models.Store;
-import dk.aau.cs.ds302e18.service.Models.StoreModel;
-import dk.aau.cs.ds302e18.service.Models.StoreNotFoundException;
-import dk.aau.cs.ds302e18.service.Models.StoreRepository;
+import dk.aau.cs.ds302e18.service.models.Store;
+import dk.aau.cs.ds302e18.service.models.StoreModel;
+import dk.aau.cs.ds302e18.service.models.StoreNotFoundException;
+import dk.aau.cs.ds302e18.service.models.StoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

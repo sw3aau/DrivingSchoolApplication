@@ -1,5 +1,8 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.app.controllers;
 
+import dk.aau.cs.ds302e18.app.domain.CanvasModel;
+import dk.aau.cs.ds302e18.app.RegisterUser;
+import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
 import dk.aau.cs.ds302e18.app.service.LessonService;
@@ -70,8 +73,8 @@ public class LessonController
     @PostMapping(value = "/test")
     public String postTestPage(@RequestBody CanvasModel canvasModel)
     {
-        Canvas.upload("p3-project", "CoolSignature", canvasModel.getDataUrl());
-        return "register-account";
+       // CanvasModel("p3-project", "CoolSignature", canvasModel.getDataUrl());
+        return "canvas";
     }
 
     @PostMapping(value = "/register")

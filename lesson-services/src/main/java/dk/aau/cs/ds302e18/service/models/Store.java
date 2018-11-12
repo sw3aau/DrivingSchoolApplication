@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.service.Models;
+package dk.aau.cs.ds302e18.service.models;
 
 import javax.persistence.*;
 
