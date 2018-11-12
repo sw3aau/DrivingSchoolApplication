@@ -51,8 +51,11 @@ public class LessonServicesController
     links to the new information. */
     @PostMapping
     public ResponseEntity<Lesson> addLesson(@RequestBody LessonModel model){
+        /* Translates the input entered in the add lesson menu into input that can be entered in the database. */
         Lesson lesson = this.repository.save(model.translateModelToLesson());
+        /* The new lesson will be placed in the current browser /id , with an id that matches the entered lessons ID. */
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(lesson.getId()).toUri();
+        /* The connection to the new lesson is created. */
         return ResponseEntity.created(location).body(lesson);
     }
 
