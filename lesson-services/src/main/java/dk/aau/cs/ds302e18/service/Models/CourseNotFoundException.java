@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.service;
+package dk.aau.cs.ds302e18.service.Models;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

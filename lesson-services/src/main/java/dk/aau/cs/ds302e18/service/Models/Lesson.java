@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.service;
+package dk.aau.cs.ds302e18.service.Models;
 
 import javax.persistence.*;
 import java.util.Date;
