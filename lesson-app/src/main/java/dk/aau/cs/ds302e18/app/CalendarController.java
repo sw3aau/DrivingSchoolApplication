@@ -1,5 +1,9 @@
 package dk.aau.cs.ds302e18.app;
 
+import dk.aau.cs.ds302e18.app.domain.CalendarViewModel;
+import dk.aau.cs.ds302e18.app.domain.Lesson;
+import dk.aau.cs.ds302e18.app.domain.LessonModel;
+import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,59 +17,57 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class CalendarController
 {
+    private final LessonService lessonService;
+
+    public CalendarController(LessonService lessonService)
+    {
+        super();
+        this.lessonService = lessonService;
+    }
+
+
     @GetMapping(value = "/calendar")
-    public String getCalendar(Model model)
+    public String getCalendar()
     {
         return "calendar";
     }
 
     @RequestMapping("/calendar/getData")
-    public @ResponseBody ArrayList<LessonModel> getCalendarData(){
+    public @ResponseBody
+    ArrayList<CalendarViewModel> getCalendarData()
+    {
 
         // Get the Spring Security user details of the currently logged in user
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ArrayList<LessonModel> lessonModelArrayList = new ArrayList<>();
-
-        Connection connection = new DBConnector().createConnectionObject();
-
-        String query = "SELECT * FROM lesson";
-
-        try
+        List<Lesson> lessons = this.lessonService.getAllLessons();
+        ArrayList<CalendarViewModel> lessonArrayModels = new ArrayList<>();
+        for (Lesson lesson : lessons)
         {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(query);
-
-            if (rs == null)
-                return null;
-
-
-            while (rs.next())
+            if (lesson.getStudentList().contains(userDetails.getUsername()))
             {
-                String[] splitUsernames = rs.getString("student_list").split(":");
-
-                int i = 0; // This value is the id of the lesson. Since the ids are only for each user, it can simply start from 0 and iterate up.
-                for (String username : splitUsernames)
-                {
-                    if (username.equals(userDetails.getUsername()))
-                    {
-                        LessonModel lessonModel = new LessonModel(i, "red","Lesson", rs.getTimestamp("lesson_date").toLocalDateTime());
-                        lessonModelArrayList.add(lessonModel);
-                        ++i;
-                    }
+                String lessonType = "";
+                String lessonColor = "";
+                if (lesson.getLessonType() == 1){
+                    lessonType = "Theory lesson";
+                    lessonColor = "CYAN";
                 }
+                if (lesson.getLessonType() == 2){
+                    lessonType = "Pratical lesson";
+                    lessonColor = "GREEN";
+                }
+                CalendarViewModel calendarViewModel = new CalendarViewModel(lesson.getCourseId(), lessonColor,lessonType, lesson.getLessonDate());
+
+                lessonArrayModels.add(calendarViewModel);
             }
-
         }
-        catch (Exception e)
-        {
-            e.getCause();
-        }
-
-        return lessonModelArrayList;
+        return lessonArrayModels;
     }
+
 }

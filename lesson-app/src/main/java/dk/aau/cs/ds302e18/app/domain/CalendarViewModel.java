@@ -1,9 +1,10 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.app.domain;
 
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.Date;
 
-public class LessonModel
+public class CalendarViewModel
 {
     public int getId()
     {
@@ -17,7 +18,7 @@ public class LessonModel
 
     private int id;
 
-    public LessonModel(int id, String color, String title, LocalDateTime start)
+    public CalendarViewModel(int id, String color, String title, Date start)
     {
         this.id = id;
         this.color = color;
@@ -50,15 +51,15 @@ public class LessonModel
         return title;
     }
 
-    public LocalDateTime getStart()
+    public Date getStart()
     {
         return start;
     }
 
-    public void setStart(LocalDateTime start)
+    public void setStart(Date start)
     {
         this.start = start;
     }
 
-    private LocalDateTime start;
+    private Date start;
 }
