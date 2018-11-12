@@ -1,5 +1,8 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.app.controllers;
 
+import dk.aau.cs.ds302e18.app.domain.CanvasModel;
+import dk.aau.cs.ds302e18.app.RegisterUser;
+import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
 import dk.aau.cs.ds302e18.app.service.LessonService;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -52,8 +56,9 @@ public class LessonController
     }
 
     @GetMapping(value = "/canvas")
-    public String getCanvasPage()
+    public String getCanvasPage(HttpSession session)
     {
+        System.out.println(session.getAttribute("testSession"));
         return "canvas";
     }
 
@@ -68,8 +73,8 @@ public class LessonController
     @PostMapping(value = "/test")
     public String postTestPage(@RequestBody CanvasModel canvasModel)
     {
-        Canvas.upload("p3-project", "CoolSignature", canvasModel.getDataUrl());
-        return "register-account";
+       // CanvasModel("p3-project", "CoolSignature", canvasModel.getDataUrl());
+        return "canvas";
     }
 
     @PostMapping(value = "/register")
@@ -135,12 +140,11 @@ public class LessonController
         return "lesson-view";
     }
 
-    /* HTML for updating an lesson */
     @PostMapping(value = "/lessons/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateLesson(Model model, @PathVariable long id, @ModelAttribute LessonModel lessonModel)
     {
-        /* Returns an lesson that is read from the 8100 server through updateLesson. */
+        /* Returns an lesson that is read from the 8100 server through updateCourse. */
         Lesson lesson = this.lessonService.updateLesson(id, lessonModel);
         model.addAttribute("lesson", lesson);
         model.addAttribute("lessonModel", new LessonModel());

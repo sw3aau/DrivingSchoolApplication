@@ -66,4 +66,5 @@ public class CmsUserPrincipal implements UserDetails{
     public boolean isEnabled() {
         return this.user.isActive();
     }
+
 }

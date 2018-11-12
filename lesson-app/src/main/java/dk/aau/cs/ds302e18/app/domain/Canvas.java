@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.app.domain;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
@@ -28,7 +28,7 @@ class Canvas
         SECRET_KEY = reader.getString("aws.secretkey");
     }
 
-    static void upload(String bucketName, String imageName, String imageData)
+    public void upload(String bucketName, String imageName, String imageData)
     {
         AmazonS3 s3 = new AmazonS3Client(new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY));
         Region region = Region.getRegion(Regions.EU_WEST_2);
