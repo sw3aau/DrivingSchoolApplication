@@ -99,8 +99,8 @@ savePNGButton.addEventListener("click", function (event) {
   } else {
     var dataURL = signaturePad.toDataURL();
     var xhr = new XMLHttpRequest();
-    var text = "test";
-      xhr.open("POST", "http://localhost:8080/canvas", true);
+    var currentLocation = window.location;
+      xhr.open("POST", currentLocation, true);
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.send("{\"dataUrl\":\"" + dataURL + "\"}");
   }
