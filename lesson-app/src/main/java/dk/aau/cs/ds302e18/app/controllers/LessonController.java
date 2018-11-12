@@ -5,9 +5,12 @@ import dk.aau.cs.ds302e18.app.RegisterUser;
 import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
+import dk.aau.cs.ds302e18.app.domain.SignatureCanvas;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.util.List;
 
 @Controller
@@ -63,17 +67,17 @@ public class LessonController
     }
 
     @PostMapping(value = "/canvas")
-    public String postCanvasPage(@ModelAttribute CanvasModel canvasModel)
+    public String postCanvasPage(@RequestBody CanvasModel canvasModel)
     {
-        System.out.println("test");
-        System.out.println(canvasModel.getDataUrl());
-        return "canvas";
-    }
+        System.out.println("Received");
 
-    @PostMapping(value = "/test")
-    public String postTestPage(@RequestBody CanvasModel canvasModel)
-    {
-       // CanvasModel("p3-project", "CoolSignature", canvasModel.getDataUrl());
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)principal).getUsername();
+
+        SignatureCanvas signatureCanvas = new SignatureCanvas();
+
+        signatureCanvas.upload("p3-project", username, canvasModel.getDataUrl());
+
         return "canvas";
     }
 
