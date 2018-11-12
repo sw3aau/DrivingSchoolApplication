@@ -1,5 +1,9 @@
-package dk.aau.cs.ds302e18.service;
+package dk.aau.cs.ds302e18.service.Controllers;
 
+import dk.aau.cs.ds302e18.service.Lesson;
+import dk.aau.cs.ds302e18.service.LessonModel;
+import dk.aau.cs.ds302e18.service.LessonNotFoundException;
+import dk.aau.cs.ds302e18.service.LessonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

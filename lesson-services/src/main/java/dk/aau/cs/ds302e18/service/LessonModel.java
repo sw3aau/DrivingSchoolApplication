@@ -85,7 +85,7 @@ public class LessonModel
         this.courseId = courseId;
     }
 
-    Lesson translateModelToLesson(){
+    public Lesson translateModelToLesson(){
         Lesson lesson = new Lesson();
         lesson.setLessonType(this.lessonType);
         lesson.setStudentList(this.studentList);
