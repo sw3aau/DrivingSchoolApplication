@@ -2,8 +2,6 @@ package dk.aau.cs.ds302e18.app.service;
 
 import dk.aau.cs.ds302e18.app.domain.Course;
 import dk.aau.cs.ds302e18.app.domain.CourseModel;
-import dk.aau.cs.ds302e18.app.domain.Lesson;
-import dk.aau.cs.ds302e18.app.domain.LessonModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -21,7 +19,7 @@ public class CourseService
     private static final String SLASH = "/";
 
     @Value("${ds.service.url}")
-    private String storeServiceUrl;
+    private String courseServiceUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -29,30 +27,35 @@ public class CourseService
        the Lesson class. */
     public List<Course> getAllCourseRequests()
     {
-        String url = storeServiceUrl + REQUESTS;
+        String url = courseServiceUrl + REQUESTS;
         HttpEntity<String> request = new HttpEntity<>(null, null);
         return this.restTemplate.exchange(url, HttpMethod.GET, request, new ParameterizedTypeReference<List<Course>>() { }).getBody();
     }
 
-    /* Returns an store object from the 8100 server that has just been added */
     public Course addCourseRequest(CourseModel courseModel)
     {
-        String url = storeServiceUrl + REQUESTS;
+        String url = courseServiceUrl + REQUESTS;
         HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
         return this.restTemplate.exchange(url, HttpMethod.POST, request, Course.class).getBody();
     }
 
 
     public Course getCourseRequest(long id) {
-        String url = storeServiceUrl + REQUESTS + SLASH + id;
+        String url = courseServiceUrl + REQUESTS + SLASH + id;
         HttpEntity<String> request = new HttpEntity<>(null, null);
         return this.restTemplate.exchange(url, HttpMethod.GET, request, Course.class).getBody();
     }
 
-    public Course acceptCourseRequest(long id, CourseModel storeModel) {
-        System.out.println(storeModel);
-        String url = storeServiceUrl + REQUESTS + SLASH + id;
-        HttpEntity<CourseModel> request = new HttpEntity<>(storeModel, null);
+    public Course acceptCourseRequest(long id, CourseModel courseModel) {
+        System.out.println(courseModel);
+        String url = courseServiceUrl + REQUESTS + SLASH + id;
+        HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
         return this.restTemplate.exchange(url, HttpMethod.PUT, request, Course.class).getBody();
+    }
+
+    public Course addCourseLessons(CourseModel courseModel){
+        String url = courseServiceUrl + REQUESTS + SLASH + "addCourseLessons";
+        HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
+        return this.restTemplate.exchange(url, HttpMethod.POST, request, Course.class).getBody();
     }
 }

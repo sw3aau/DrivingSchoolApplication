@@ -1,9 +1,11 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 
+import dk.aau.cs.ds302e18.app.SortByID;
 import dk.aau.cs.ds302e18.app.domain.Course;
 import dk.aau.cs.ds302e18.app.domain.CourseModel;
 import dk.aau.cs.ds302e18.app.service.CourseService;
+import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,17 +20,19 @@ import java.util.List;
 @RequestMapping("/")
 public class CourseController {
 
+    private final LessonService lessonService;
     private final CourseService courseService;
 
-    public CourseController(CourseService courseService) {
+
+    public CourseController(LessonService lessonService, CourseService courseService) {
         super();
+        this.lessonService = lessonService;
         this.courseService = courseService;
     }
 
     @GetMapping(value = "/course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getCourses(Model model)
-    {
+    public String getCourses(Model model) {
         /* Creates an list of courses from the return value of getAllLessons in LessonService(which is an function that gets courses
         from the 8100 server and makes them into lesson objects and returns them as an list) */
         List<Course> courses = this.courseService.getAllCourseRequests();
@@ -38,20 +42,17 @@ public class CourseController {
 
     @GetMapping(value = "/course/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getAddCourseForm(Model model)
-    {
+    public String getAddCourseForm(Model model) {
         return "course-view";
     }
 
     /* Posts a newly added lesson in the lessons list on the website */
     @PostMapping(value = "/course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView addCourse(HttpServletRequest request, Model model, @ModelAttribute CourseModel courseModel)
-    {
+    public ModelAndView addCourse(HttpServletRequest request, Model model, @ModelAttribute CourseModel courseModel) {
         /* The newly added course object is retrieved from the 8100 server.  */
         Course course = this.courseService.addCourseRequest(courseModel);
-        if (course.getStudentUsernames().isEmpty() | course.getId() == 0)
-        {
+        if (course.getStudentUsernames().isEmpty() | course.getId() == 0) {
             throw new RuntimeException();
         }
         model.addAttribute("course", course);
@@ -62,8 +63,7 @@ public class CourseController {
 
     @GetMapping(value = "/course/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getCourse(Model model, @PathVariable long id)
-    {
+    public String getCourse(Model model, @PathVariable long id) {
         Course course = this.courseService.getCourseRequest(id);
         model.addAttribute("course", course);
         return "course-view";
@@ -72,12 +72,25 @@ public class CourseController {
     /* HTML for updating an lesson */
     @PostMapping(value = "/course/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateCourse(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
-    {
+    public String updateCourse(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel) {
         /* Returns an course that is read from the 8100 server through updateLesson. */
         Course course = this.courseService.acceptCourseRequest(id, courseModel);
         model.addAttribute("course", course);
         model.addAttribute("courseModel", new CourseModel());
         return "course-view";
+    }
+
+    /* Get list of students from course database */
+    /* Prepare lesson date, lesson ID, instructor, location, type. DONE */
+    /* needs to sort lessons after ID, and pick the ID incremented by one. DONE */
+    /* Still needs number of hours at a time and start date should be the exact time the first lesson starts */
+    /* every lesson needs an associated courseID if there are any */
+    @PostMapping(value = "/course")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView courseAddLessons(HttpServletRequest request, Model model, @ModelAttribute CourseModel courseModel) {
+        Course course = this.courseService.addCourseLessons(courseModel);
+        /* Exceptions for when part of the model is empty */
+        model.addAttribute("course", course);
+        return new ModelAndView(/*"redirect:/lessons/" + lesson.getId() */);
     }
 }
