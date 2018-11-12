@@ -1,25 +1,33 @@
 package dk.aau.cs.ds302e18.app.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
 public class CmsUserDetailsService implements UserDetailsService{
 
+    // This is used for retrieving and storing data on the session
+    @Autowired
+    private HttpServletRequest request;
+
     private final UserRepository userRepository;
     private final AuthGroupRepository authGroupRepository;
     private final AccountRespository accountRespository;
-
+    
     public CmsUserDetailsService(UserRepository userRepository, AuthGroupRepository authGroupRepository, AccountRespository accountRespository){
         super();
         this.userRepository = userRepository;
         this.authGroupRepository = authGroupRepository;
         this.accountRespository = accountRespository;
     }
+
+    // nah m8 this is login, not storing. also pls use // not /* */ it's not C89
 
     /* Springs way of storing user details / information. */
     @Override
@@ -35,6 +43,7 @@ public class CmsUserDetailsService implements UserDetailsService{
         /* Account information is read from the database and stored in an account object. */
         Account account = this.accountRespository.findByUsername(username);
         /* User credentials, authorities and account information is stored and returned as an UserDetails object.  */
+        request.getSession().setAttribute("testSession", "testing!");
         return new CmsUserPrincipal(user, authGroups, account);
     }
 }

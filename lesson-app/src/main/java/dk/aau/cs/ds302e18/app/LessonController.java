@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -52,8 +53,9 @@ public class LessonController
     }
 
     @GetMapping(value = "/canvas")
-    public String getCanvasPage()
+    public String getCanvasPage(HttpSession session)
     {
+        System.out.println(session.getAttribute("testSession"));
         return "canvas";
     }
 
