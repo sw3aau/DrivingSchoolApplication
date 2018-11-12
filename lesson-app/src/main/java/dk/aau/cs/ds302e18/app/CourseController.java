@@ -75,13 +75,13 @@ public class CourseController {
     public String updateCourse(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
     {
         /* Returns an course that is read from the 8100 server through updateLesson. */
+        for (int i = 0; i < 20; i++)
+        {
+            System.out.println("On APP"+ courseModel.getStudentUsernames());
+        }
         Course course = this.courseService.acceptCourseRequest(id, courseModel);
         model.addAttribute("course", course);
         model.addAttribute("courseModel", new CourseModel());
-        //if (course.getLessonType() != 1 || course.getLessonType() != 2)
-        //{
-        //    throw new RuntimeException();
-        //}
         return "course-view";
     }
 }

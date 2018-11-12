@@ -20,7 +20,7 @@ public class CourseService
     private static final String REQUESTS = "/course";
     private static final String SLASH = "/";
 
-    @Value("http://localhost:8100")
+    @Value("http://localhost:8200")
     private String storeServiceUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
