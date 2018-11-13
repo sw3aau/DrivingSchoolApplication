@@ -6,8 +6,10 @@ import java.util.Timer;
 //Timer class to trigger NotificationTriggerTask once every 24 hour period.
 public class NotificationTrigger {
     private Timer timer;
+    private final NotificationTriggerTask task;
 
     public NotificationTrigger() {
+        task = new NotificationTriggerTask();
     }
 
     //Starts the timer.
@@ -16,7 +18,6 @@ public class NotificationTrigger {
     //https://docs.oracle.com/javase/7/docs/api/java/util/Timer.html#scheduleAtFixedRate(java.util.TimerTask,%20java.util.Date,%20long)
     public void startNotificationSystem(Date timerStartDate, long taskDelayInMilliseconds) {
         timer = new Timer();
-        NotificationTriggerTask task = new NotificationTriggerTask();
         timer.scheduleAtFixedRate(task, timerStartDate, taskDelayInMilliseconds);
     }
 
