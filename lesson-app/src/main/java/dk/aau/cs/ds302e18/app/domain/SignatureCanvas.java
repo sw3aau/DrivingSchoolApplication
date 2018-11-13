@@ -47,7 +47,7 @@ public class SignatureCanvas
 
     private static File createFile(String imageName, String imageData) throws IOException
     {
-        File file = null;
+        File file;
 
         byte[] imageBytes = DatatypeConverter.parseBase64Binary(imageData.substring(imageData.indexOf(",") + 1));
         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));

@@ -59,29 +59,6 @@ public class LessonController
         return "register-account";
     }
 
-    @GetMapping(value = "/canvas/{id}")
-    public String getCanvasPage(HttpSession session, @PathVariable long id)
-    {
-        System.out.println("GETMAP" + id);
-        System.out.println(session.getAttribute("testSession"));
-        return "canvas";
-    }
-
-    @PostMapping(value = "/canvas/{id}")
-    public String postCanvasPage(@RequestBody CanvasModel canvasModel, @PathVariable long id)
-    {
-        System.out.println("Received");
-        System.out.println("Canvas ID" + id);
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)principal).getUsername();
-
-        SignatureCanvas signatureCanvas = new SignatureCanvas();
-
-        signatureCanvas.upload("p3-project", username, canvasModel.getDataUrl());
-
-        return "canvas";
-    }
 
     @PostMapping(value = "/register")
     public String getRegisterPage(@ModelAttribute Student student)
