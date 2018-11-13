@@ -6,6 +6,7 @@ import java.util.Date;
 public class Course {
     private long id;
     private String studentUsernames;
+
     private Date startDate;
     private ArrayList<Integer> weekdays;
     private int numberLessons;

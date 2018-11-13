@@ -20,7 +20,6 @@ public class Course
     private int numberLessons;
     private int numberLessonsADay;
     private ArrayList<String> studentList;
-    private int courseTick;
     private String location;
     private String instructorName;
     private int lessonType;
@@ -83,14 +82,6 @@ public class Course
 
     public void setStudentList(ArrayList<String> studentList) {
         this.studentList = studentList;
-    }
-
-    public int getCourseTick() {
-        return courseTick;
-    }
-
-    public void setCourseTick(int courseTick) {
-        this.courseTick = courseTick;
     }
 
     public String getLocation() {
