@@ -4,8 +4,38 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="splitting.css" rel="stylesheet"></link>
+<style>
 
+    .split {
+        height: 100%;
+        width: 50%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+    .left {
+        left: 0;
+        background-color: whitesmoke;
+    }
+
+    .right {
+        right: 0;
+        background-color: whitesmoke;
+    }
+
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+
+</style>
 </head>
 
 <div layout:fragment="content">

@@ -1,5 +1,6 @@
 package dk.aau.cs.ds302e18.app.controllers;
 import dk.aau.cs.ds302e18.app.DBConnector;
+import dk.aau.cs.ds302e18.app.ModifyUser;
 import dk.aau.cs.ds302e18.app.RegisterUser;
 import dk.aau.cs.ds302e18.app.Student;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +49,7 @@ public class AccountController {
     @PostMapping(value = "/modifyAccount")
     public String postModifyPage(@ModelAttribute Student student){
         System.out.println(student.toString());
-        new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
+        new ModifyUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
                 student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
                 student.getZipCode(), student.getCity());
         return "modify-account";
