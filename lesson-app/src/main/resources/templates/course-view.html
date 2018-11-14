@@ -13,7 +13,7 @@
 <div layout:fragment="content">
     <div class="container main-content">
         <h3>Lessons to course</h3>
-        <form method="post" action="#" th:action="${course != null} ? '/course/'+${course.getId()} : '/course'" th:object="${courseModel}">
+        <form method="post" action="#" th:action="'/course/courseAddLessons'" th:object="${courseModel}">
             <div class="form-row" >
                 <div>
                     <input th:id="courseTick" th:name="courseTick" type="text" class="form-control" placeholder="Course ID" th:value="${course != null} ? ${course.courseTick}"/>
@@ -80,14 +80,14 @@
                     <input th:id="instructorName" th:name="instructorName" type="text" class="form-control" placeholder="Instructor name" th:value="${course != null} ? ${course.instructorName}"/>
                 </div>
             </div>
-
-
             <div class="form-row">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
         <a th:href="@{/course}">Return to All Courses</a>
     </div>
+
+
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>
 </div>

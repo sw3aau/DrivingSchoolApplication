@@ -11,7 +11,8 @@
             z-index: 1;
             top: 0;
             overflow-x: hidden;
-            padding-top: 5%
+            padding-top: 5%;
+            padding-left: 5%;
         }
 
         .left {
@@ -37,16 +38,16 @@
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <div class="row">
-            <div class="col-7">
-                <h3>Courses</h3>
-            </div>
-            <div class="col">
-                <a th:href="@{/course/add}">Add lessons to a course</a>
-            </div>
-        </div>
         <div class="split left">
             <div class="left">
+                <div class="row">
+                    <div class="col-7">
+                        <h3>Courses</h3>
+                    </div>
+                    <div class="col">
+                        <a th:href="@{/course/addlessons}">Add lessons to a course</a>
+                    </div>
+                </div>
                 <table id="table" class="table table-striped table-sm">
                     <thead>
                     <th scope="col">#</th>
@@ -56,9 +57,44 @@
                     <tr th:each="course : ${courses}">
                         <th scope="row"><a th:href="@{'/course/' + ${course.id}}" th:text="${course.id}"></a></th>
                         <td th:text="${course.studentUsernames}"></td>
+                        <td>
+                            <form method="post" th:action="'course/deleteCourse'" th:object="${courseModel}">
+                                <input type="hidden" name="deleteCourse" id="deleteCourse" th:value="${course.courseTick}"/>
+                                <button type="submit" name="submit" value="value" class="btn btn-success">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="split right">
+            <div class="right">
+                <form method="post" action="#" th:action="'/course/addCourse'" th:object="${courseModel}">
+                    <div class="form-row">
+                        <div class="col">
+                            Student usernames seperated by the : symbol
+                            <input th:id="studentUsernames" th:name="studentUsernames" type="text" class="form-control"
+                                   placeholder="Student names seperated by :"
+                                   th:value="${course != null} ? ${course.studentUsernames}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                <!--form method="post" action="#" th:action="'/course/deleteCourse'" th:object="${courseModel}">
+                    <div class="form-row">
+                        <div class="col">
+                            <input th:id="courseTick" th:name="courseTick" type="text" class="form-control"
+                                   placeholder="Course to be deleted"
+                                   th:value="${course != null} ? ${course.courseTick}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form-->
             </div>
         </div>
     </div>

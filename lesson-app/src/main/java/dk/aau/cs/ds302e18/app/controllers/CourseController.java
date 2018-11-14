@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
 @Controller
 @RequestMapping("/")
 public class CourseController {
@@ -47,47 +48,29 @@ public class CourseController {
         return "courses-view";
     }
 
-    @GetMapping(value = "/course/add")
+    @GetMapping(value = "/course/addlessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddCourseForm(Model model) {
         return "course-view";
     }
 
-
-
-    @GetMapping(value = "/course/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String getCourse(Model model, @PathVariable long id) {
-        Course course = this.courseService.getCourseRequest(id);
-        model.addAttribute("course", course);
-        return "course-view";
+    @DeleteMapping(value = "/course/deleteCourse")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView deleteCourse(@ModelAttribute CourseModel courseModel) {
+        courseService.deleteCourse(courseModel);
+        return new ModelAndView("redirect:/course/");
     }
 
-    /* HTML for updating an lesson */
-    @PostMapping(value = "/course/{id}")
+    /* Både ved add lesson og denne funktion, jeg har ingen ide om hvordan den mapper til course/add uden at have det i post mapping */
+    @PostMapping(value = "/course/courseAddLessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateCourse(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel) {
-        /* Returns an course that is read from the 8100 server through updateLesson. */
-        Course course = this.courseService.acceptCourseRequest(id, courseModel);
-        model.addAttribute("course", course);
-        model.addAttribute("courseModel", new CourseModel());
-        return "course-view";
-    }
-
-    /* Get list of students from course database */
-    /* Prepare lesson date, lesson ID, instructor, location, type. DONE */
-    /* needs to sort lessons after ID, and pick the ID incremented by one. DONE */
-    /* Still needs number of hours at a time and start date should be the exact time the first lesson starts */
-    /* every lesson needs an associated courseID if there are any */
-    @PostMapping(value = "/course")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView courseAddLessons(HttpServletRequest request, Model model, @ModelAttribute CourseModel courseModel) {
+    public ModelAndView courseAddLessons(@ModelAttribute CourseModel courseModel) {
         ArrayList<Date> lessonDates = createLessonDates(courseModel.getStartDate(), courseModel.getWeekdays(), courseModel.getNumberLessons(), courseModel.getNumberLessonsADay());
-        /* All added lessons will be initialized as active */
+        /* All added lessons will be initialized as unsigned */
         boolean isSigned = false;
-        List<Lesson> lessonList = lessonService.getAllLessons();
 
-        for(int j = 0; j<lessonDates.size(); j++) {
+        /* For every lesson date, a lesson will be created */
+        for (int j = 0; j < lessonDates.size(); j++) {
             Date lessonDate = lessonDates.get(j);
             LessonModel lesson = new LessonModel();
             lesson.setSigned(isSigned);
@@ -100,10 +83,18 @@ public class CourseController {
 
             lessonService.addLesson(lesson);
         }
-        Course course = this.courseService.addCourseLessons(courseModel);
+        //Course course = this.courseService.addCourseLessons(courseModel);
         /* Exceptions for when part of the model is empty */
-        model.addAttribute("course", course);
-        return new ModelAndView(/*"redirect:/lessons/" + lesson.getId() */);
+        //model.addAttribute("course", course);
+
+        return new ModelAndView("redirect:/course/");
+    }
+
+    @PostMapping(value = "/course/addCourse")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
+        courseService.addCourse(courseModel);
+        return new ModelAndView("redirect:/course/");
     }
 
     public ArrayList<Date> createLessonDates(Date startDate, ArrayList<Integer> weekdays, int numberLessonsToDistribute,
@@ -123,12 +114,12 @@ public class CourseController {
             /* 86400000 * dayCount is not contained in a variable due to the possible of reaching an overflow of most
                data-types. Date is by default suitable to handle very large numbers. */
             currentDayDate = new Date(startDate.getTime() + 86400000 * dayCount);
-            if(weekdays.contains(currentDayDate.getDay())) {
+            if (weekdays.contains(currentDayDate.getDay())) {
                 /* If it is one of the weekdays specified in the weekdays array, add an number of lessons equal to
                  * number lessons a day. Also since it adds a several lessons in a loop it needs to check before each lesson
                  * is added if the necessary lessons have been distributed. */
-                for(int g = 0; g<numberLessonsADay; g++){
-                    if(numberLessonsToDistribute > 0) {
+                for (int g = 0; g < numberLessonsADay; g++) {
+                    if (numberLessonsToDistribute > 0) {
                         System.out.println(g);
                         lessonDates.add(new Date(currentDayDate.getTime() + lessonDurationMilliseconds * g));
                         numberLessonsToDistribute--;

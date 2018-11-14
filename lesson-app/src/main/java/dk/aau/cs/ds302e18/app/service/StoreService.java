@@ -48,7 +48,6 @@ public class StoreService
     }
 
     public Store acceptStoreRequest(long id, StoreModel storeModel) {
-        System.out.println(storeModel);
         String url = storeServiceUrl + REQUESTS + SLASH + id;
         HttpEntity<StoreModel> request = new HttpEntity<>(storeModel, null);
         return this.restTemplate.exchange(url, HttpMethod.PUT, request, Store.class).getBody();

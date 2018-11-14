@@ -19,13 +19,11 @@ public class CourseServicesController
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseServicesController.class);
 
-    private final LessonRepository lessonRepository;
     private final CourseRepository courseRepository;
 
 
-    public CourseServicesController(LessonRepository lessonRepository, CourseRepository courseRepository){
+    public CourseServicesController(CourseRepository courseRepository){
         super();
-        this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
     }
 
@@ -74,10 +72,12 @@ public class CourseServicesController
 
 
     /* NOT IMPLEMENTED: Delete = responsible for deleting database entries. */
-    @DeleteMapping("/{id}")
+    @RequestMapping(value="/deleteCourse", method=RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.RESET_CONTENT)
-    public void deleteCourse(@PathVariable Long id){
+    public void deleteCourse(/*@PathVariable Long id*/@ModelAttribute CourseModel courseModel){
+        long id = (long)courseModel.getCourseTick();
         Optional<Course> existing = this.courseRepository.findById(id);
+        System.out.println("Course Found with ID: " + courseModel.getCourseTick());
         if(!existing.isPresent()){
             throw new CourseNotFoundException("Course not found with id: " + id);
         }

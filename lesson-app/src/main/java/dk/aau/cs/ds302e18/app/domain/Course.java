@@ -104,4 +104,10 @@ public class Course {
     public void setLessonType(int lessonType) {
         this.lessonType = lessonType;
     }
+
+    public Course translateModelToCourse(){
+        Course course = new Course();
+        course.setStudentUsernames(this.studentUsernames);
+        return course;
+    }
 }

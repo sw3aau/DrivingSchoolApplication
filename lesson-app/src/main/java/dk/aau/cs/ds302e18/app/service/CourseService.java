@@ -32,7 +32,7 @@ public class CourseService
         return this.restTemplate.exchange(url, HttpMethod.GET, request, new ParameterizedTypeReference<List<Course>>() { }).getBody();
     }
 
-    public Course addCourseRequest(CourseModel courseModel)
+    public Course addCourse(CourseModel courseModel)
     {
         String url = courseServiceUrl + REQUESTS;
         HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
@@ -53,9 +53,9 @@ public class CourseService
         return this.restTemplate.exchange(url, HttpMethod.PUT, request, Course.class).getBody();
     }
 
-    public Course addCourseLessons(CourseModel courseModel){
-        String url = courseServiceUrl + REQUESTS + SLASH + "addCourseLessons";
+    public Course deleteCourse(CourseModel courseModel){
+        String url = courseServiceUrl + REQUESTS + SLASH + "deleteCourse";
         HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
-        return this.restTemplate.exchange(url, HttpMethod.POST, request, Course.class).getBody();
+        return this.restTemplate.exchange(url, HttpMethod.DELETE, request, Course.class).getBody();
     }
 }
