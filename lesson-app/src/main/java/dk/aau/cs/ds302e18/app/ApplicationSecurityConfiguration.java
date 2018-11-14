@@ -18,12 +18,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapter{
+public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CmsUserDetailsService userDetailsService;
 
+
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder(11));
@@ -37,6 +38,11 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         authorityMapper.setConvertToUpperCase(true);
         authorityMapper.setDefaultAuthority("USER");
         return authorityMapper;
+    }
+
+    @Autowired
+    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
@@ -58,7 +64,11 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .logout().invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logout-success").permitAll();
+                .logoutSuccessUrl("/logout-success").permitAll()
+                /*.and()
+                .logout().deleteCookies("JSESSIONID")*/
+                .and()
+                .rememberMe().key("uniqueAndSecret");
     }
 
 }
