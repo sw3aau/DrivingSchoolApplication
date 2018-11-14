@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-class Canvas
+public class SignatureCanvas
 {
 
     private static String ACCESS_KEY;

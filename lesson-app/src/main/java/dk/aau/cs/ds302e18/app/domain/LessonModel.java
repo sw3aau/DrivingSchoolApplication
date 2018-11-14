@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class LessonModel
 {
-    private byte lessonType;
+    private LessonType lessonType;
 
     private String studentList;
 
@@ -74,12 +74,12 @@ public class LessonModel
         this.lessonLocation = lessonLocation;
     }
 
-    public byte getLessonType()
+    public LessonType getLessonType()
     {
         return lessonType;
     }
 
-    public void setLessonType(byte lessonType)
+    public void setLessonType(LessonType lessonType)
     {
         this.lessonType = lessonType;
     }

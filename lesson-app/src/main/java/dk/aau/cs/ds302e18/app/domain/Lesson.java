@@ -5,7 +5,7 @@ import java.util.Date;
 public class Lesson
 {
     private long id;
-    private byte lessonType;
+    private LessonType lessonType;
     private String studentList;
     private String lessonInstructor;
     private Date lessonDate;
@@ -26,12 +26,12 @@ public class Lesson
         this.id = id;
     }
 
-    public byte getLessonType()
+    public LessonType getLessonType()
     {
         return lessonType;
     }
 
-    public void setLessonType(byte lessonType)
+    public void setLessonType(LessonType lessonType)
     {
         this.lessonType = lessonType;
     }
