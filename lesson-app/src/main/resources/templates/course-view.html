@@ -12,8 +12,13 @@
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <h3>Add course</h3>
+        <h3>Lessons to course</h3>
         <form method="post" action="#" th:action="${course != null} ? '/course/'+${course.getId()} : '/course'" th:object="${courseModel}">
+            <div class="form-row" >
+                <div>
+                    <input th:id="courseTick" th:name="courseTick" type="text" class="form-control" placeholder="Course ID" th:value="${course != null} ? ${course.courseTick}"/>
+                </div>
+            </div>
             <div class="form-row">
                 <div>
                     <input th:id="studentUsernames" th:name="studentUsernames" type="text" class="form-control" placeholder="Students" th:value="${course != null} ? ${course.studentUsernames}"/>

@@ -96,6 +96,7 @@ public class CourseController {
             lesson.setLessonLocation(courseModel.getLocation());
             lesson.setStudentList(courseModel.getStudentUsernames());
             lesson.setCourseId(courseModel.getCourseTick());
+            lesson.setLessonType(courseModel.getLessonType());
 
             lessonService.addLesson(lesson);
         }

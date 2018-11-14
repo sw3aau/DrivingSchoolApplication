@@ -1,7 +1,37 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
 <head>
     <title>Home</title>
+    <style>
+        .split {
+            height: 100%;
+            width: 50%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            overflow-x: hidden;
+            padding-top: 5%
+        }
+
+        .left {
+            left: 0;
+            background-color: whitesmoke;
+        }
+
+        .right {
+            right: 0;
+            background-color: whitesmoke;
+        }
+
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -12,21 +42,25 @@
                 <h3>Courses</h3>
             </div>
             <div class="col">
-                <a th:href="@{/course/add}">Add New Course</a>
+                <a th:href="@{/course/add}">Add lessons to a course</a>
             </div>
         </div>
-        <table id="table" class="table table-striped table-sm">
-            <thead>
-            <th scope="col">#</th>
-            <th scope="col">Student Usernames</th>
-            </thead>
-            <tbody>
-            <tr th:each="course : ${courses}">
-                <th scope="row"><a th:href="@{'/course/' + ${course.id}}" th:text="${course.id}"></a></th>
-                <td th:text="${course.studentUsernames}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="split left">
+            <div class="left">
+                <table id="table" class="table table-striped table-sm">
+                    <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">Student Usernames</th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="course : ${courses}">
+                        <th scope="row"><a th:href="@{'/course/' + ${course.id}}" th:text="${course.id}"></a></th>
+                        <td th:text="${course.studentUsernames}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>

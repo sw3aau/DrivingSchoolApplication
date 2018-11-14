@@ -16,7 +16,7 @@ public class CourseModel {
 
     private String location;
     private String instructorName;
-    private int lessonType;
+    private byte lessonType;
     private String studentUsernames;
 
 
@@ -85,11 +85,11 @@ public class CourseModel {
         this.instructorName = instructorName;
     }
 
-    public int getLessonType() {
+    public byte getLessonType() {
         return lessonType;
     }
 
-    public void setLessonType(int lessonType) {
+    public void setLessonType(byte lessonType) {
         this.lessonType = lessonType;
     }
 }
