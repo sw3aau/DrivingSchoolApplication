@@ -11,10 +11,10 @@
         <form method="post" action="#" th:action="${lesson != null} ? '/lessons/'+${lesson.id} : '/lessons'" th:object="${lessonModel}">
             <div class="form-row">
                 <div class="col">
-                    <input th:id="lessonType" th:name="lessonType" type="text" class="form-control" placeholder="Lesson Type" th:value="${lesson != null} ? ${lesson.lessonType}"/>
+                    <input th:id="lessonType" th:name="lessonType" type="number" min="1" max="2" class="form-control" placeholder="Lesson type" th:value="${lesson != null} ? ${lesson.lessonType}" required/>
                 </div>
                 <div class="col">
-                    <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/>
+                    <input th:id="studentList" th:name="studentList" type="text" required="required" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/>
 
 
                     <!--input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/-->
@@ -22,12 +22,12 @@
             </div>
             <div class="form-row">
                 <div class="col">
-                    <input th:id="lessonInstructor" th:name="lessonInstructor" type="text" class="form-control" placeholder="Instructor" th:value="${lesson != null} ? ${lesson.lessonInstructor}"/>
+                    <input th:id="lessonInstructor" th:name="lessonInstructor" type="text"required="required" class="form-control" placeholder="Instructor" th:value="${lesson != null} ? ${lesson.lessonInstructor}"/>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col">
-                    <input th:id="lessonLocation" th:name="lessonLocation" type="text" class="form-control" placeholder="Location" th:value="${lesson != null} ? ${lesson.lessonLocation}"/>
+                    <input th:id="lessonLocation" th:name="lessonLocation" type="text" required="required" class="form-control" placeholder="Location" th:value="${lesson != null} ? ${lesson.lessonLocation}"/>
                 </div>
             </div>
             <div class="form-row">
