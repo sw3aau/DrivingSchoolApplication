@@ -1,6 +1,6 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
-import dk.aau.cs.ds302e18.app.domain.CanvasModel;
+import dk.aau.cs.ds302e18.app.domain.*;
 import dk.aau.cs.ds302e18.app.RegisterUser;
 import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
@@ -119,7 +119,7 @@ public class LessonController
         Lesson lesson = this.lessonService.addLesson(lessonModel);
         if (lesson.getStudentList().isEmpty() | lesson.getLessonInstructor().isEmpty() | lesson.getLessonLocation().isEmpty())
         {
-            if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2)
+            if (lesson.getLessonType() != LessonType.THEORY_LESSON || lesson.getLessonType() != LessonType.PRACTICAL_LESSON)
             {
                 throw new RuntimeException();
             }
@@ -147,7 +147,7 @@ public class LessonController
         Lesson lesson = this.lessonService.updateLesson(id, lessonModel);
         model.addAttribute("lesson", lesson);
         model.addAttribute("lessonModel", new LessonModel());
-        if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2)
+        if (lesson.getLessonType() != LessonType.THEORY_LESSON || lesson.getLessonType() != LessonType.PRACTICAL_LESSON)
         {
             throw new RuntimeException();
         }
