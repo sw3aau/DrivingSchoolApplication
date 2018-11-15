@@ -90,6 +90,11 @@ public class AccountController
             e.printStackTrace();
         }
     }
+    @GetMapping(value = "/account/modify")
+    public String getModifyPage()
+    {
+        return "modify-account";
+    }
 
     @GetMapping(value = "/contact")
     public String getContactPage()
@@ -97,6 +102,21 @@ public class AccountController
         return "contact-formular";
     }
 
+    @GetMapping(value = "/account/modify")
+    public String getModifyPage()
+    {
+        return "modify-account";
+    }
+
+    @PostMapping(value = "/account/modify")
+    public String postModifyPage(@ModelAttribute Student student){
+        System.out.println(student.toString());
+        new ModifyUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
+                student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
+                student.getZipCode(), student.getCity());
+        return "modify-account";
+    }
+    
     public void getUsername() {
         getUsername(); {this.conn = new DBConnector().createConnectionObject();}
 
