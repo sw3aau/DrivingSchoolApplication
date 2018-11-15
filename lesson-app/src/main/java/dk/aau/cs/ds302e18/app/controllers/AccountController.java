@@ -34,7 +34,7 @@ public class AccountController {
             e.printStackTrace();
         }
     }
-    @GetMapping(value = "/modifyaccount")
+    @GetMapping(value = "/account/modify")
     public String getModifyPage()
     {
         return "modify-account";
@@ -46,7 +46,7 @@ public class AccountController {
         return "contact-formular";
     }
 
-    @PostMapping(value = "/modifyaccount")
+    @PostMapping(value = "/account/modify")
     public String postModifyPage(@ModelAttribute Student student){
         System.out.println(student.toString());
         new ModifyUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
