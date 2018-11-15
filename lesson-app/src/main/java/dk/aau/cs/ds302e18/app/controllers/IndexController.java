@@ -54,6 +54,11 @@ public class IndexController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
 
+        /**
+         * If there is more then 7 lessons in the database, it limits the listed lesson to 7,
+         * and only iterates through 6
+         * */
+        if (lessonList.size()>=7){
         //Iterates through all lessons, adding the ones with today's date to todaysLessonList
         for (int i = 0; i <= 6 ;i++) {
             if (lessonList.get(i).getLessonDate() != null &&
@@ -69,6 +74,27 @@ public class IndexController {
         for (int i = 0; i <= 6 ;i++) {
             if (lessonList.get(i).getLessonDate() != null && lessonList.get(i).getStudentList().contains(username)) {
                 upcomingLessonList.add(lessonList.get(i));
+            }
+        }
+        }
+
+        /**
+         * If there is less than 6 lessons in the database, no limiter is needed.
+         * */
+        if (lessonList.size()<6){
+            for (Lesson lesson: lessonList)
+            {
+                if (lesson.getLessonDate() != null &&
+                        lesson.getStudentList().contains(username) &&
+                        lesson.getLessonDate().getYear() == currDate.getYear() &&
+                        lesson.getLessonDate().getMonth() == currDate.getMonth() &&
+                        lesson.getLessonDate().getDate() == currDate.getDate()) {
+                    todaysLessonList.add(lesson);
+                }
+
+                if (lesson.getLessonDate() != null && lesson.getStudentList().contains(username)) {
+                    upcomingLessonList.add(lesson);
+                }
             }
         }
 
