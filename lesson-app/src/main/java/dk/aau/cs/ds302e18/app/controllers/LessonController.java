@@ -40,13 +40,6 @@ public class LessonController
         this.lessonService = lessonService;
     }
 
-    @GetMapping(value = {"/", "/index"})
-    public String getHomePage(Model model)
-    {
-        model.addAttribute("penis", "FUk");
-        return "index";
-    }
-
     @GetMapping(value = "/login")
     public String getLoginPage(Model model)
     {
