@@ -102,12 +102,6 @@ public class AccountController
         return "contact-formular";
     }
 
-    @GetMapping(value = "/account/modify")
-    public String getModifyPage()
-    {
-        return "modify-account";
-    }
-
     @PostMapping(value = "/account/modify")
     public String postModifyPage(@ModelAttribute Student student){
         System.out.println(student.toString());
