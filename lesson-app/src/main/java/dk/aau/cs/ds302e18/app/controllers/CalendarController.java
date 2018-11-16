@@ -3,7 +3,6 @@ package dk.aau.cs.ds302e18.app.controllers;
 import dk.aau.cs.ds302e18.app.domain.CalendarViewModel;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
-import dk.aau.cs.ds302e18.app.domain.LessonType;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -32,6 +31,7 @@ public class CalendarController
         this.lessonService = lessonService;
     }
 
+
     @GetMapping(value = "/calendar")
     public String getCalendar()
     {
@@ -55,11 +55,11 @@ public class CalendarController
             {
                 String lessonType = "";
                 String lessonColor = "";
-                if (lesson.getLessonType() == LessonType.THEORY_LESSON){
+                if (lesson.getLessonType() == 1){
                     lessonType = "Theory lesson";
                     lessonColor = "CYAN";
                 }
-                if (lesson.getLessonType() == LessonType.PRACTICAL_LESSON){
+                if (lesson.getLessonType() == 2){
                     lessonType = "Pratical lesson";
                     lessonColor = "GREEN";
                 }

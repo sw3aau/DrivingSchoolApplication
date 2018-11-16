@@ -1,0 +1,97 @@
+package dk.aau.cs.ds302e18.app;
+
+
+import dk.aau.cs.ds302e18.app.domain.Course;
+import dk.aau.cs.ds302e18.app.domain.CourseModel;
+import dk.aau.cs.ds302e18.app.service.CourseService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+@Controller
+@RequestMapping("/")
+public class CourseController {
+
+    private final CourseService courseService;
+
+    public CourseController(CourseService courseService) {
+        super();
+        this.courseService = courseService;
+    }
+
+    @GetMapping(value = "/course")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getStores(Model model)
+    {
+        // Fetching all requests in a list
+        List<Course> fetchedCourseList = this.courseService.getAllCourseRequests();
+        // Creating a new list, to store the filtered requests
+        List<Course> courseList = new ArrayList<>();
+        // Iterates through all requests, adding the ones with state (0) into the filtered request list.
+        for (Course course : fetchedCourseList)
+            courseList.add(course);
+        model.addAttribute("storeadmin", courseList);
+        return "storeadmin-view";
+    }
+
+    @GetMapping(value = "/course/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getAddStoreForm(Model model)
+    {
+        return "store-view";
+    }
+
+    @PostMapping(value = "/course")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView addStore(HttpServletRequest request, Model model, @ModelAttribute CourseModel courseModel)
+    {
+        /* The newly added store object is retrieved from the 8100 server.  */
+        Course course = this.courseService.addCourseRequest(courseModel);
+        model.addAttribute("store", course);
+        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new ModelAndView("redirect:/storeadmin/" + course.getCourseID());
+    }
+
+    /**
+     * Used for admins to hard change values in each request - view the information in each request
+     * @param model
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/course/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String getCourse(Model model, @PathVariable long id)
+    {
+        Course store = this.courseService.getCourseRequest(id);
+        model.addAttribute("store", store);
+        return "store-view";
+    }
+
+    /**
+     * Used for admins to hard change values in each request - updates the request in the databasse with the id.
+     * @param model
+     * @param id
+     * @param courseModel
+     * @return
+     */
+    @PostMapping(value = "/course/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateRequest(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    {
+        /* Returns an lesson that is read from the 8100 server through updateLesson. */
+        Course store = this.courseService.acceptCourseRequest(id, courseModel);
+        model.addAttribute("store", store);
+        model.addAttribute("storeModel", new CourseModel());
+        return "store-view";
+    }
+}

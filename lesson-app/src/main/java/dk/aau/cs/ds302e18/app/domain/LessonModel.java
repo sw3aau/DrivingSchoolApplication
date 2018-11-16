@@ -2,26 +2,21 @@ package dk.aau.cs.ds302e18.app.domain;
 
 import dk.aau.cs.ds302e18.app.Instructor;
 import dk.aau.cs.ds302e18.app.Student;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class LessonModel
 {
-    private LessonType lessonType;
-
+    private byte lessonType;
     private String studentList;
-
     private String lessonInstructor;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date lessonDate;
-
     private String lessonLocation;
-
+    //final so that lesson type cannot be changed once it's been set.
+    //This is to prevent lessons from changing type after compeletion.
+    //It lesson needs to be changed, a new lesson must be created.
     private boolean isSigned;
-
     private int courseId;
 
     public boolean isSigned()
@@ -74,12 +69,12 @@ public class LessonModel
         this.lessonLocation = lessonLocation;
     }
 
-    public LessonType getLessonType()
+    public byte getLessonType()
     {
         return lessonType;
     }
 
-    public void setLessonType(LessonType lessonType)
+    public void setLessonType(byte lessonType)
     {
         this.lessonType = lessonType;
     }
