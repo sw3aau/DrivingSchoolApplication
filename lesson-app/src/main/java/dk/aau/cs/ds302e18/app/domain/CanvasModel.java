@@ -8,9 +8,4 @@ public class CanvasModel
     {
         return dataUrl;
     }
-
-    public void setDataUrl(String dataUrl)
-    {
-        this.dataUrl = dataUrl;
-    }
 }

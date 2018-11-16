@@ -50,28 +50,6 @@
             </tbody>
         </table>
     </div>
-    <div width="300" class="main-content float-sm-right">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">B Course</a>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <br class="card-text">Start Date : 20/11-2018</br>
-                    End Date : 20/12-2018</p>
-                </div>
-                <div class="card-footer">
-                    <form th:action="@{/apply}" method="post">
-                        <input type="hidden" name="courseId" id="courseId" th:value="123"/>
-                        <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
-                        <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>
 </div>
