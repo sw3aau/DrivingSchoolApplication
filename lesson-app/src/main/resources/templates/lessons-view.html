@@ -19,6 +19,7 @@
             <thead>
             <th scope="col">#</th>
             <th scope="col">Type</th>
+			<th scope="col">Date</th>
             <th scope="col">Student List</th>
             <th scope="col">Instructor</th>
             <th scope="col">Location</th>
@@ -28,6 +29,7 @@
             <tr th:each="lesson : ${lessons}">
                 <th scope="row"><a th:href="@{'/lessons/' + ${lesson.id}}" th:text="${lesson.id}"></a></th>
                 <td th:text="${lesson.lessonType}"></td>
+				<td th:text="${lesson.lessonDate}"></td>
                 <td th:text="${lesson.studentList}"></td>
                 <td th:text="${lesson.lessonInstructor}"></td>
                 <td th:text="${lesson.lessonLocation}"></td>

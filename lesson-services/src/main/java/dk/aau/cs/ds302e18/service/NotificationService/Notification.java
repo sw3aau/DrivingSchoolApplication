@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.app;
+package dk.aau.cs.ds302e18.service.NotificationService;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNSClient;
@@ -31,6 +31,7 @@ public class Notification
         emailPassword = reader.getString("mail.password");
     }
 
+    //Overloaded constructor to send a message to both a phone number and an email address.
     protected Notification(String message, String phoneNumber, String emailAddress)
     {
         Map<String, MessageAttributeValue> smsAttributes =
@@ -48,6 +49,13 @@ public class Notification
         AmazonSNSClient snsClient = new AmazonSNSClient(new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY));
         SMSMessage(snsClient, message, phoneNumber, smsAttributes);
 
+        // Send Email
+        EmailMessage(message, emailAddress);
+    }
+
+    //Overloaded constructor to send a message to only an email address.
+    protected Notification(String message, String emailAddress)
+    {
         // Send Email
         EmailMessage(message, emailAddress);
     }
