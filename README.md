@@ -1,6 +1,6 @@
 # Driving School Application
 
-[![N|Solid](https://s3.eu-west-2.amazonaws.com/p3-project/sembrik/Untitled-1.png)](#)
+<img src="https://s3.eu-west-2.amazonaws.com/p3-project/sembrik/Webp.net-resizeimage.png"/>
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true)]()
 
