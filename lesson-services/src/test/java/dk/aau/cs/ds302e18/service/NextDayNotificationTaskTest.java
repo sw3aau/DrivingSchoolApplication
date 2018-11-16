@@ -6,7 +6,7 @@ import java.util.Date;
 
 import static org.junit.Assert.*;
 
-public class NotificationTriggerTaskTest {
+public class NextDayNotificationTaskTest {
 
     @Test
     public void dateFormatTest() {

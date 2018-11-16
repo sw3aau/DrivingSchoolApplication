@@ -1,15 +1,16 @@
-package dk.aau.cs.ds302e18.service;
+package dk.aau.cs.ds302e18.service.NotificationService;
 
 import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
-//Timer class to trigger NotificationTriggerTask once every 24 hour period.
-public class NotificationTrigger {
+//Timer class to trigger NextDayNotificationTask once every 24 hour period.
+public class NotificationTimer {
     private Timer timer;
-    private final NotificationTriggerTask task;
+    private final TimerTask task;
 
-    public NotificationTrigger() {
-        task = new NotificationTriggerTask();
+    public NotificationTimer(TimerTask notificationTimerTask) {
+        this.task = notificationTimerTask;
     }
 
     //Starts the timer.

@@ -1,4 +1,6 @@
-package dk.aau.cs.ds302e18.service;
+package dk.aau.cs.ds302e18.service.NotificationService;
+
+import dk.aau.cs.ds302e18.service.DBConnector;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,14 +9,14 @@ import java.util.Date;
 import java.util.TimerTask;
 
 //TimerTask class to send notifications to students based on lessons in the next 24 hour period.
-public class NotificationTriggerTask extends TimerTask {
+public class NextDayNotificationTask extends TimerTask {
 
     @Override
     public void run() {
         TriggerNotifications();
     }
 
-    //The function this task will run when the timer in NotificationTrigger executes it's next task.
+    //The function this task will run when the timer in NotificationTimer executes it's next task.
     //When triggered it finds the current date and time and queries the database for lessons in the next 24 hour period.
     //If there is such lessons, it sends notifications to the students of the lessons, based on their username.
     private void TriggerNotifications() {
