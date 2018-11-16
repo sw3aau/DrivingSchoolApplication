@@ -3,6 +3,7 @@ package dk.aau.cs.ds302e18.service.models;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="COURSE")
@@ -23,6 +24,7 @@ public class Course
     private String location;
     private String instructorName;
     private int lessonType;
+    private List<String> StudentNameList;
 
     public Course() {
         super();
@@ -106,5 +108,13 @@ public class Course
 
     public void setLessonType(int lessonType) {
         this.lessonType = lessonType;
+    }
+
+    public List<String> getStudentNameList() {
+        return StudentNameList;
+    }
+
+    public void setStudentNameList(List<String> studentNameList) {
+        StudentNameList = studentNameList;
     }
 }

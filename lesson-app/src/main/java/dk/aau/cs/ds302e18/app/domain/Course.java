@@ -2,6 +2,7 @@ package dk.aau.cs.ds302e18.app.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Course {
     private long id;
@@ -16,6 +17,7 @@ public class Course {
     private String location;
     private String instructorName;
     private int lessonType;
+    private List<String> StudentNameList;
 
     public long getId() {
         return id;
@@ -103,6 +105,14 @@ public class Course {
 
     public void setLessonType(int lessonType) {
         this.lessonType = lessonType;
+    }
+
+    public List<String> getStudentNameList() {
+        return StudentNameList;
+    }
+
+    public void setStudentNameList(List<String> studentNameList) {
+        StudentNameList = studentNameList;
     }
 
     public Course translateModelToCourse(){

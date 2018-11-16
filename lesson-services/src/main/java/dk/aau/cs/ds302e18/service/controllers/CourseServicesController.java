@@ -43,6 +43,14 @@ public class CourseServicesController
         throw new CourseNotFoundException("Course not found with id: " + id);
     }
 
+    /*
+    @PostMapping
+    public ResponseEntity<Course> addCourse(@RequestBody CourseModel model){
+        Course course = this.courseRepository.save(model.translateModelToCourse());
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
+        return ResponseEntity.created(location).body(course);
+    }
+    */
 
     @PostMapping
     public ResponseEntity<Course> addCourse(@RequestBody CourseModel model){

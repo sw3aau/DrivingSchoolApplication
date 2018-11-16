@@ -1,15 +1,11 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 
-import dk.aau.cs.ds302e18.app.Account;
 import dk.aau.cs.ds302e18.app.SortByID;
-import dk.aau.cs.ds302e18.app.auth.AuthGroup;
 import dk.aau.cs.ds302e18.app.domain.Course;
 import dk.aau.cs.ds302e18.app.domain.CourseModel;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
-import dk.aau.cs.ds302e18.app.service.AccountService;
-import dk.aau.cs.ds302e18.app.service.AuthGroupService;
 import dk.aau.cs.ds302e18.app.service.CourseService;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.http.HttpStatus;
@@ -34,17 +30,12 @@ public class CourseController {
 
     private final LessonService lessonService;
     private final CourseService courseService;
-    private final AccountService accountService;
-    private final AuthGroupService authGroupService;
 
 
-
-    public CourseController(LessonService lessonService, CourseService courseService, AccountService accountService, AuthGroupService authGroupService) {
+    public CourseController(LessonService lessonService, CourseService courseService) {
         super();
         this.lessonService = lessonService;
         this.courseService = courseService;
-        this.accountService = accountService;
-        this.authGroupService = authGroupService;
     }
 
     @GetMapping(value = "/course")
@@ -52,18 +43,13 @@ public class CourseController {
     public String getCourses(Model model) {
         /* Creates an list of courses from the return value of getAllLessons in LessonService(which is an function that gets courses
         from the 8100 server and makes them into lesson objects and returns them as an list) */
-        List<Account> studentAccounts = new ArrayList<>();
-        List<AuthGroup> authGroups = authGroupService.getAllAuthGroups();
-        for(AuthGroup userAuthentication: authGroups) {
-            /* Den kommer også til at vise Sembrik som er både user og admin */
-            if(userAuthentication.getAuthGroup() == "USER"){
-                /* Adds the students account to an list */
-                studentAccounts.add(accountService.getAccount(userAuthentication.getId()));
-            }
-        }
         List<Course> courses = this.courseService.getAllCourseRequests();
         model.addAttribute("courses", courses);
-        model.addAttribute("studentAccounts", studentAccounts);
+
+        CourseModel foo = new CourseModel();
+        List<String> checkedItems = new ArrayList<String>();
+        foo.setStudentNameList(checkedItems);
+        model.addAttribute(checkedItems);
         return "courses-view";
     }
 
@@ -111,7 +97,9 @@ public class CourseController {
 
     @PostMapping(value = "/course/addCourse")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
+    public ModelAndView addCourse(@ModelAttribute(value = "courseModel") CourseModel courseModel) {
+        List<String> studentNameList = courseModel.getStudentNameList();
+
         courseService.addCourse(courseModel);
         return new ModelAndView("redirect:/course/");
     }

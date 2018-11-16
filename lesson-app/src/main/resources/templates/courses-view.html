@@ -35,6 +35,12 @@
             transform: translate(-50%, -50%);
             text-align: center;
         }
+
+        .checkbox-inline {
+            display: inline-block;
+            width: 15%;
+        }
+
     </style>
 </head>
 <body>
@@ -63,26 +69,36 @@
                         <td th:text="${course.studentUsernames}"></td>
                         <td>
                             <form method="post" th:action="'course/deleteCourse'" th:object="${courseModel}">
-                                <input type="hidden" name="deleteCourse" id="deleteCourse" th:value="${course.courseTick}"/>
+                                <input type="hidden" name="deleteCourse" id="deleteCourse"
+                                       th:value="${course.courseTick}"/>
                                 <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <div class="container">
+                    <h2>Form control: inline checkbox</h2>
+                    <p>The form below contains three inline checkboxes:</p>
+                </div>
             </div>
         </div>
         <div class="split right">
             <div class="right">
                 <form method="post" action="#" th:action="'/course/addCourse'" th:object="${courseModel}">
-                    <div class="form-row">
-                        <div class="col">
-                            <h4>Add new course</h4>
-                            <input th:id="studentUsernames" th:name="studentUsernames" type="text" class="form-control"
-                                   placeholder="Student names seperated by :"
-                                   th:value="${course != null} ? ${course.studentUsernames}"/>
-                        </div>
+                    <div class="container">
+                        <h4>Add new course</h4>
+                            <label th:each="studentAccount : ${studentAccounts}" class="checkbox-inline">
+                                <input th:text="${studentAccount.getFirstName()}" type="checkbox" th:name="studentUsernames"
+                                       th:value="${course != null} ? ${course.studentUsernames}">
+                            </label>
                     </div>
+                    <!--input th:id="studentUsernames" th:name="studentUsernames" type="text" class="form-control"
+                           placeholder="Student names seperated by :"
+                           th:value="${course != null} ? ${course.studentUsernames}"/-->
+
+
+
                     <div class="form-row">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
@@ -100,9 +116,6 @@
                     </div>
                 </form-->
 
-                    <select th:each="course : ${courses}">
-                        <option th:value="volvo">Volvo</option>
-                    </select>
 
                 </tr>
             </div>
