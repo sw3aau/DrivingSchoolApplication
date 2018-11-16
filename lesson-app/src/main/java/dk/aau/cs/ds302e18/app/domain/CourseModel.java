@@ -4,7 +4,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class CourseModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -14,11 +13,11 @@ public class CourseModel {
     private int numberLessons;
     private int numberLessonsADay;
     private int courseTick;
+
     private String location;
     private String instructorName;
     private byte lessonType;
     private String studentUsernames;
-    private List<String> StudentNameList;
 
 
 
@@ -93,13 +92,5 @@ public class CourseModel {
 
     public void setLessonType(byte lessonType) {
         this.lessonType = lessonType;
-    }
-
-    public List<String> getStudentNameList() {
-        return StudentNameList;
-    }
-
-    public void setStudentNameList(List<String> studentNameList) {
-        StudentNameList = studentNameList;
     }
 }

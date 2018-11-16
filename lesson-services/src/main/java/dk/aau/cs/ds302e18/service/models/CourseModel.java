@@ -17,7 +17,6 @@ public class CourseModel {
     private String location;
     private String instructorName;
     private boolean isSigned;
-    private ArrayList<String> StudentNameList;
 
     public String getStudentUsernames() {
         return studentUsernames;
@@ -72,20 +71,8 @@ public class CourseModel {
         return isSigned;
     }
 
-    public ArrayList<String> getStudentNameList() {
-        return StudentNameList;
-    }
-
-    public void setStudentNameList(ArrayList<String> studentNameList) {
-        StudentNameList = studentNameList;
-    }
-
     public Course translateModelToCourse(){
         Course course = new Course();
-        String usernamesString = "";
-        for(int i=0; i<this.StudentNameList.size(); i++) {
-            usernamesString += this.StudentNameList.get(i);
-        }
         course.setStudentUsernames(this.studentUsernames);
         return course;
     }
