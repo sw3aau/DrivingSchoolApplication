@@ -50,20 +50,6 @@ public class StoreController
         return "storeadmin-view";
     }
 
-    @GetMapping(value = "/store")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getStore(Model model)
-    {
-        // Fetching all requests in a list
-        List<Store> storeadmin = this.storeService.getAllStoreRequests();
-        // Creating a new list, to store the filtered requests
-        List<Store> list = new ArrayList<>();
-        // Iterates through all requests, adding the ones with state (0) into the filtered request list.
-        for (Store store : storeadmin) if (store.getState() == 0) list.add(store);
-        model.addAttribute("store", list);
-        return "store-page";
-    }
-
     /**
      * Get for the page.
      * @param model
