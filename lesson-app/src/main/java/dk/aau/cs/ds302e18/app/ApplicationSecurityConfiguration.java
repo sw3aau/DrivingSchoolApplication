@@ -18,13 +18,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Autowired
     private CmsUserDetailsService userDetailsService;
 
-
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder(11));
@@ -40,11 +39,6 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         return authorityMapper;
     }
 
-    @Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
@@ -55,7 +49,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/css/*", "/js/*", "/register", "/test", "/gdpr", "/contact").permitAll()
+                .antMatchers("/", "/index", "/css/*", "/js/*", "/register", "/test", "/gdpr").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -64,11 +58,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .logout().invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logout-success").permitAll()
-                /*.and()
-                .logout().deleteCookies("JSESSIONID")*/
-                .and()
-                .rememberMe().key("uniqueAndSecret");
+                .logoutSuccessUrl("/logout-success").permitAll();
     }
 
 }

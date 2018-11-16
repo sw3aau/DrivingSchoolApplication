@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class LessonModel
 {
-    private LessonType lessonType;
+    private byte lessonType;
     private String studentList;
     private String lessonInstructor;
     private Date lessonDate;
@@ -15,12 +15,12 @@ public class LessonModel
     private boolean isSigned;
     private int courseId;
 
-    public LessonType getLessonType()
+    public byte getLessonType()
     {
         return lessonType;
     }
 
-    public void setLessonType(LessonType lessonType)
+    public void setLessonType(byte lessonType)
     {
         this.lessonType = lessonType;
     }

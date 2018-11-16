@@ -1,16 +1,13 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
-import dk.aau.cs.ds302e18.app.domain.*;
+import dk.aau.cs.ds302e18.app.domain.CanvasModel;
 import dk.aau.cs.ds302e18.app.RegisterUser;
 import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
-import dk.aau.cs.ds302e18.app.domain.SignatureCanvas;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +16,6 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
 import java.util.List;
 
 @Controller
@@ -40,6 +36,13 @@ public class LessonController
         this.lessonService = lessonService;
     }
 
+    @GetMapping(value = {"/", "/index"})
+    public String getHomePage(Model model)
+    {
+        model.addAttribute("penis", "FUk");
+        return "index";
+    }
+
     @GetMapping(value = "/login")
     public String getLoginPage(Model model)
     {
@@ -52,27 +55,25 @@ public class LessonController
         return "register-account";
     }
 
-    @GetMapping(value = "/canvas/{id}")
-    public String getCanvasPage(HttpSession session, @PathVariable long id)
+    @GetMapping(value = "/canvas")
+    public String getCanvasPage(HttpSession session)
     {
-        System.out.println("GETMAP" + id);
         System.out.println(session.getAttribute("testSession"));
         return "canvas";
     }
 
-    @PostMapping(value = "/canvas/{id}")
-    public String postCanvasPage(@RequestBody CanvasModel canvasModel, @PathVariable long id)
+    @PostMapping(value = "/canvas")
+    public String postCanvasPage(@ModelAttribute CanvasModel canvasModel)
     {
-        System.out.println("Received");
-        System.out.println("Canvas ID" + id);
+        System.out.println("test");
+        System.out.println(canvasModel.getDataUrl());
+        return "canvas";
+    }
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)principal).getUsername();
-
-        SignatureCanvas signatureCanvas = new SignatureCanvas();
-
-        signatureCanvas.upload("p3-project", username, canvasModel.getDataUrl());
-
+    @PostMapping(value = "/test")
+    public String postTestPage(@RequestBody CanvasModel canvasModel)
+    {
+       // CanvasModel("p3-project", "CoolSignature", canvasModel.getDataUrl());
         return "canvas";
     }
 
@@ -119,7 +120,7 @@ public class LessonController
         Lesson lesson = this.lessonService.addLesson(lessonModel);
         if (lesson.getStudentList().isEmpty() | lesson.getLessonInstructor().isEmpty() | lesson.getLessonLocation().isEmpty())
         {
-            if (lesson.getLessonType() != LessonType.THEORY_LESSON || lesson.getLessonType() != LessonType.PRACTICAL_LESSON)
+            if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2)
             {
                 throw new RuntimeException();
             }
@@ -147,7 +148,7 @@ public class LessonController
         Lesson lesson = this.lessonService.updateLesson(id, lessonModel);
         model.addAttribute("lesson", lesson);
         model.addAttribute("lessonModel", new LessonModel());
-        if (lesson.getLessonType() != LessonType.THEORY_LESSON || lesson.getLessonType() != LessonType.PRACTICAL_LESSON)
+        if (lesson.getLessonType() != 1 || lesson.getLessonType() != 2)
         {
             throw new RuntimeException();
         }

@@ -9,29 +9,20 @@ public class Lesson
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name="LESSON_ID")
     private long id;
-
     @Column(name="LESSON_TYPE")
-    @Enumerated(EnumType.STRING)
-    private LessonType lessonType;
-
+    private byte lessonType;
     @Column(name="STUDENT_LIST")
     private String studentList;
-
     @Column(name="INSTRUCTOR")
     private String lessonInstructor;
-
     @Column(name="LESSON_DATE")
     private Date lessonDate;
-
     @Column(name="LESSON_LOCATION")
     private String lessonLocation;
-
     @Column(name="STATE")
     private boolean isSigned;
-
     @Column(name="COURSE_ID")
     private int courseId;
 
@@ -49,12 +40,12 @@ public class Lesson
         this.id = id;
     }
 
-    public LessonType getLessonType()
+    public byte getLessonType()
     {
         return lessonType;
     }
 
-    public void setLessonType(LessonType lessonType)
+    public void setLessonType(byte lessonType)
     {
         this.lessonType = lessonType;
     }
