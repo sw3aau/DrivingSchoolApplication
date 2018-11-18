@@ -1,7 +1,10 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 
+import dk.aau.cs.ds302e18.app.auth.Account;
 import dk.aau.cs.ds302e18.app.auth.AccountRespository;
+import dk.aau.cs.ds302e18.app.auth.AuthGroup;
+import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
 import dk.aau.cs.ds302e18.app.domain.Course;
 import dk.aau.cs.ds302e18.app.domain.CourseModel;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
@@ -26,11 +29,13 @@ public class CourseController {
     private final CourseService courseService;
     private final LessonService lessonService;
     private final AccountRespository accountRespository;
+    private final AuthGroupRepository authGroupRepository;
 
-    public CourseController(CourseService courseService, LessonService lessonService, AccountRespository accountRespository) {
+    public CourseController(CourseService courseService, LessonService lessonService, AccountRespository accountRespository, AuthGroupRepository authGroupRepository) {
         this.courseService = courseService;
         this.lessonService = lessonService;
         this.accountRespository = accountRespository;
+        this.authGroupRepository = authGroupRepository;
     }
 
     @GetMapping(value = "/course")
@@ -38,13 +43,26 @@ public class CourseController {
     public String getCourses(Model model)
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
+        List<AuthGroup> users = authGroupRepository.findAll();
+        ArrayList<AuthGroup> studentsAuthList = new ArrayList<>();
+        for(AuthGroup user: users){
+            if(user.getAuthGroup().equals("USER")){
+                studentsAuthList.add(user);
+            }
+        }
+        ArrayList<Account> studentAccounts = new ArrayList<>();
+        for(AuthGroup studentAuth : studentsAuthList){
+            studentAccounts.add(accountRespository.findByUsername(studentAuth.getUsername()));
+        }
+
         setFullNamesFromUsernamesString(courses);
+        model.addAttribute("studentAccounts", studentAccounts);
         model.addAttribute("courses", courses);
         return "courses-view";
     }
 
 
-    void setFullNamesFromUsernamesString(List<Course> courseList){
+    private void setFullNamesFromUsernamesString(List<Course> courseList){
         /*  Every student username list in account is separated and added to an String array. Then the
          *  username is used to fetch the full name of the student belonging to the username. */
         for(Course course: courseList){
@@ -73,7 +91,7 @@ public class CourseController {
     }
 
     /* change getmapping later to courseAddLessons, since that makes more sense. */
-    @GetMapping(value = "/course/add")
+    @GetMapping(value = "/course/courseAddLessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddCourseForm(Model model)
     {

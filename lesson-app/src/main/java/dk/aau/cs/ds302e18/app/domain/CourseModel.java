@@ -1,10 +1,13 @@
 package dk.aau.cs.ds302e18.app.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class CourseModel {
     private String studentUsernames;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startDate;
     private ArrayList<Integer> weekdays;
     private int numberLessons;

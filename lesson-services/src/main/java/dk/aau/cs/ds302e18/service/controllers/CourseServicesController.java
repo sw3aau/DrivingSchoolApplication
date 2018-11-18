@@ -51,7 +51,6 @@ public class CourseServicesController
     links to the new information. */
     @PostMapping(value = "/addCourse")
     public ResponseEntity<Course> addCourse(@RequestBody CourseModel model){
-        System.out.println("It gets here");
         Course course = this.courseRepository.save(model.translateModelToCourse());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
         return ResponseEntity.created(location).body(course);
