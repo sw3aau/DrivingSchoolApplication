@@ -1,0 +1,17 @@
+Switch MySQL queries to prepared statements, prevent injection (potentially remove sql queries if possible by applying Hibernate on the Account. NOTE THAT THIS WILL REQUIRE REROUTING TO MULTIPLE TABLES)
+Change "isacitve" to "is_active", typo in MySQL table
+Change naming of tables to better describe its usage, potentially add description to the table and its keys
+Generally fix MySQL structure, said changes will happen on a local database to confirm it working
+
+Separate controllers correctly, move mappings not belonging to said controller to its own controller
+
+Make "shared" module that both "app" and "services" can access to prevent duplicate models
+
+Make comments in classes to explain their usage
+Rename to proper cases such as camelCase and PascalCase, as seen with "birthdate" in "Account.java"
+"NotificationService" package should not be uppercased
+Is it "domain" or "models"? Mismatch in "service" and "app", I vote for "models"
+
+Create the proper ranks: "STUDENT", "INSTRUCTOR", "ADMIN"
+
+Make dummy files for the properties, then gitignore it
