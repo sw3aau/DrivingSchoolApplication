@@ -2,6 +2,7 @@ Switch MySQL queries to prepared statements, prevent injection (potentially remo
 Change "isacitve" to "is_active", typo in MySQL table
 Change naming of tables to better describe its usage, potentially add description to the table and its keys
 Generally fix MySQL structure, said changes will happen on a local database to confirm it working
+Remove random ID on generation of account, make it incremental instead
 
 Separate controllers correctly, move mappings not belonging to said controller to its own controller
 
