@@ -2,16 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"lang="en">
 <head>
     <title>Home</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <h3>Lesson View</h3>
-        <form method="post" action="#" th:action="${course != null} ? '/course/'+${course.getId()} : '/course'" th:object="${courseModel}">
+        <h3>Lessons to course</h3>
+        <form method="post" action="#" th:action="'/course/courseAddLessons'" th:object="${courseModel}">
+            <div class="form-row" >
+                <div>
+                    <input th:id="courseTick" th:name="courseTick" type="text" class="form-control" placeholder="Course ID" th:value="${course != null} ? ${course.courseTick}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div>
+                    <input th:id="studentUsernames" th:name="studentUsernames" type="text" class="form-control" placeholder="Students" th:value="${course != null} ? ${course.studentUsernames}"/>
+                </div>
+            </div>
+
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <input th:id="startDate" th:name="startDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" th:value="${course != null} ? ${course.startDate}"/>
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $.fn.datetimepicker.Constructor.Default = $.extend($.fn.datetimepicker.Constructor.Default, {
+                    icons : {
+                        time : 'fas fa-clock',
+                        date : 'fas fa-calendar',
+                        up : 'fas fa-arrow-up',
+                        down : 'fas fa-arrow-down',
+                        previous : 'fas fa-chevron-left',
+                        next : 'fas fa-chevron-right',
+                        today : 'fas fa-calendar-check-o',
+                        clear : 'fas fa-trash',
+                        close : 'fas fa-times'
+                    },
+                    format:'YYYY-MM-DD HH:mm'
+                });
+            </script>
+
             <div class="form-row">
                 <div class="col">
-                    <input th:id="studentUsernames" th:name="studentUsernames" type="text" class="form-control" placeholder="Students" th:value="${course != null} ? ${course.studentUsernames}"/>
+                    <input th:id="weekdays" th:name="weekdays" type="text" class="form-control" placeholder="Week days" th:value="${course != null} ? ${course.weekdays}"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class = "col">
+                    <input th:id="numberLessons" th:name="numberLessons" type="text" class="form-control" placeholder="Number lessons" th:value="${course != null} ? ${course.numberLessons}"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class = "col">
+                    <input th:id="numberLessonsADay" th:name="numberLessonsADay" type="text" class="form-control" placeholder="Number Lessons a day" th:value="${course != null} ? ${course.numberLessonsADay}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class = "col">
+                    <input th:id="location" th:name="location" type="text" class="form-control" placeholder="Location" th:value="${course != null} ? ${course.location}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class = "col">
+                    <input th:id="lessonType" th:name="lessonType" type="text" class="form-control" placeholder="Lesson Type" th:value="${course != null} ? ${course.lessonType}"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class = "col">
+                    <input th:id="instructorName" th:name="instructorName" type="text" class="form-control" placeholder="Instructor name" th:value="${course != null} ? ${course.instructorName}"/>
                 </div>
             </div>
             <div class="form-row">
@@ -20,6 +86,8 @@
         </form>
         <a th:href="@{/course}">Return to All Courses</a>
     </div>
+
+
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>
 </div>
