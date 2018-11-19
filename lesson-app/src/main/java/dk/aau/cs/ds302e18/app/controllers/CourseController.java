@@ -78,7 +78,7 @@ public class CourseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
         courseService.addCourse(courseModel);
-        return new ModelAndView("redirect:/course/");
+        return new ModelAndView("redirect:/course/courseAddLessons");
     }
 
 
@@ -91,8 +91,6 @@ public class CourseController {
         /* WE DONT EVEN HAVE AN INSTRUCTOR TYPE LOL */
         ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
 
-        String gender = "";
-        model.addAttribute(gender);
         model.addAttribute("instructorAccounts", instructorAccounts);
         model.addAttribute("courses", courses);
         return "course-view";
