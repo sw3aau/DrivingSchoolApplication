@@ -20,6 +20,7 @@
 	<modules>
 		<module>website</module>
 		<module>rest-api</module>
+		<module>shared</module>
 	</modules>
 
 	<build>
