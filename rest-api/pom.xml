@@ -83,12 +83,7 @@
 			<artifactId>aws-java-sdk-sns</artifactId>
 			<version>1.11.288</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-sns -->
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-sns</artifactId>
-			<version>1.11.288</version>
-		</dependency>
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>

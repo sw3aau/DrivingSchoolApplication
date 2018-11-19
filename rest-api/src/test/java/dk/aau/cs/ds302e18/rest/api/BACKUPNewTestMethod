@@ -1,0 +1,77 @@
+package dk.aau.cs.ds302e18.restapi;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+
+public class CourseServiceControllerTest {
+
+    private ArrayList<String> studentList;
+    private Date startDate;
+    private CourseServiceController courseServiceController;
+
+    @Before
+    public void setUp() throws Exception {
+        LessonRepository lessonRepositoryMock = mock(LessonRepository.class);
+        CourseRepository courseRepositoryMock =  mock(CourseRepository.class);
+        courseServiceController = new CourseServiceController(lessonRepositoryMock, courseRepositoryMock);
+
+        String user1 = "username1";
+
+        String user2 = "username2";
+
+
+        String user3 = "username3";
+
+        studentList = new ArrayList<>();
+        studentList.add(user1);
+        studentList.add(user2);
+        studentList.add(user3);
+        startDate = new Date(118,11,1,16,0);
+    }
+
+    @Test
+    public void saveStudentnamesAsString() {
+        String combinedStudentnames = courseServiceController.saveStudentnamesAsString(studentList);
+        assertEquals("username1:username2:username3:", combinedStudentnames);
+    }
+
+    @Test
+    public void createEmptyCourse() {
+
+    }
+
+    @Test
+    public void createEmptyCourse1() {
+    }
+
+    @Test
+    public void addStudent() {
+    }
+
+    @Test
+    public void removeStudent() {
+    }
+
+    @Test
+    public void deleteCourse() {
+    }
+
+    @Test
+    public void courseAddLessons() {
+    }
+
+    @Test
+    public void createLessonDates() {
+    }
+
+    @Test
+    public void springToDBTest() {
+
+    }
+}
