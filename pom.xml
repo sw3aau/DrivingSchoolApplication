@@ -18,8 +18,8 @@
 	</properties>
 	
 	<modules>
-		<module>lesson-app</module>
-		<module>lesson-services</module>
+		<module>website</module>
+		<module>rest-api</module>
 	</modules>
 
 	<build>
