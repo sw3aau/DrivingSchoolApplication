@@ -3,6 +3,7 @@ package dk.aau.cs.ds302e18.app.controllers;
 import dk.aau.cs.ds302e18.app.DBConnector;
 import dk.aau.cs.ds302e18.app.ModifyUser;
 import dk.aau.cs.ds302e18.app.Student;
+import dk.aau.cs.ds302e18.app.domain.StudentModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -79,9 +80,10 @@ public class AccountController
     
     
     public void editAccount(String address, String birthday, String email, String firstname, String city,
-                            String lastname, int phonenumber, String username, int zip ) {
+                            String lastname, String phonenumber, String username, String zip ) {
         try {
             Statement st = conn.createStatement();
+
             st.executeUpdate("UPDATE `account` SET `address` = '"+address+"',  `birthday` = '"+birthday+"',   " +
                     "`email` = '"+email+"', `firstname` = '"+firstname+"', `lastname`='"+lastname+"', `city`='"+city+"', " +
                     " `phonenumber` = "+phonenumber+", `zip`="+zip+" WHERE `username` = '"+username+"'");
@@ -96,22 +98,19 @@ public class AccountController
         return "modify-account";
     }
 
-    @GetMapping(value = "/contact")
-    public String getContactPage()
-    {
-        return "contact-formular";
-    }
-
     @PostMapping(value = "/account/modify")
-    public String postModifyPage(@ModelAttribute Student student){
-        System.out.println(student.toString());
-        new ModifyUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
-                student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
-                student.getZipCode(), student.getCity());
+    public String postModifyPage(@ModelAttribute StudentModel studentModel){
+        System.out.println(studentModel.getUsername());
+        System.out.println(studentModel.getEmail());
+        System.out.println(studentModel.getLastName());
+        System.out.println(studentModel.toString());
+        editAccount(studentModel.getAddress(), studentModel.getBirthdate(), studentModel.getEmail(), studentModel.getFirstName()
+        , studentModel.getCity(), studentModel.getLastName(), studentModel.getPhonenumber(), studentModel.getUsername(), studentModel.getZipCode());
+        conn.commit();
         return "modify-account";
     }
     
-    public void getUsername() {
+    /*public void getUsername() {
         getUsername(); {this.conn = new DBConnector().createConnectionObject();}
 
         try {
@@ -133,5 +132,6 @@ public class AccountController
             e.printStackTrace();
         }
 
-    }
+    } */
+
 }
