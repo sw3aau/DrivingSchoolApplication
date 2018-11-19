@@ -1,7 +1,7 @@
 package dk.aau.cs.ds302e18.website.service;
 
-import dk.aau.cs.ds302e18.website.domain.Lesson;
-import dk.aau.cs.ds302e18.website.domain.LessonModel;
+import dk.aau.cs.ds302e18.website.model.Lesson;
+import dk.aau.cs.ds302e18.website.model.LessonModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;

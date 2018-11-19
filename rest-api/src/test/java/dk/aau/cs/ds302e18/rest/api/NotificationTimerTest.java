@@ -1,7 +1,7 @@
 package dk.aau.cs.ds302e18.rest.api;
 
-import dk.aau.cs.ds302e18.rest.api.NotificationService.NextDayNotificationTask;
-import dk.aau.cs.ds302e18.rest.api.NotificationService.NotificationTimer;
+import dk.aau.cs.ds302e18.rest.api.notification.NextDayNotificationTask;
+import dk.aau.cs.ds302e18.rest.api.notification.NotificationTimer;
 import org.junit.Test;
 
 import java.util.Date;

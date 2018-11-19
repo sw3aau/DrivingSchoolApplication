@@ -1,7 +1,7 @@
 package dk.aau.cs.ds302e18.website.service;
 
-import dk.aau.cs.ds302e18.website.domain.Store;
-import dk.aau.cs.ds302e18.website.domain.StoreModel;
+import dk.aau.cs.ds302e18.website.model.Store;
+import dk.aau.cs.ds302e18.website.model.StoreModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
