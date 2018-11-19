@@ -8,6 +8,7 @@ import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
 import dk.aau.cs.ds302e18.app.domain.Course;
 import dk.aau.cs.ds302e18.app.domain.CourseModel;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
+import dk.aau.cs.ds302e18.app.domain.LessonType;
 import dk.aau.cs.ds302e18.app.service.CourseService;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.http.HttpStatus;
@@ -43,17 +44,7 @@ public class CourseController {
     public String getCourses(Model model)
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
-        List<AuthGroup> users = authGroupRepository.findAll();
-        ArrayList<AuthGroup> studentsAuthList = new ArrayList<>();
-        for(AuthGroup user: users){
-            if(user.getAuthGroup().equals("USER")){
-                studentsAuthList.add(user);
-            }
-        }
-        ArrayList<Account> studentAccounts = new ArrayList<>();
-        for(AuthGroup studentAuth : studentsAuthList){
-            studentAccounts.add(accountRespository.findByUsername(studentAuth.getUsername()));
-        }
+        ArrayList<Account> studentAccounts = findAccountsOfType("USER");
 
         setFullNamesFromUsernamesString(courses);
         model.addAttribute("studentAccounts", studentAccounts);
@@ -90,11 +81,20 @@ public class CourseController {
         return new ModelAndView("redirect:/course/");
     }
 
-    /* change getmapping later to courseAddLessons, since that makes more sense. */
+
     @GetMapping(value = "/course/courseAddLessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getAddCourseForm(Model model)
+    public String getCourseAddLessonsForm(Model model)
     {
+        List<Course> courses = this.courseService.getAllCourseRequests();
+        setFullNamesFromUsernamesString(courses);
+        /* WE DONT EVEN HAVE AN INSTRUCTOR TYPE LOL */
+        ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
+
+        String gender = "";
+        model.addAttribute(gender);
+        model.addAttribute("instructorAccounts", instructorAccounts);
+        model.addAttribute("courses", courses);
         return "course-view";
     }
 
@@ -113,9 +113,10 @@ public class CourseController {
             lesson.setLessonDate(lessonDate);
             lesson.setLessonInstructor(courseModel.getInstructorName());
             lesson.setLessonLocation(courseModel.getLocation());
-            lesson.setStudentList(courseModel.getStudentUsernames());
+            lesson.setStudentList(poorMansGetCourse(courseModel.getCourseTick()).getStudentUsernames());
+            //lesson.setStudentList(courseService.getCourse(courseModel.getCourseTick()).getStudentUsernames());     Cant get shitty getCourse to work
             lesson.setCourseId(courseModel.getCourseTick());
-            lesson.setLessonType(courseModel.getLessonType());
+            lesson.setLessonType(LessonType.THEORY_LESSON);
 
             lessonService.addLesson(lesson);
         }
@@ -148,7 +149,7 @@ public class CourseController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getCourse(Model model, @PathVariable long id)
     {
-        Course course = this.courseService.getCourseRequest(id);
+        Course course = this.courseService.getCourse(id);
         model.addAttribute("course", course);
         return "course-view";
     }
@@ -200,7 +201,7 @@ public class CourseController {
         return lessonDates;
     }
 
-    public String saveStringListAsSingleString(ArrayList<String> studentNameList) {
+    private String saveStringListAsSingleString(ArrayList<String> studentNameList) {
         String combinedString = "";
         for (String student : studentNameList) {
             combinedString += student + ",";
@@ -208,7 +209,7 @@ public class CourseController {
         return combinedString;
     }
 
-    public ArrayList<String> saveUsernameStringAsList(String usernames) {
+    private ArrayList<String> saveUsernameStringAsList(String usernames) {
         ArrayList<String> studentList = new ArrayList<>();
         String[] parts = usernames.split(",");
         for(String part: parts){
@@ -216,4 +217,30 @@ public class CourseController {
         }
         return studentList;
     }
+
+    private ArrayList<Account> findAccountsOfType(String accountType){
+        List<AuthGroup> users = authGroupRepository.findAll();
+        ArrayList<AuthGroup> studentsAuthList = new ArrayList<>();
+        for(AuthGroup user: users){
+            if(user.getAuthGroup().equals(accountType)){
+                studentsAuthList.add(user);
+            }
+        }
+        ArrayList<Account> studentAccounts = new ArrayList<>();
+        for(AuthGroup studentAuth : studentsAuthList){
+            studentAccounts.add(accountRespository.findByUsername(studentAuth.getUsername()));
+        }
+        return studentAccounts;
+    }
+
+
+    private Course poorMansGetCourse(long courseId){
+        List<Course> courses = this.courseService.getAllCourseRequests();
+        for(Course course: courses){
+            if(course.getCourseTick() == courseId)
+                return course;
+        }
+        return null;
+    }
+
 }

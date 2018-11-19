@@ -7,6 +7,12 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <style>
+        .checkbox-inline {
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,12 +22,10 @@
         <form method="post" action="#" th:action="'/course/courseAddLessons'" th:object="${courseModel}">
             <div class="form-row" >
                 <div>
-                    <input th:id="courseTick" th:name="courseTick" type="text" class="form-control" placeholder="Course ID" th:value="${course != null} ? ${course.courseTick}"/>
-                </div>
-            </div>
-            <div class="form-row">
-                <div>
-                    <input th:id="studentUsernames" th:name="studentUsernames" type="text" class="form-control" placeholder="Students" th:value="${course != null} ? ${course.studentUsernames}"/>
+                    <select >
+                        <!-- The id from each course is displayed as an drop down list and send to the courseModel with the variable name courseTick.  -->
+                        <option th:each="course : ${courses}" th:id="courseTick" th:name="courseTick"  th:text="${course.id}" th:value="${course != null} ? ${course.courseTick}"></option>
+                    </select>
                 </div>
             </div>
 
@@ -50,7 +54,29 @@
 
             <div class="form-row">
                 <div class="col">
-                    <input th:id="weekdays" th:name="weekdays" type="text" class="form-control" placeholder="Week days" th:value="${course != null} ? ${course.weekdays}"/>
+                    <div class="container">
+                        <label class="checkbox-inline">
+                            <input th:text="Monday" type="checkbox" th:name="weekdays"  class="form-control" th:value="1">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input th:text="Tuesday" type="checkbox" th:name="weekdays"  class="form-control" th:value="2">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input th:text="Wednesday" type="checkbox" th:name="weekdays"  class="form-control" th:value="3">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input th:text="Thursday" type="checkbox" th:name="weekdays"  class="form-control" th:value="4">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input th:text="Friday" type="checkbox" th:name="weekdays"  class="form-control" th:value="5">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input th:text="Saturday" type="checkbox" th:name="weekdays"  class="form-control" th:value="6">
+                        </label>
+                        <label class="checkbox-inline">
+                            <input th:text="Sunday" type="checkbox" th:name="weekdays"  class="form-control" th:value="0">
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -72,12 +98,9 @@
             </div>
             <div class="form-row">
                 <div class = "col">
-                    <input th:id="lessonType" th:name="lessonType" type="text" class="form-control" placeholder="Lesson Type" th:value="${course != null} ? ${course.lessonType}"/>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class = "col">
-                    <input th:id="instructorName" th:name="instructorName" type="text" class="form-control" placeholder="Instructor name" th:value="${course != null} ? ${course.instructorName}"/>
+                    <select th:name="instructorName">
+                        <option th:each="instructorAccount : ${instructorAccounts}" th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}" th:value="${instructorAccount.username}"></option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">

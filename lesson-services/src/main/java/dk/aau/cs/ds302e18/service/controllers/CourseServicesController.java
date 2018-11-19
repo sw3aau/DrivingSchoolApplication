@@ -38,7 +38,7 @@ public class CourseServicesController
 
     /* Get = responsible for retrieving information only */
     @GetMapping("/{id}")
-    public Course getCourse(@PathVariable Long id){
+    public Course getLesson(@PathVariable Long id){
         Optional<Course> course = this.courseRepository.findById(id);
         if(course.isPresent()){
             return course.get();

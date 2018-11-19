@@ -85,8 +85,8 @@
                     <h4>Add new course</h4>
                     <div class="container">
                         <label th:each="studentAccount : ${studentAccounts}" class="checkbox-inline">
-                            <!-- An checkbox is generated for each course, and the username of the course of the checkbox is send
-                                 to the courseModel. -->
+                            <!-- An checkbox is generated for each student account, and the username of the student account of the checkbox is send
+                                 to the courseModel as the studentUsernames variable as implied in th:name. -->
                             <input th:text="${studentAccount.firstName + ' ' + studentAccount.lastName}" type="checkbox" th:name="studentUsernames"
                                    th:value="${studentAccount.username}">
                                     <!-- course != null} ? ${course.studentUsernames -->
@@ -96,6 +96,7 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
+                <!-- Simple delete button for testing purposes -->
                 <!--form method="post" action="#" th:action="'/course/deleteCourse'" th:object="${courseModel}">
                     <div class="form-row">
                         <div class="col">

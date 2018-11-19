@@ -35,13 +35,13 @@ public class CourseService
     public Course addCourse(CourseModel courseModel)
     {
         System.out.println("ADD COURSE");
-        String url = courseServiceUrl + REQUESTS + "/addCourse";
+        String url = courseServiceUrl + REQUESTS + SLASH + "addCourse";
         HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
         return this.restTemplate.exchange(url, HttpMethod.POST, request, Course.class).getBody();
     }
 
 
-    public Course getCourseRequest(long id) {
+    public Course getCourse(long id) {
         String url = courseServiceUrl + REQUESTS + SLASH + id;
         HttpEntity<String> request = new HttpEntity<>(null, null);
         return this.restTemplate.exchange(url, HttpMethod.GET, request, Course.class).getBody();
