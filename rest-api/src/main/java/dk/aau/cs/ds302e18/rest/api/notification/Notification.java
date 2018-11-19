@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.rest.api.NotificationService;
+package dk.aau.cs.ds302e18.rest.api.notification;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNSClient;

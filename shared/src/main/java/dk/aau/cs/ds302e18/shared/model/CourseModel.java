@@ -1,7 +1,5 @@
 package dk.aau.cs.ds302e18.shared.model;
 
-import javax.persistence.*;
-
 public class CourseModel {
     private String studentUsernames;
 

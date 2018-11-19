@@ -1,9 +1,9 @@
 package dk.aau.cs.ds302e18.rest.api.controllers;
 
-import dk.aau.cs.ds302e18.rest.api.models.Course;
-import dk.aau.cs.ds302e18.rest.api.models.CourseModel;
 import dk.aau.cs.ds302e18.rest.api.models.CourseRepository;
 import dk.aau.cs.ds302e18.rest.api.models.CourseNotFoundException;
+import dk.aau.cs.ds302e18.shared.model.Course;
+import dk.aau.cs.ds302e18.shared.model.CourseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

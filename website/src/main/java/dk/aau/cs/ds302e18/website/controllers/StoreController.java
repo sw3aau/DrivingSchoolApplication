@@ -1,7 +1,7 @@
 package dk.aau.cs.ds302e18.website.controllers;
 
-import dk.aau.cs.ds302e18.website.domain.Store;
-import dk.aau.cs.ds302e18.website.domain.StoreModel;
+import dk.aau.cs.ds302e18.shared.model.Store;
+import dk.aau.cs.ds302e18.shared.model.StoreModel;
 import dk.aau.cs.ds302e18.website.service.StoreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

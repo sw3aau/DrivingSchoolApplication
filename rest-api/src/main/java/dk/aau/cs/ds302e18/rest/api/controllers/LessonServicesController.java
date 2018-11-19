@@ -1,8 +1,8 @@
 package dk.aau.cs.ds302e18.rest.api.controllers;
 
-import dk.aau.cs.ds302e18.rest.api.models.LessonModel;
+import dk.aau.cs.ds302e18.shared.model.LessonModel;
 import dk.aau.cs.ds302e18.rest.api.models.LessonRepository;
-import dk.aau.cs.ds302e18.rest.api.models.Lesson;
+import dk.aau.cs.ds302e18.shared.model.Lesson;
 import dk.aau.cs.ds302e18.rest.api.models.LessonNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

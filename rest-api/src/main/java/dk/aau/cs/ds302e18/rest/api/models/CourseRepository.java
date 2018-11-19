@@ -1,5 +1,6 @@
 package dk.aau.cs.ds302e18.rest.api.models;
 
+import dk.aau.cs.ds302e18.shared.model.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 /* Spring uses JpaRepository to connect to the database. Here the lesson repository in the database is connected to.

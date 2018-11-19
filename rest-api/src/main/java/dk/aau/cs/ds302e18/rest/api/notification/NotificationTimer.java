@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.rest.api.NotificationService;
+package dk.aau.cs.ds302e18.rest.api.notification;
 
 import java.util.Date;
 import java.util.Timer;
