@@ -122,7 +122,7 @@ public class CourseController {
         /* Exceptions for when part of the model is empty */
         //model.addAttribute("course", course);
 
-        return new ModelAndView("redirect:/course/");
+        return new ModelAndView("redirect:/lessons");
     }
 
 
