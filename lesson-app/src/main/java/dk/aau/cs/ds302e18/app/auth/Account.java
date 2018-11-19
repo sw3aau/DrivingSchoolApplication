@@ -3,7 +3,7 @@ package dk.aau.cs.ds302e18.app.auth;
 import javax.persistence.*;
 
 
-/* Ensures that the table Account exists in the database and has the following columns.
+/* Ensures that the table AAccount exists in the database and has the following columns.
    Also provides setters and getters. */
 @Entity
 @Table(name="Account")

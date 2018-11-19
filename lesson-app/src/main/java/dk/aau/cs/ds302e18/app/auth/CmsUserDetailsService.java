@@ -40,7 +40,7 @@ public class CmsUserDetailsService implements UserDetailsService{
         }
         /* All the authorities an user has is read from the database and added to an list.  */
         List<AuthGroup> authGroups = this.authGroupRepository.findByUsername(username);
-        /* Account information is read from the database and stored in an account object. */
+        /* AAccount information is read from the database and stored in an account object. */
         Account account = this.accountRespository.findByUsername(username);
         /* User credentials, authorities and account information is stored and returned as an UserDetails object.  */
         request.getSession().setAttribute("testSession", "testing!");

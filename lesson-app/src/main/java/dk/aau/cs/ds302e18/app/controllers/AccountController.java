@@ -1,8 +1,9 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.DBConnector;
-import dk.aau.cs.ds302e18.app.ModifyUser;
 import dk.aau.cs.ds302e18.app.Student;
+import dk.aau.cs.ds302e18.app.auth.Account;
+import dk.aau.cs.ds302e18.app.auth.AccountRespository;
 import dk.aau.cs.ds302e18.app.domain.StudentModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -13,6 +14,8 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller responsible for handling actions towards the account
@@ -20,9 +23,15 @@ import java.sql.Statement;
 @Controller
 public class AccountController
 {
-    private Connection conn;
+    //private Connection conn;
 
-    public AccountController() {this.conn = new DBConnector().createConnectionObject();}
+    private final AccountRespository accountRespository;
+
+    public AccountController(AccountRespository accountRespository) {
+        this.accountRespository = accountRespository;
+    }
+
+//public AccountController() {this.conn = new DBConnector().createConnectionObject();}
     
     @RequestMapping(value = "/account/exportCalendar", method = RequestMethod.GET)
     @ResponseBody
@@ -79,8 +88,8 @@ public class AccountController
     }
     
     
-    public void editAccount(String address, String birthday, String email, String firstname, String city,
-                            String lastname, String phonenumber, String username, String zip ) {
+   /* public void editAccount(String address, String birthday, String email, String firstname, String city,
+                            String lastname, String phonenumber, String username, int zip ) {
         try {
             Statement st = conn.createStatement();
 
@@ -91,7 +100,7 @@ public class AccountController
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
     @GetMapping(value = "/account/modify")
     public String getModifyPage()
     {
@@ -104,8 +113,25 @@ public class AccountController
         System.out.println(studentModel.getEmail());
         System.out.println(studentModel.getLastName());
         System.out.println(studentModel.toString());
-        editAccount(studentModel.getAddress(), studentModel.getBirthdate(), studentModel.getEmail(), studentModel.getFirstName()
-        , studentModel.getCity(), studentModel.getLastName(), studentModel.getPhonenumber(), studentModel.getUsername(), studentModel.getZipCode());
+
+
+
+        Account acount = accountRespository.findByUsername(studentModel.getUsername());
+
+        acount.setAddress(studentModel.getAddress());
+        acount.setBirthday(studentModel.getBirthdate());
+        acount.setCity(studentModel.getCity());
+        acount.setEmail(studentModel.getEmail());
+        acount.setFirstName(studentModel.getFirstName());
+        acount.setLastName(studentModel.getLastName());
+        acount.setPhoneNumber(studentModel.getPhonenumber());
+        acount.setUsername(studentModel.getUsername());
+        acount.setZipCode(studentModel.getZipCode());
+        accountRespository.save(acount);
+        System.out.println(acount);
+       /* editAccount(studentModel.getAddress(), studentModel.getBirthdate(), studentModel.getEmail(), studentModel.getFirstName()
+        , studentModel.getCity(), studentModel.getLastName(), studentModel.getPhonenumber(),
+         studentModel.getUsername(), studentModel.getZipCode()); */
         return "modify-account";
     }
     

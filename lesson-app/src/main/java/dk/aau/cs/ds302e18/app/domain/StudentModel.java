@@ -8,7 +8,7 @@ public class StudentModel {
     private String email;
     private String birthdate;
     private String address;
-    private String zipCode;
+    private int zipCode;
     private String city;
     private String username;
     private String password;
@@ -41,7 +41,7 @@ public class StudentModel {
         this.address = address;
     }
 
-    public void setZipCode(String zipCode) {
+    public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -85,7 +85,7 @@ public class StudentModel {
         return address;
     }
 
-    public String getZipCode() {
+    public int getZipCode() {
         return zipCode;
     }
 
