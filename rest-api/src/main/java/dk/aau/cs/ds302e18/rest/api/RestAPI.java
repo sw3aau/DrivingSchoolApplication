@@ -3,7 +3,8 @@ package dk.aau.cs.ds302e18.rest.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+
+@SpringBootApplication(scanBasePackages = "dk.aau.cs.ds302e18.shared")
 public class RestAPI
 {
 
