@@ -3,7 +3,7 @@ package dk.aau.cs.ds302e18.rest.api.controllers;
 import dk.aau.cs.ds302e18.shared.model.Store;
 import dk.aau.cs.ds302e18.shared.model.StoreModel;
 import dk.aau.cs.ds302e18.rest.api.models.StoreNotFoundException;
-import dk.aau.cs.ds302e18.shared.model.StoreRepository;
+import repository.StoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

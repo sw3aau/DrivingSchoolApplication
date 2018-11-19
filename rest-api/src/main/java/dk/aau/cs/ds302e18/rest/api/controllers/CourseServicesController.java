@@ -1,6 +1,6 @@
 package dk.aau.cs.ds302e18.rest.api.controllers;
 
-import dk.aau.cs.ds302e18.shared.model.CourseRepository;
+import repository.CourseRepository;
 import dk.aau.cs.ds302e18.rest.api.models.CourseNotFoundException;
 import dk.aau.cs.ds302e18.shared.model.Course;
 import dk.aau.cs.ds302e18.shared.model.CourseModel;
