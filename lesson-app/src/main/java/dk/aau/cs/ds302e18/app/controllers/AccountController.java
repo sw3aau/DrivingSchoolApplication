@@ -106,7 +106,6 @@ public class AccountController
         System.out.println(studentModel.toString());
         editAccount(studentModel.getAddress(), studentModel.getBirthdate(), studentModel.getEmail(), studentModel.getFirstName()
         , studentModel.getCity(), studentModel.getLastName(), studentModel.getPhonenumber(), studentModel.getUsername(), studentModel.getZipCode());
-        conn.commit();
         return "modify-account";
     }
     

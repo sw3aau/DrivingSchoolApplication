@@ -13,6 +13,50 @@ public class StudentModel {
     private String username;
     private String password;
 
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public int getUserID() {
         return userID;
     }
