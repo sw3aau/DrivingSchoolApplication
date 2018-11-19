@@ -1,4 +1,4 @@
-package dk.aau.cs.ds302e18.rest.api.models;
+package dk.aau.cs.ds302e18.shared.model;
 
 import javax.persistence.*;
 

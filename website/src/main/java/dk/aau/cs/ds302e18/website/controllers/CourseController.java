@@ -1,8 +1,8 @@
 package dk.aau.cs.ds302e18.website.controllers;
 
 
-import dk.aau.cs.ds302e18.website.domain.Course;
-import dk.aau.cs.ds302e18.website.domain.CourseModel;
+import dk.aau.cs.ds302e18.shared.model.Course;
+import dk.aau.cs.ds302e18.shared.model.CourseModel;
 import dk.aau.cs.ds302e18.website.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

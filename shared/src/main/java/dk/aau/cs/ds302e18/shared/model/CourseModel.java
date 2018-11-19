@@ -1,4 +1,6 @@
-package dk.aau.cs.ds302e18.website.domain;
+package dk.aau.cs.ds302e18.shared.model;
+
+import javax.persistence.*;
 
 public class CourseModel {
     private String studentUsernames;
@@ -10,7 +12,6 @@ public class CourseModel {
     public void setStudentUsernames(String studentUsernames) {
         this.studentUsernames = studentUsernames;
     }
-
 
     public Course translateModelToCourse(){
         Course course = new Course();

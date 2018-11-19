@@ -1,19 +1,53 @@
-package dk.aau.cs.ds302e18.rest.api.models;
+package dk.aau.cs.ds302e18.shared.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
-public class LessonModel
+@Entity
+@Table(name="LESSON")
+public class Lesson
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Column(name="LESSON_ID")
+    private long id;
+
+    @Column(name="LESSON_TYPE")
+    @Enumerated(EnumType.STRING)
     private LessonType lessonType;
+
+    @Column(name="STUDENT_LIST")
     private String studentList;
+
+    @Column(name="INSTRUCTOR")
     private String lessonInstructor;
+
+    @Column(name="LESSON_DATE")
     private Date lessonDate;
+
+    @Column(name="LESSON_LOCATION")
     private String lessonLocation;
-    //final so that lesson type cannot be changed once it's been set.
-    //This is to prevent lessons from changing type after compeletion.
-    //It lesson needs to be changed, a new lesson must be created.
+
+    @Column(name="STATE")
     private boolean isSigned;
+
+    @Column(name="COURSE_ID")
     private int courseId;
+
+    public Lesson() {
+        super();
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
+    }
 
     public LessonType getLessonType()
     {
@@ -83,17 +117,5 @@ public class LessonModel
     public void setCourseId(int courseId)
     {
         this.courseId = courseId;
-    }
-
-    public Lesson translateModelToLesson(){
-        Lesson lesson = new Lesson();
-        lesson.setLessonType(this.lessonType);
-        lesson.setStudentList(this.studentList);
-        lesson.setLessonInstructor(this.lessonInstructor);
-        lesson.setLessonDate(this.lessonDate);
-        lesson.setLessonLocation(this.lessonLocation);
-        lesson.setSigned(this.isSigned);
-        lesson.setCourseId(this.courseId);
-        return lesson;
     }
 }

@@ -1,6 +1,6 @@
 package dk.aau.cs.ds302e18.website.controllers;
 
-import dk.aau.cs.ds302e18.website.domain.Lesson;
+import dk.aau.cs.ds302e18.shared.model.Lesson;
 import dk.aau.cs.ds302e18.website.service.LessonService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;

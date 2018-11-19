@@ -1,10 +1,11 @@
 package dk.aau.cs.ds302e18.website.controllers;
 
+import dk.aau.cs.ds302e18.shared.model.LessonType;
 import dk.aau.cs.ds302e18.website.domain.*;
 import dk.aau.cs.ds302e18.website.RegisterUser;
 import dk.aau.cs.ds302e18.website.Student;
-import dk.aau.cs.ds302e18.website.domain.Lesson;
-import dk.aau.cs.ds302e18.website.domain.LessonModel;
+import dk.aau.cs.ds302e18.shared.model.Lesson;
+import dk.aau.cs.ds302e18.shared.model.LessonModel;
 import dk.aau.cs.ds302e18.website.domain.SignatureCanvas;
 import dk.aau.cs.ds302e18.website.service.LessonService;
 import org.springframework.http.HttpStatus;

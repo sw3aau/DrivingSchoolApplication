@@ -1,8 +1,8 @@
 package dk.aau.cs.ds302e18.website.controllers;
 
 import dk.aau.cs.ds302e18.website.domain.CalendarViewModel;
-import dk.aau.cs.ds302e18.website.domain.Lesson;
-import dk.aau.cs.ds302e18.website.domain.LessonType;
+import dk.aau.cs.ds302e18.shared.model.Lesson;
+import dk.aau.cs.ds302e18.shared.model.LessonType;
 import dk.aau.cs.ds302e18.website.service.LessonService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
