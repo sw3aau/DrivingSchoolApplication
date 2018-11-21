@@ -1,5 +1,6 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
+import dk.aau.cs.ds302e18.app.SortLessonsByDateTime;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,57 +34,91 @@ public class IndexController {
     @GetMapping(value = {"/", "/index"})
     @PreAuthorize("isAuthenticated()")
     public String getIndexLesson(Model model) {
+
+        //Retrieves all lessons from the data base and sorts them by date
         List<Lesson> lessonList = this.lessonService.getAllLessons();
+        lessonList.sort(new SortLessonsByDateTime());
+
         //Creating two new list, to store the specific user's lessons, one for today's lessons and one for upcoming lessons
         List<Lesson> todaysLessonList = new ArrayList<>();
         List<Lesson> upcomingLessonList = new ArrayList<>();
 
-        //Creates new date for comparison for today's lessons
+        //Creates two new dates for comparison. One for today's lessons and one for upcoming lessons
+        //The nextDate date is used to find lessons after the current date. For this one full day is added to nextDate
         Date currDate = new Date();
+        Date nextDate = new Date();
+        //86400000 is one day in milliseconds
+        nextDate.setTime(nextDate.getTime() + 86400000);
 
         //Fetches the username from the session
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
 
         /**
-         * If there is more then 7 lessons in the database, it limits the listed lesson to 7,
-         * and only iterates through 6
+         * If there is more then 9 lessons in the database, it limits the listed lesson to 9,
+         * and only iterates through 8
          * */
-        if (lessonList.size() >= 7) {
+        if (lessonList.size() >= 9) {
             //Iterates through all lessons, adding the ones with today's date to todaysLessonList
-            for (int i = 0; i <= 6; i++) {
+            for (int i = 0; i <= 8; i++) {
                 if (lessonList.get(i).getLessonDate() != null &&
-                        lessonList.get(i).getStudentList().contains(username) &&
                         lessonList.get(i).getLessonDate().getYear() == currDate.getYear() &&
                         lessonList.get(i).getLessonDate().getMonth() == currDate.getMonth() &&
                         lessonList.get(i).getLessonDate().getDate() == currDate.getDate()) {
-                    todaysLessonList.add(lessonList.get(i));
+
+                    String[] studentListArray = lessonList.get(i).getStudentList().split(",");
+                    for (String studentUsername : studentListArray) {
+                        if (studentUsername.equals(username)) {
+                            todaysLessonList.add(lessonList.get(i));
+                        }
+                    }
                 }
             }
-
             //Iterates through all lessons, adding the upcoming lessons to upcomingLessonList
-            for (int i = 0; i <= 6; i++) {
-                if (lessonList.get(i).getLessonDate() != null && lessonList.get(i).getStudentList().contains(username)) {
-                    upcomingLessonList.add(lessonList.get(i));
+            for (int i = 0; i <= 8; i++) {
+                if (lessonList.get(i).getLessonDate() != null &&
+                        lessonList.get(i).getLessonDate().getYear() >= nextDate.getYear() &&
+                        lessonList.get(i).getLessonDate().getMonth() >= nextDate.getMonth() &&
+                        lessonList.get(i).getLessonDate().getDate() >= nextDate.getDate()) {
+
+                    String[] studentListArray = lessonList.get(i).getStudentList().split(",");
+                    for (String studentUsername : studentListArray) {
+                        if (studentUsername.equals(username)) {
+                            upcomingLessonList.add(lessonList.get(i));
+                        }
+                    }
                 }
             }
         }
 
         /**
-         * If there is less than 6 lessons in the database, no limiter is needed.
+         * If there is less than 8 lessons in the database, no limiter is needed.
          * */
-        if (lessonList.size() < 6) {
+        if (lessonList.size() <= 8) {
             for (Lesson lesson : lessonList) {
                 if (lesson.getLessonDate() != null &&
-                        lesson.getStudentList().contains(username) &&
                         lesson.getLessonDate().getYear() == currDate.getYear() &&
                         lesson.getLessonDate().getMonth() == currDate.getMonth() &&
                         lesson.getLessonDate().getDate() == currDate.getDate()) {
-                    todaysLessonList.add(lesson);
-                }
 
-                if (lesson.getLessonDate() != null && lesson.getStudentList().contains(username)) {
-                    upcomingLessonList.add(lesson);
+                    String[] studentListArray = lesson.getStudentList().split(",");
+                    for (String studentUsername : studentListArray) {
+                        if (studentUsername.equals(username)) {
+                            todaysLessonList.add(lesson);
+                        }
+                    }
+                }
+                if (lesson.getLessonDate() != null &&
+                        lesson.getLessonDate().getYear() >= nextDate.getYear() &&
+                        lesson.getLessonDate().getMonth() >= nextDate.getMonth() &&
+                        lesson.getLessonDate().getDate() >= nextDate.getDate()) {
+
+                    String[] studentListArray = lesson.getStudentList().split(",");
+                    for (String studentUsername : studentListArray) {
+                        if (studentUsername.equals(username)) {
+                            upcomingLessonList.add(lesson);
+                        }
+                    }
                 }
             }
         }

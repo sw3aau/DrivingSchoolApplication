@@ -3,6 +3,7 @@ package dk.aau.cs.ds302e18.app.controllers;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,10 @@ public class LogbookController {
         //Fetches the username from the session
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
+
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        GrantedAuthority role = userDetails.getAuthorities().iterator().next();
 
         for(int i = 0; i < lessonList.size(); i++) {
             if(lessonList.get(i).getStudentList().contains(username)) {
