@@ -22,7 +22,7 @@ public class LessonModel
 
     private boolean isSigned;
 
-    private int courseId;
+    private long courseId;
 
     public boolean isSigned()
     {
@@ -84,17 +84,15 @@ public class LessonModel
         this.lessonType = lessonType;
     }
 
-    public int getCourseId()
-    {
+    public long getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(int courseId)
-    {
+    public void setCourseId(long courseId) {
         this.courseId = courseId;
     }
 
-    Lesson translateModelToLesson(){
+    public Lesson translateModelToLesson(){
         Lesson lesson = new Lesson();
         lesson.setLessonType(this.lessonType);
         lesson.setStudentList(this.studentList);

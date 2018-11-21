@@ -8,8 +8,9 @@ public class Course
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="COURSE_TICK")
-    private long id;
+    @Column(name="COURSE_TABLE_ID")
+    private long courseTableID;
+
     @Column(name="STUDENT_USERNAMES")
     private String studentUsernames;
 
@@ -17,12 +18,12 @@ public class Course
         super();
     }
 
-    public long getId() {
-        return id;
+    public long getCourseTableID() {
+        return courseTableID;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setCourseTableID(long courseTableID) {
+        this.courseTableID = courseTableID;
     }
 
     public String getStudentUsernames() {

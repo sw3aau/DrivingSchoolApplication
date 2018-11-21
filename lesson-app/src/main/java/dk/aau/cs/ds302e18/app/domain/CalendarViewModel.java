@@ -6,19 +6,19 @@ import java.util.Date;
 
 public class CalendarViewModel
 {
-    public int getId()
+    public long getId()
     {
         return id;
     }
 
-    public void setId(int id)
+    public void setId(long id)
     {
         this.id = id;
     }
 
-    private int id;
+    private long id;
 
-    public CalendarViewModel(int id, String color, String title, Date start)
+    public CalendarViewModel(long id, String color, String title, Date start)
     {
         this.id = id;
         this.color = color;

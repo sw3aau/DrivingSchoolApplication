@@ -14,7 +14,7 @@ public class Lesson
     //This is to prevent lessons from changing type after compeletion.
     //It lesson needs to be changed, a new lesson must be created.
     private boolean isSigned;
-    private int courseId;
+    private long courseId;
 
     public long getId()
     {
@@ -86,12 +86,12 @@ public class Lesson
         isSigned = signed;
     }
 
-    public int getCourseId()
+    public long getCourseId()
     {
         return courseId;
     }
 
-    public void setCourseId(int courseId)
+    public void setCourseId(long courseId)
     {
         this.courseId = courseId;
     }

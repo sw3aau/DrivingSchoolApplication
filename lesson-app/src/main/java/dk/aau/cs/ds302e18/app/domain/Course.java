@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Course {
-    private long id;
+    private long courseTableID;
     private String studentUsernames;
 
     private Date startDate;
@@ -13,19 +13,18 @@ public class Course {
     private int numberLessons;
     private int numberLessonsADay;
     private ArrayList<String> studentList;
-    private int courseTick;
     private String location;
     private String instructorName;
     private int lessonType;
     private List<String> StudentNameList;
     private String studentNamesString;
 
-    public long getId() {
-        return id;
+    public long getCourseTableID() {
+        return courseTableID;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setCourseTableID(long courseTableID) {
+        this.courseTableID = courseTableID;
     }
 
     public String getStudentUsernames() {
@@ -74,14 +73,6 @@ public class Course {
 
     public void setStudentList(ArrayList<String> studentList) {
         this.studentList = studentList;
-    }
-
-    public int getCourseTick() {
-        return courseTick;
-    }
-
-    public void setCourseTick(int courseTick) {
-        this.courseTick = courseTick;
     }
 
     public String getLocation() {

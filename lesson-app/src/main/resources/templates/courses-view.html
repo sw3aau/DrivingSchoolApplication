@@ -57,7 +57,7 @@
                         <a th:href="@{/course/courseAddLessons}">Add lessons to a course</a>
                     </div>
                 </div>
-                <table id="table" class="table table-striped table-sm">
+                <table id="table" class="table table-sm">
                     <thead>
                     <th scope="col">#Course</th>
                     <th scope="col">List of students</th>
@@ -65,12 +65,12 @@
                     </thead>
                     <tbody>
                     <tr th:each="course : ${courses}">
-                        <th scope="row"><a th:href="@{'/course/' + ${course.id}}" th:text="${course.id}"></a></th>
+                        <th scope="row"><a th:href="@{'/course/' + ${course.courseTableID}}" th:text="${course.courseTableID}"></a></th>
                         <td th:text="${course.studentNamesString}"></td>
                         <td>
-                            <form method="post" th:action="'course/deleteCourse'" th:object="${courseModel}">
+                            <form method="post" th:action="@{'/course/delete/' + ${course.courseTableID}}" th:object="${courseModel}">
                                 <input type="hidden" name="deleteCourse" id="deleteCourse"
-                                       th:value="${course.courseTick}"/>
+                                       th:value="${course.courseTableID}"/>
                                 <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
@@ -100,9 +100,9 @@
                 <!--form method="post" action="#" th:action="'/course/deleteCourse'" th:object="${courseModel}">
                     <div class="form-row">
                         <div class="col">
-                            <input th:id="courseTick" th:name="courseTick" type="text" class="form-control"
+                            <input th:id="id" th:name="id" type="text" class="form-control"
                                    placeholder="Course to be deleted"
-                                   th:value="${course != null} ? ${course.courseTick}"/>
+                                   th:value="${course != null} ? ${course.id}"/>
                         </div>
                     </div>
                     <div class="form-row">

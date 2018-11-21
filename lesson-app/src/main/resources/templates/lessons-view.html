@@ -15,7 +15,7 @@
                 <a th:href="@{/lessons/add}">Add New Lesson</a>
             </div>
         </div>
-        <table id="table" class="table table-striped table-sm">
+        <table courseTableID="table" class="table table-striped table-sm">
             <thead>
             <th scope="col">#</th>
             <th scope="col">Type</th>
@@ -27,15 +27,15 @@
             </thead>
             <tbody>
             <tr th:each="lesson : ${lessons}">
-                <th scope="row"><a th:href="@{'/lessons/' + ${lesson.id}}" th:text="${lesson.id}"></a></th>
+                <th scope="row"><a th:href="@{'/lessons/' + ${lesson.courseId}}" th:text="${lesson.courseId}"></a></th>
                 <td th:text="${lesson.lessonType}"></td>
 				<td th:text="${lesson.lessonDate}"></td>
                 <td th:text="${lesson.studentList}"></td>
                 <td th:text="${lesson.lessonInstructor}"></td>
                 <td th:text="${lesson.lessonLocation}"></td>
                 <td>
-                    <form action="#" th:action="@{'/canvas/' + ${lesson.id}}" method="get">
-                        <button th:id="'lessonId' + ${lesson.id}" type="submit">
+                    <form action="#" th:action="@{'/canvas/' + ${lesson.courseId}}" method="get">
+                        <button th:courseTableID="'lessonId' + ${lesson.courseId}" type="submit">
                             <i>Sign Course</i>
                         </button>
                     </form>

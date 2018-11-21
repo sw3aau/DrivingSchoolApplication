@@ -34,11 +34,11 @@ public class CourseService
 
     public Course addCourse(CourseModel courseModel)
     {
-        System.out.println("ADD COURSE");
         String url = courseServiceUrl + REQUESTS + SLASH + "addCourse";
         HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, null);
         return this.restTemplate.exchange(url, HttpMethod.POST, request, Course.class).getBody();
     }
+
 
 
     public Course getCourse(long id) {
@@ -47,7 +47,20 @@ public class CourseService
         return this.restTemplate.exchange(url, HttpMethod.GET, request, Course.class).getBody();
     }
 
-    public Course acceptCourseRequest(long id, CourseModel storeModel) {
+    public Course getLastCourseByID() {
+        String url = courseServiceUrl + REQUESTS + SLASH + "getLastCourse";
+        HttpEntity<String> request = new HttpEntity<>(null, null);
+        return this.restTemplate.exchange(url, HttpMethod.GET, request, Course.class).getBody();
+    }
+
+    public void deleteCourse(long id){
+        String url = courseServiceUrl + REQUESTS + SLASH + "delete" + SLASH + id;
+        HttpEntity<String> request = new HttpEntity<>(null, null);
+        restTemplate.exchange(url, HttpMethod.DELETE, request, Course.class).getBody();
+    }
+
+
+    public Course updateCourse(long id, CourseModel storeModel) {
         System.out.println(storeModel);
         String url = courseServiceUrl + REQUESTS + SLASH + id;
         HttpEntity<CourseModel> request = new HttpEntity<>(storeModel, null);

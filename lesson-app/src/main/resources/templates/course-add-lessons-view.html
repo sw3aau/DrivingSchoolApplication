@@ -22,10 +22,6 @@
         <form method="post" action="#" th:action="'/course/courseAddLessons'" th:object="${courseModel}">
             <div class="form-row" >
                 <div>
-                    <select >
-                        <!-- The id from each course is displayed as an drop down list and send to the courseModel with the variable name courseTick.  -->
-                        <option th:each="course : ${courses}" th:id="courseTick" th:name="courseTick"  th:text="${course.id}" th:value="${course != null} ? ${course.courseTick}"></option>
-                    </select>
                 </div>
             </div>
 
@@ -88,17 +84,17 @@
 
             <div class="form-row">
                 <div class = "col">
-                    <input th:id="numberLessonsADay" th:name="numberLessonsADay" type="text" class="form-control" placeholder="Number Lessons a day" th:value="${course != null} ? ${course.numberLessonsADay}"/>
+                    <input thid="numberLessonsADay" th:name="numberLessonsADay" type="text" class="form-control" placeholder="Number Lessons a day" th:value="${course != null} ? ${course.numberLessonsADay}"/>
                 </div>
             </div>
             <div class="form-row">
                 <div class = "col">
-                    <input th:id="location" th:name="location" type="text" class="form-control" placeholder="Location" th:value="${course != null} ? ${course.location}"/>
+                    <input thid="location" th:name="location" type="text" class="form-control" placeholder="Location" th:value="${course != null} ? ${course.location}"/>
                 </div>
             </div>
             <div class="form-row">
                 <div class = "col">
-                    <select th:name="instructorName">
+                    <select th:name="instructorUsername">
                         <option th:each="instructorAccount : ${instructorAccounts}" th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}" th:value="${instructorAccount.username}"></option>
                     </select>
                 </div>

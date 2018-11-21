@@ -53,6 +53,27 @@ public class CourseController {
     }
 
 
+    private void setFullNamesFromUsernamesString(List<Course> courseList){
+        /*  Every student username list in account is separated and added to an String array. Then the
+         *  username is used to fetch the full name of the student belonging to the username. */
+        for(Course course: courseList){
+            ArrayList<String> fullNames = new ArrayList<>();
+            ArrayList<String> listOfUsernames = saveUsernameStringAsList(course.getStudentUsernames());
+            for(String username: listOfUsernames){
+                String firstName = accountRespository.findByUsername(username).getFirstName();
+                String lastName = accountRespository.findByUsername(username).getLastName();
+                String fullName = firstName + " " + lastName;
+                fullNames.add(" " + fullName);
+            }
+            String studentFullNames = saveStringListAsSingleString(fullNames);
+            /* The way saveStringListAsSingleString formats the list to an string is with an comma at the end of each
+               object. The last of the commas is removed for appearance sake. */
+            String studentFullNamesWithoutEndingComma = studentFullNames.substring(0, studentFullNames.length()-1);
+
+            course.setStudentNamesString(studentFullNamesWithoutEndingComma);
+        }
+    }
+
     @PostMapping(value = "/course/addCourse")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
@@ -60,8 +81,7 @@ public class CourseController {
         return new ModelAndView("redirect:/course/courseAddLessons");
     }
 
-    /* When an course has been created the instructor will be redirected to this site, where they can decide
-      * if they want to assign initial theory lessons. */
+
     @GetMapping(value = "/course/courseAddLessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getCourseAddLessonsForm(Model model)
@@ -73,7 +93,7 @@ public class CourseController {
 
         model.addAttribute("instructorAccounts", instructorAccounts);
         model.addAttribute("courses", courses);
-        return "course-add-lessons-view";
+        return "course-view";
     }
 
     @PostMapping(value = "/course/courseAddLessons")
@@ -89,26 +109,23 @@ public class CourseController {
             LessonModel lesson = new LessonModel();
             lesson.setSigned(isSigned);
             lesson.setLessonDate(lessonDate);
-            lesson.setLessonInstructor(courseModel.getInstructorUsername());
+            lesson.setLessonInstructor(courseModel.getInstructorName());
             lesson.setLessonLocation(courseModel.getLocation());
-            Course latestCreatedCourse = courseService.getLastCourseByID();
-            lesson.setStudentList(latestCreatedCourse.getStudentUsernames());
-            lesson.setCourseId(latestCreatedCourse.getCourseTableID());
+            lesson.setStudentList(courseService.getCourse(courseModel.getCourseTick()).getStudentUsernames());
+            //lesson.setStudentList(courseService.getCourse(courseModel.getCourseTick()).getStudentUsernames());     Cant get shitty getCourse to work
+            lesson.setCourseId(courseModel.getCourseTick());
             lesson.setLessonType(LessonType.THEORY_LESSON);
 
             lessonService.addLesson(lesson);
         }
+        //Course course = this.courseService.addCourseLessons(courseModel);
+        /* Exceptions for when part of the model is empty */
+        //model.addAttribute("course", course);
+
         return new ModelAndView("redirect:/lessons");
     }
 
 
-    @DeleteMapping(value = "/course/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteCourse(HttpServletRequest request, @PathVariable long id){
-        courseService.deleteCourse(id);
-        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        return new ModelAndView("redirect:/course/");
-    }
 
     /* Posts a newly added lesson in the lessons list on the website */
     @PostMapping(value = "/course")
@@ -117,41 +134,38 @@ public class CourseController {
     {
         /* The newly added course object is retrieved from the 8100 server.  */
         Course course = this.courseService.addCourse(courseModel);
-        if (course.getStudentUsernames().isEmpty() | course.getCourseTableID() == 0)
+        if (course.getStudentUsernames().isEmpty() | course.getId() == 0)
         {
             throw new RuntimeException();
         }
         model.addAttribute("course", course);
 
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        return new ModelAndView("redirect:/course/" + course.getCourseTableID());
+        return new ModelAndView("redirect:/course/" + course.getId());
     }
 
-
-
-/*
-    @GetMapping(value = "/course/{id}")
+    @GetMapping(value = "/course/{courseTableID}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getCourse(Model model, @PathVariable long id)
+    public String getCourse(Model model, @PathVariable long courseTableID)
     {
-        Course course = this.courseService.getCourse(id);
-        ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
-        model.addAttribute("instructorAccounts", instructorAccounts);
+        Course course = this.courseService.getCourse(courseTableID);
+        System.out.println(course.getStudentUsernames());
         model.addAttribute("course", course);
         return "course-view";
     }
-*/
-/*
-    @PostMapping(value = "/course/{id}")
+
+    /* HTML for updating an lesson */
+    @PostMapping(value = "/course/{courseTableID}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateCourse(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    public String updateCourse(Model model, @PathVariable long courseTableID, @ModelAttribute CourseModel courseModel)
     {
-        Course course = this.courseService.updateCourse(id, courseModel);
+        /* Returns an course that is read from the 8100 server through updateLesson. */
+        Course course = this.courseService.acceptCourseRequest(courseTableID, courseModel);
         model.addAttribute("course", course);
         model.addAttribute("courseModel", new CourseModel());
         return "course-view";
     }
-*/
+
     public ArrayList<Date> createLessonDates(Date startDate, ArrayList<Integer> weekdays, int numberLessonsToDistribute,
                                              int numberLessonsADay) {
         ArrayList<Date> lessonDates = new ArrayList<>();
@@ -219,24 +233,14 @@ public class CourseController {
         return studentAccounts;
     }
 
-    private void setFullNamesFromUsernamesString(List<Course> courseList){
-        /*  Every student username list in account is separated and added to an String array. Then the
-         *  username is used to fetch the full name of the student belonging to the username. */
-        for(Course course: courseList){
-            ArrayList<String> fullNames = new ArrayList<>();
-            ArrayList<String> listOfUsernames = saveUsernameStringAsList(course.getStudentUsernames());
-            for(String username: listOfUsernames){
-                String firstName = accountRespository.findByUsername(username).getFirstName();
-                String lastName = accountRespository.findByUsername(username).getLastName();
-                String fullName = firstName + " " + lastName;
-                fullNames.add(" " + fullName);
-            }
-            String studentFullNames = saveStringListAsSingleString(fullNames);
-            /* The way saveStringListAsSingleString formats the list to an string is with an comma at the end of each
-               object. The last of the commas is removed for appearance sake. */
-            String studentFullNamesWithoutEndingComma = studentFullNames.substring(0, studentFullNames.length()-1);
 
-            course.setStudentNamesString(studentFullNamesWithoutEndingComma);
+    private Course poorMansGetCourse(long courseTableID){
+        List<Course> courses = this.courseService.getAllCourseRequests();
+        for(Course course: courses){
+            if(course.getCourseTick() == courseTableID)
+                return course;
         }
+        return null;
     }
+
 }

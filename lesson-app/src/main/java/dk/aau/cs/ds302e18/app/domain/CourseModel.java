@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class CourseModel {
     private String studentUsernames;
+    private long courseTableID;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startDate;
     private ArrayList<Integer> weekdays;
@@ -14,9 +15,8 @@ public class CourseModel {
     private int numberLessonsADay;
     private String studentList;
     private LessonType lessonType;
-    private int courseTick;
     private String location;
-    private String instructorName;
+    private String instructorUsername;
     private boolean isSigned;
     private ArrayList<String> StudentNameList;
 
@@ -76,12 +76,12 @@ public class CourseModel {
         this.lessonType = lessonType;
     }
 
-    public int getCourseTick() {
-        return courseTick;
+    public long getCourseTableID() {
+        return courseTableID;
     }
 
-    public void setCourseTick(int courseTick) {
-        this.courseTick = courseTick;
+    public void setCourseTableID(long courseTableID) {
+        this.courseTableID = courseTableID;
     }
 
     public String getLocation() {
@@ -92,12 +92,12 @@ public class CourseModel {
         this.location = location;
     }
 
-    public String getInstructorName() {
-        return instructorName;
+    public String getInstructorUsername() {
+        return instructorUsername;
     }
 
-    public void setInstructorName(String instructorName) {
-        this.instructorName = instructorName;
+    public void setInstructorUsername(String instructorUsername) {
+        this.instructorUsername = instructorUsername;
     }
 
     public boolean isSigned() {

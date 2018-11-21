@@ -38,7 +38,7 @@ public class CourseServicesController
 
     /* Get = responsible for retrieving information only */
     @GetMapping("/{id}")
-    public Course getLesson(@PathVariable Long id){
+    public Course getCourse(@PathVariable Long id){
         Optional<Course> course = this.courseRepository.findById(id);
         if(course.isPresent()){
             return course.get();
@@ -46,13 +46,32 @@ public class CourseServicesController
         throw new CourseNotFoundException("Course not found with id: " + id);
     }
 
+    /* Get = responsible for retrieving information only */
+    @GetMapping("/getLastCourse")
+    public Course getLastCourseByID(){
+        Optional<Course> course = Optional.ofNullable(this.courseRepository.findFirstByOrderByCourseTableIDDesc());
+        if(course.isPresent()){
+            return course.get();
+        }
+        throw new CourseNotFoundException("Course not find last the last course.");
+    }
 
     /* Post = responsible for posting new information directly after it has been created to the website, and create fitting
     links to the new information. */
     @PostMapping(value = "/addCourse")
-    public ResponseEntity<Course> addCourse(@RequestBody CourseModel model){
-        Course course = this.courseRepository.save(model.translateModelToCourse());
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
+    public ResponseEntity<Course> addCourse(@RequestBody CourseModel courseModel){
+        Course course = this.courseRepository.save(courseModel.translateModelToCourse());
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getCourseTableID()).toUri();
+        return ResponseEntity.created(location).body(course);
+    }
+
+    @PostMapping(value = "/removeStudent")
+    public ResponseEntity<Course> removeStudentFromCourse(@RequestBody CourseModel courseModel){
+        String usernamesWithoutStudent = courseModel.getStudentUsernames().replace(courseModel.getStudentToDelete() + ",", "");
+        Optional<Course> courseToBeChanged = courseRepository.findById(courseModel.getCourseTableID());
+        //Kom her til
+        Course course = this.courseRepository.save(courseModel.translateModelToCourse());
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getCourseTableID()).toUri();
         return ResponseEntity.created(location).body(course);
     }
 
@@ -60,21 +79,21 @@ public class CourseServicesController
 
     /* Put = responsible for updating existing database entries*/
     @PutMapping("/{id}")
-    public Course updateCourse(@PathVariable Long id, @RequestBody CourseModel model){
+    public Course updateCourse(@PathVariable Long id, @RequestBody CourseModel courseModel){
         /* Throw an error if the selected course do not exist. */
         Optional<Course> existing = this.courseRepository.findById(id);
         if(!existing.isPresent()){
             throw new CourseNotFoundException("Course not found with id: " + id);
         }
         /* Translates input from the interface into an course object */
-        Course course = model.translateModelToCourse();
+        Course course = courseModel.translateModelToCourse();
         /* Uses the ID the course already had to save the course */
-        course.setId(id);
+        course.setCourseTableID(id);
         return this.courseRepository.save(course);
     }
 
     /* NOT IMPLEMENTED: Delete = responsible for deleting database entries. */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.RESET_CONTENT)
     public void deleteCourse(@PathVariable Long id){
         Optional<Course> existing = this.courseRepository.findById(id);

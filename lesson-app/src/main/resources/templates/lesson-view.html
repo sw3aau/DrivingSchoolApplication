@@ -13,7 +13,7 @@
 <div layout:fragment="content">
     <div class="container main-content">
         <h3>Lesson View</h3>
-        <form method="post" action="#" th:action="${lesson != null} ? '/lessons/'+${lesson.id} : '/lessons'" th:object="${lessonModel}">
+        <form method="post" action="#" th:action="${lesson != null} ? '/lessons/'+${lesson.courseId} : '/lessons'" th:object="${lessonModel}">
             <div class="form-row">
                 <div class="col">
                     <input th:id="lessonType" th:name="lessonType" type="text" class="form-control" placeholder="Lesson Type" th:value="${lesson != null} ? ${lesson.lessonType}"/>
