@@ -1,11 +1,13 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.DBConnector;
+import dk.aau.cs.ds302e18.app.RegisterUser;
 import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.auth.Account;
 import dk.aau.cs.ds302e18.app.auth.AccountRespository;
 import dk.aau.cs.ds302e18.app.domain.StudentModel;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -131,6 +133,29 @@ public class AccountController
         System.out.println(acount);
         return "modify-account";
     }
+
+    @GetMapping(value = "/register")
+    public String getRegisterPage()
+    {
+        return "register-account";
+    }
+
+    @PostMapping(value = "/register")
+    public String getRegisterPage(@ModelAttribute Student student)
+    {
+        System.out.println(student.toString());
+        new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
+                student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
+                student.getZipCode(), student.getCity());
+        return "login";
+    }
+
+    @GetMapping(value = "/login")
+    public String getLoginPage(Model model)
+    {
+        return "login";
+    }
+
 
 
 }
