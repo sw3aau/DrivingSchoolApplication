@@ -103,13 +103,34 @@ public class LessonController
     }
 
     @GetMapping(value = "/lessons")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public String getLessons(Model model)
     {
         /* Creates an list of lessons from the return value of getAllLessons in LessonService(which is an function that gets lessons
         from the 8100 server and makes them into lesson objects and returns them as an list) */
         List<Lesson> lessons = this.lessonService.getAllLessons();
+
+        List<Lesson> studentLessons = new ArrayList<>();
+        // Iterates through all requests, adding the ones with state (0) into the filtered request list.
+
+        //Fetches the username from the session
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+
+
+        for (Lesson lesson : lessons)
+        {
+            String[] studentListArray = lesson.getStudentList().split(",");
+            for (String studentUsername : studentListArray) {
+                if (studentUsername.equals(username)) {
+                    studentLessons.add(lesson);
+                }
+            }
+
+        }
+
         model.addAttribute("lessons", lessons);
+        model.addAttribute("specificLesson", studentLessons);
         return "lessons-view";
     }
 
@@ -147,7 +168,7 @@ public class LessonController
     }
 
     @GetMapping(value = "/lessons/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getLesson(Model model, @PathVariable long id)
     {
         Lesson lesson = this.lessonService.getLesson(id);
@@ -177,7 +198,7 @@ public class LessonController
     }
 
     @GetMapping(value = "/deletelesson/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView deleteLesson(Model model, @PathVariable long id)
     {
         Lesson lesson = this.lessonService.getLesson(id);
