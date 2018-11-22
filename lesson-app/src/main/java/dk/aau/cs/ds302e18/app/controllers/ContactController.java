@@ -21,14 +21,14 @@ public class ContactController {
         return "contact-formular";
     }
 
-
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
     public RedirectView acceptContactState(@RequestParam("firstName") String firstName, @RequestParam("email") String email,
-                                           @RequestParam("message") String message, Model model,
-                                           @ModelAttribute StoreModel storeModel) {
+                                           @RequestParam("message") String message) {
         String sendmessage = ("New Email from : " + firstName + " \n" + "Email :" + email + " \n" + "Message : " + message);
         System.out.println( sendmessage + email);
         new Notification(sendmessage, email);
         return new RedirectView("contact");
     }
+
+
 }

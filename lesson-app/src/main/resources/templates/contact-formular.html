@@ -30,12 +30,13 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2172.2870189408723!2d9.989367515959458!3d57.01239238090904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x464eccdc3b849cf3%3A0xf858a47b27302972!2sCassiopeia+-+Institut+for+Datalogi%2C+Selma+Lagerl%C3%B8fs+Vej+300%2C+9220+Aalborg!5e0!3m2!1sda!2sdk!4v1542280965623" width="600" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
 
                 <h4>Contact form</h4>
-                <form method="POST" th:action="@{/contact}">
+
+                <form action="#" method="POST" th:action="@{/contact}">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstName">Full Name *</label>
-                                <input id="firstName" type="text" name="name" class="form-control" placeholder="Please enter your name" required="required" data-error="Firstname is required.">
+                                <input id="firstName" type="text" name="firstName" class="form-control" placeholder="Please enter your name" required="required" data-error="Firstname is required.">
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
@@ -48,16 +49,17 @@
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" name="message" class="form-control" placeholder="Please type a message to send" rows="4" required="required" data-error="Please, leave us a message."></textarea>
-                            <div class="help-block with-errors"></div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                             <label for="message">Message *</label>
+                             <textarea id="message" name="message" class="form-control" placeholder="Please type a message to send" rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                             <div class="help-block with-errors"></div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <button type="submit" name="submit" value="value" class="btn btn-success">Send Message</button>
                 </form>
+
             </div>
         </div>
     </div>
