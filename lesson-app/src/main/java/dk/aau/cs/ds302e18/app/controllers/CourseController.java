@@ -56,6 +56,7 @@ public class CourseController {
     @PostMapping(value = "/course/addCourse")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
+        System.out.println(courseModel.toString());
         courseService.addCourse(courseModel);
         return new ModelAndView("redirect:/course/courseAddLessons");
     }
@@ -68,7 +69,6 @@ public class CourseController {
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
         setFullNamesFromUsernamesString(courses);
-        /* WE DONT EVEN HAVE AN INSTRUCTOR TYPE LOL */
         ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
 
         model.addAttribute("instructorAccounts", instructorAccounts);
@@ -102,11 +102,10 @@ public class CourseController {
     }
 
 
-    @DeleteMapping(value = "/course/delete/{id}")
+    @GetMapping(value = "/course/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteCourse(HttpServletRequest request, @PathVariable long id){
+    public ModelAndView deleteCourse(@PathVariable long id){
         courseService.deleteCourse(id);
-        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
         return new ModelAndView("redirect:/course/");
     }
 

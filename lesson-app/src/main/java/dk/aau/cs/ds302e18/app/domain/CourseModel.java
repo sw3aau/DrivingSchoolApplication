@@ -121,4 +121,22 @@ public class CourseModel {
         course.setStudentUsernames(this.studentUsernames);
         return course;
     }
+
+    @Override
+    public String toString() {
+        return "CourseModel{" +
+                "studentUsernames='" + studentUsernames + '\'' +
+                ", courseTableID=" + courseTableID +
+                ", startDate=" + startDate +
+                ", weekdays=" + weekdays +
+                ", numberLessons=" + numberLessons +
+                ", numberLessonsADay=" + numberLessonsADay +
+                ", studentList='" + studentList + '\'' +
+                ", lessonType=" + lessonType +
+                ", location='" + location + '\'' +
+                ", instructorUsername='" + instructorUsername + '\'' +
+                ", isSigned=" + isSigned +
+                ", StudentNameList=" + StudentNameList +
+                '}';
+    }
 }

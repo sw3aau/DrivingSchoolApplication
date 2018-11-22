@@ -68,7 +68,7 @@
                         <th scope="row"><a th:href="@{'/course/' + ${course.courseTableID}}" th:text="${course.courseTableID}"></a></th>
                         <td th:text="${course.studentNamesString}"></td>
                         <td>
-                            <form method="post" th:action="@{'/course/delete/' + ${course.courseTableID}}" th:object="${courseModel}">
+                            <form method="get" th:action="@{'/course/delete/' + ${course.courseTableID}}" th:object="${courseModel}">
                                 <input type="hidden" name="deleteCourse" id="deleteCourse"
                                        th:value="${course.courseTableID}"/>
                                 <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
