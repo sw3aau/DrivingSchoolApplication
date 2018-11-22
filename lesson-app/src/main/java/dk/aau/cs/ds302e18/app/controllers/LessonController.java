@@ -1,5 +1,9 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
+import dk.aau.cs.ds302e18.app.auth.Account;
+import dk.aau.cs.ds302e18.app.auth.AccountRespository;
+import dk.aau.cs.ds302e18.app.auth.AuthGroup;
+import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
 import dk.aau.cs.ds302e18.app.domain.*;
 import dk.aau.cs.ds302e18.app.RegisterUser;
 import dk.aau.cs.ds302e18.app.Student;
@@ -20,6 +24,7 @@ import org.springframework.web.servlet.View;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,12 +38,17 @@ public class LessonController
        @PreAuthorize defines what role is necessary to access the url. */
 
     private final LessonService lessonService;
+    private final AccountRespository accountRespository;
+    private final AuthGroupRepository authGroupRepository;
 
-    public LessonController(LessonService lessonService)
-    {
+
+    public LessonController(LessonService lessonService, AccountRespository accountRespository, AuthGroupRepository authGroupRepository) {
         super();
         this.lessonService = lessonService;
+        this.accountRespository = accountRespository;
+        this.authGroupRepository = authGroupRepository;
     }
+
 
     @GetMapping(value = "/login")
     public String getLoginPage(Model model)
@@ -107,6 +117,10 @@ public class LessonController
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddLessonForm(Model model)
     {
+        ArrayList<Account> userAccounts = findAccountsOfType("USER");
+
+        model.addAttribute("userAccountlist", userAccounts);
+        userAccounts.get(0).getFirstName();
         return "lesson-view";
     }
 
@@ -170,4 +184,19 @@ public class LessonController
         return new ModelAndView("redirect:/lessons/");
     }
 
+
+    private ArrayList<Account> findAccountsOfType(String accountType){
+        List<AuthGroup> users = authGroupRepository.findAll();
+        ArrayList<AuthGroup> studentsAuthList = new ArrayList<>();
+        for(AuthGroup user: users){
+            if(user.getAuthGroup().equals(accountType)){
+                studentsAuthList.add(user);
+            }
+        }
+        ArrayList<Account> studentAccounts = new ArrayList<>();
+        for(AuthGroup studentAuth : studentsAuthList){
+            studentAccounts.add(accountRespository.findByUsername(studentAuth.getUsername()));
+        }
+        return studentAccounts;
+    }
 }
