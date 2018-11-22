@@ -2,7 +2,7 @@ package dk.aau.cs.ds302e18.app;
 
 import java.util.Objects;
 
-public abstract class Account {
+public abstract class AAccount {
 
     private int userID;
     private String firstName;
@@ -16,7 +16,7 @@ public abstract class Account {
     private String username;
     private String password;
 
-    public Account(String firstName, String lastName, String phonenumber, String email, String birthdate, String address, String zipCode, String city, String username) {
+    public AAccount(String firstName, String lastName, String phonenumber, String email, String birthdate, String address, String zipCode, String city, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phonenumber = phonenumber;
@@ -127,24 +127,6 @@ public abstract class Account {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return userID == account.userID &&
-                phonenumber == account.phonenumber &&
-                zipCode == account.zipCode &&
-                Objects.equals(firstName, account.firstName) &&
-                Objects.equals(lastName, account.lastName) &&
-                Objects.equals(email, account.email) &&
-                Objects.equals(birthdate, account.birthdate) &&
-                Objects.equals(address, account.address) &&
-                Objects.equals(city, account.city) &&
-                Objects.equals(username, account.username) &&
-                Objects.equals(password, account.password);
     }
 
     @Override

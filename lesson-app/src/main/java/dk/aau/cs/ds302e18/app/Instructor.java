@@ -1,6 +1,6 @@
 package dk.aau.cs.ds302e18.app;
 
-public class Instructor extends Account {
+public class Instructor extends AAccount {
 
     private boolean isAdmin;
 

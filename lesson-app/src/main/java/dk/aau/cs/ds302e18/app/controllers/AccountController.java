@@ -1,8 +1,10 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.DBConnector;
-import dk.aau.cs.ds302e18.app.ModifyUser;
 import dk.aau.cs.ds302e18.app.Student;
+import dk.aau.cs.ds302e18.app.auth.Account;
+import dk.aau.cs.ds302e18.app.auth.AccountRespository;
+import dk.aau.cs.ds302e18.app.domain.StudentModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,8 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller responsible for handling actions towards the account
@@ -19,10 +23,16 @@ import java.sql.Statement;
 @Controller
 public class AccountController
 {
-    private Connection conn;
+    //private Connection conn;
 
-    public AccountController() {this.conn = new DBConnector().createConnectionObject();}
-    
+    private final AccountRespository accountRespository;
+
+    public AccountController(AccountRespository accountRespository) {
+        this.accountRespository = accountRespository;
+    }
+
+//public AccountController() {this.conn = new DBConnector().createConnectionObject();}
+
     @RequestMapping(value = "/account/exportCalendar", method = RequestMethod.GET)
     @ResponseBody
     public void exportCalendar(HttpServletResponse response) throws IOException
@@ -76,62 +86,51 @@ public class AccountController
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         FileCopyUtils.copy(inputStream, response.getOutputStream());
     }
-    
-    
-    public void editAccount(String address, String birthday, String email, String firstname, String city,
-                            String lastname, int phonenumber, String username, int zip ) {
-        try {
-            Statement st = conn.createStatement();
-            st.executeUpdate("UPDATE `account` SET `address` = '"+address+"',  `birthday` = '"+birthday+"',   " +
-                    "`email` = '"+email+"', `firstname` = '"+firstname+"', `lastname`='"+lastname+"', `city`='"+city+"', " +
-                    " `phonenumber` = "+phonenumber+", `zip`="+zip+" WHERE `username` = '"+username+"'");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
+    /* public void editAccount(String address, String birthday, String email, String firstname, String city,
+                             String lastname, String phonenumber, String username, int zip ) {
+         try {
+             Statement st = conn.createStatement();
+
+             st.executeUpdate("UPDATE `account` SET `address` = '"+address+"',  `birthday` = '"+birthday+"',   " +
+                     "`email` = '"+email+"', `firstname` = '"+firstname+"', `lastname`='"+lastname+"', `city`='"+city+"', " +
+                     " `phonenumber` = "+phonenumber+", `zip`="+zip+" WHERE `username` = '"+username+"'");
+
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+     }*/
     @GetMapping(value = "/account/modify")
     public String getModifyPage()
     {
         return "modify-account";
     }
 
-    @GetMapping(value = "/contact")
-    public String getContactPage()
-    {
-        return "contact-formular";
-    }
-
     @PostMapping(value = "/account/modify")
-    public String postModifyPage(@ModelAttribute Student student){
-        System.out.println(student.toString());
-        new ModifyUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
-                student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
-                student.getZipCode(), student.getCity());
+    public String postModifyPage(@ModelAttribute StudentModel studentModel){
+        System.out.println(studentModel.getUsername());
+        System.out.println(studentModel.getEmail());
+        System.out.println(studentModel.getLastName());
+        System.out.println(studentModel.toString());
+
+
+
+        Account acount = accountRespository.findByUsername(studentModel.getUsername());
+
+        acount.setAddress(studentModel.getAddress());
+        acount.setBirthday(studentModel.getBirthdate());
+        acount.setCity(studentModel.getCity());
+        acount.setEmail(studentModel.getEmail());
+        acount.setFirstName(studentModel.getFirstName());
+        acount.setLastName(studentModel.getLastName());
+        acount.setPhoneNumber(studentModel.getPhonenumber());
+        acount.setUsername(studentModel.getUsername());
+        acount.setZipCode(studentModel.getZipCode());
+        accountRespository.save(acount);
+        System.out.println(acount);
         return "modify-account";
     }
-    
-    public void getUsername() {
-        getUsername(); {this.conn = new DBConnector().createConnectionObject();}
 
-        try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT`address`, `birthday`, `city`, `email`, `firstname`," +
-                    " `lastname`, `phonenumber`, `username`, `zip` FROM `account` WHERE `username` = Sembrik");
-            rs.next();
-            String accountAddress = rs.getString("address");
-            String accountBirthday = rs.getString("birthday");
-            String accountCity = rs.getString("city");
-            String accountFirstname = rs.getString("firstname");
-            String accountLastname = rs.getString("lastname");
-            String accountPhonenumber = rs.getString("phonenumber");
-            String accountZip = rs.getString("zip");
-            String accountUserName = rs.getString("username");
 
-            conn.close();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 }
