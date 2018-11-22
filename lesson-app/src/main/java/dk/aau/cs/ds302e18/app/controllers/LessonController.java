@@ -50,18 +50,6 @@ public class LessonController
     }
 
 
-    @GetMapping(value = "/login")
-    public String getLoginPage(Model model)
-    {
-        return "login";
-    }
-
-    @GetMapping(value = "/register")
-    public String getRegisterPage()
-    {
-        return "register-account";
-    }
-
     @GetMapping(value = "/canvas/{id}")
     public String getCanvasPage(HttpSession session, @PathVariable long id)
     {
@@ -85,17 +73,6 @@ public class LessonController
 
         return "canvas";
     }
-
-    @PostMapping(value = "/register")
-    public String getRegisterPage(@ModelAttribute Student student)
-    {
-        System.out.println(student.toString());
-        new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
-                student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
-                student.getZipCode(), student.getCity());
-        return "login";
-    }
-
     @GetMapping(value = "/logout-success")
     public String getLogoutPage(Model model)
     {
