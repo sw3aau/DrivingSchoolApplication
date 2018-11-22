@@ -159,4 +159,15 @@ public class LessonController
     {
         return "gdpr";
     }
+
+    @GetMapping(value = "/deletelesson/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ModelAndView deleteLesson(Model model, @PathVariable long id)
+    {
+        Lesson lesson = this.lessonService.getLesson(id);
+        model.addAttribute("dlesson", lesson);
+        this.lessonService.deleteLesson(id);
+        return new ModelAndView("redirect:/lessons/");
+    }
+
 }
