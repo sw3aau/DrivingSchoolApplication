@@ -118,9 +118,11 @@ public class LessonController
     public String getAddLessonForm(Model model)
     {
         ArrayList<Account> userAccounts = findAccountsOfType("USER");
-
         model.addAttribute("userAccountlist", userAccounts);
-        userAccounts.get(0).getFirstName();
+
+        ArrayList<Account> instrutorAccounts = findAccountsOfType("ADMIN");
+        model.addAttribute("instructorAccountList", instrutorAccounts);
+
         return "lesson-view";
     }
 
@@ -199,4 +201,6 @@ public class LessonController
         }
         return studentAccounts;
     }
+
+
 }

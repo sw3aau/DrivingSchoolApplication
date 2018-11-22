@@ -12,7 +12,7 @@
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <h3>Lesson View</h3>
+        <h3>Lesson Manager</h3>
         <form method="post" action="#" th:action="${lesson != null} ? '/lessons/'+${lesson.id} : '/lessons'" th:object="${lessonModel}">
             <div class="form-row">
                 <div class="col">
@@ -24,7 +24,7 @@
                 </div>
                 <div class="col">
                     <h2>Student List</h2>
-                    <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Seperated by comma (username1, username2)" th:value="${lesson != null} ? ${lesson.studentList}"/>
+                    <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Seperated by comma (username1,username2)" th:value="${lesson != null} ? ${lesson.studentList}"/>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Search Students</button>
                     <!--input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/-->
                 </div>
@@ -58,15 +58,21 @@
             <div class="form-row">
                 <div class="col">
                     <h2>Instructor</h2>
-                    <input th:id="lessonInstructor" th:name="lessonInstructor" type="text" class="form-control" placeholder="Instructor" th:value="${lesson != null} ? ${lesson.lessonInstructor}"/>
+                    <select th:name="lessonInstructor">
+                        <option th:each="instructorAccount : ${instructorAccountList}" th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}" th:value="${instructorAccount.username}"></option>
+                    </select>
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="col">
                     <h2>Location</h2>
-                    <input th:id="lessonLocation" th:name="lessonLocation" type="text" class="form-control" placeholder="Location" th:value="${lesson != null} ? ${lesson.lessonLocation}"/>
+                    <select class="form-control" id="lessonLocation" name="lessonLocation">
+                        <option value="Selma Lager Løfsvej 300" selected="selected">Selma Lager Løfsvej 300</option>
+                        <option value="Strandvejen 12">Strandvejen 12</option>
+                        <option value="Rendsburggade 14">Rendsburggade 14</option>
+                        <option value="Other Location">Other Location</option>
+                    </select>
                 </div>
             </div>
+
             <div class="form-row">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
@@ -100,9 +106,6 @@
                         </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Done</button>
                 </div>
             </div>
         </div>
