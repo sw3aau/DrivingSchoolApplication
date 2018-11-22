@@ -16,16 +16,21 @@
         <form method="post" action="#" th:action="${lesson != null} ? '/lessons/'+${lesson.id} : '/lessons'" th:object="${lessonModel}">
             <div class="form-row">
                 <div class="col">
-                    <input th:id="lessonType" th:name="lessonType" type="text" class="form-control" placeholder="Lesson Type" th:value="${lesson != null} ? ${lesson.lessonType}"/>
+                    <h2>Lesson Type</h2>
+                    <select id="lessonType" name="lessonType">
+                        <option value="THEORY_LESSON" selected="selected">Theory Lesson</option>
+                        <option value="PRACTICAL_LESSON">Practical Lesson</option>
+                    </select>
                 </div>
                 <div class="col">
+                    <h2>Student List</h2>
                     <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/>
 
 
                     <!--input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/-->
                 </div>
             </div>
-
+            <h2>Date</h2></br>
             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                 <input th:id="lessonDate" th:name="lessonDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
@@ -49,15 +54,17 @@
                 });
 
             </script>
-			
-			
+
+
             <div class="form-row">
                 <div class="col">
+                    <h2>Instructor</h2>
                     <input th:id="lessonInstructor" th:name="lessonInstructor" type="text" class="form-control" placeholder="Instructor" th:value="${lesson != null} ? ${lesson.lessonInstructor}"/>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col">
+                    <h2>Location</h2>
                     <input th:id="lessonLocation" th:name="lessonLocation" type="text" class="form-control" placeholder="Location" th:value="${lesson != null} ? ${lesson.lessonLocation}"/>
                 </div>
             </div>
