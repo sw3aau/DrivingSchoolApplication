@@ -3,8 +3,17 @@ package dk.aau.cs.ds302e18.service.models;
 public class CourseModel {
 
     private String studentUsernames;
+    private String instructorUsername;
     private String studentToDelete;
     private long courseTableID;
+
+    public String getInstructorUsername() {
+        return instructorUsername;
+    }
+
+    public void setInstructorUsername(String instructorUsername) {
+        this.instructorUsername = instructorUsername;
+    }
 
     public String getStudentUsernames() {
         return studentUsernames;
@@ -33,6 +42,7 @@ public class CourseModel {
     public Course translateModelToCourse(){
         Course course = new Course();
         course.setStudentUsernames(this.studentUsernames);
+        course.setInstructorUsername(this.instructorUsername);
         return course;
     }
 }

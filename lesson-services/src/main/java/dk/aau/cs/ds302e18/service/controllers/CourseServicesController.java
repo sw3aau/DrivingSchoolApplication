@@ -65,15 +65,6 @@ public class CourseServicesController
         return ResponseEntity.created(location).body(course);
     }
 
-    @PostMapping(value = "/removeStudent")
-    public ResponseEntity<Course> removeStudentFromCourse(@RequestBody CourseModel courseModel){
-        String usernamesWithoutStudent = courseModel.getStudentUsernames().replace(courseModel.getStudentToDelete() + ",", "");
-        Optional<Course> courseToBeChanged = courseRepository.findById(courseModel.getCourseTableID());
-        //Kom her til
-        Course course = this.courseRepository.save(courseModel.translateModelToCourse());
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getCourseTableID()).toUri();
-        return ResponseEntity.created(location).body(course);
-    }
 
 
 

@@ -14,6 +14,9 @@ public class Course
     @Column(name="STUDENT_USERNAMES")
     private String studentUsernames;
 
+    @Column(name="INSTRUCTOR_USERNAME")
+    private String instructorUsername;
+
     public Course() {
         super();
     }
@@ -32,5 +35,13 @@ public class Course
 
     public void setStudentUsernames(String studentUsernames) {
         this.studentUsernames = studentUsernames;
+    }
+
+    public String getInstructorUsername() {
+        return instructorUsername;
+    }
+
+    public void setInstructorUsername(String instructorUsername) {
+        this.instructorUsername = instructorUsername;
     }
 }

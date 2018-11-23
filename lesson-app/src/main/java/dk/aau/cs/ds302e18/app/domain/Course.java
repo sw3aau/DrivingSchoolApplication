@@ -7,6 +7,7 @@ import java.util.List;
 public class Course {
     private long courseTableID;
     private String studentUsernames;
+    private String instructorUsername;
 
     private Date startDate;
     private ArrayList<Integer> weekdays;
@@ -17,7 +18,24 @@ public class Course {
     private String instructorName;
     private int lessonType;
     private List<String> StudentNameList;
-    private String studentNamesString;
+    private String studentFullNames;
+    private String instructorFullName;
+
+    public String getInstructorFullName() {
+        return instructorFullName;
+    }
+
+    public void setInstructorFullName(String instructorFullName) {
+        this.instructorFullName = instructorFullName;
+    }
+
+    public String getInstructorUsername() {
+        return instructorUsername;
+    }
+
+    public void setInstructorUsername(String instructorUsername) {
+        this.instructorUsername = instructorUsername;
+    }
 
     public long getCourseTableID() {
         return courseTableID;
@@ -108,11 +126,11 @@ public class Course {
     }
 
     public String getStudentNamesString() {
-        return studentNamesString;
+        return studentFullNames;
     }
 
     public void setStudentNamesString(String studentNamesString) {
-        this.studentNamesString = studentNamesString;
+        this.studentFullNames = studentNamesString;
     }
 
     public Course translateModelToCourse(){

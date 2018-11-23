@@ -1,14 +1,12 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 
+import dk.aau.cs.ds302e18.app.SortByCourseID;
 import dk.aau.cs.ds302e18.app.auth.Account;
 import dk.aau.cs.ds302e18.app.auth.AccountRespository;
 import dk.aau.cs.ds302e18.app.auth.AuthGroup;
 import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
-import dk.aau.cs.ds302e18.app.domain.Course;
-import dk.aau.cs.ds302e18.app.domain.CourseModel;
-import dk.aau.cs.ds302e18.app.domain.LessonModel;
-import dk.aau.cs.ds302e18.app.domain.LessonType;
+import dk.aau.cs.ds302e18.app.domain.*;
 import dk.aau.cs.ds302e18.app.service.CourseService;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.http.HttpStatus;
@@ -44,9 +42,14 @@ public class CourseController {
     public String getCourses(Model model)
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
-        ArrayList<Account> studentAccounts = findAccountsOfType("USER");
+        setStudentsFullName(courses);
+        setInstructorFullName(courses);
+        courses.sort(new SortByCourseID());
 
-        setFullNamesFromUsernamesString(courses);
+        ArrayList<Account> studentAccounts = findAccountsOfType("USER");
+        ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
+
+        model.addAttribute("instructorAccounts", instructorAccounts);
         model.addAttribute("studentAccounts", studentAccounts);
         model.addAttribute("courses", courses);
         return "courses-view";
@@ -56,7 +59,7 @@ public class CourseController {
     @PostMapping(value = "/course/addCourse")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
-        System.out.println(courseModel.toString());
+        System.out.println( courseModel.getInstructorUsername());
         courseService.addCourse(courseModel);
         return new ModelAndView("redirect:/course/courseAddLessons");
     }
@@ -68,7 +71,7 @@ public class CourseController {
     public String getCourseAddLessonsForm(Model model)
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
-        setFullNamesFromUsernamesString(courses);
+        setStudentsFullName(courses);
         ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
 
         model.addAttribute("instructorAccounts", instructorAccounts);
@@ -104,7 +107,19 @@ public class CourseController {
 
     @GetMapping(value = "/course/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteCourse(@PathVariable long id){
+    public ModelAndView deleteCourse(@PathVariable long id, @ModelAttribute CourseModel courseModel){
+        if(courseModel.isDeleteAssociatedLessons()) {
+            List<Lesson> allLessons = lessonService.getAllLessons();
+            ArrayList<Lesson> lessonsInCourse = new ArrayList<>();
+            for (Lesson lesson : allLessons) {
+                if (lesson.getCourseId() == id) {
+                    lessonsInCourse.add(lesson);
+                }
+            }
+            for (Lesson lesson : lessonsInCourse) {
+                lessonService.deleteLesson(lesson.getId());
+            }
+        }
         courseService.deleteCourse(id);
         return new ModelAndView("redirect:/course/");
     }
@@ -128,29 +143,74 @@ public class CourseController {
 
 
 
-/*
+
     @GetMapping(value = "/course/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getCourse(Model model, @PathVariable long id)
     {
         Course course = this.courseService.getCourse(id);
-        ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
-        model.addAttribute("instructorAccounts", instructorAccounts);
+        List<Lesson> lessons = lessonService.getAllLessons();
+        ArrayList<Lesson> lessonsMatchingCourse = new ArrayList<>();
+        for(Lesson lesson: lessons){
+            if(lesson.getCourseId() == id)
+                lessonsMatchingCourse.add(lesson);
+        }
+
+        ArrayList<Account> studentAccounts = findAccountsOfType("USER");
+        ArrayList<Account> studentsBelongingToCourse = findAccountTypeBelongingToCourse(course, "USER");
+        /* Finds all user accounts and adds those that belongs to the course in a separate arrayList */
         model.addAttribute("course", course);
+        model.addAttribute("studentAccounts", studentAccounts);
+        model.addAttribute("lessonsMatchingCourse", lessonsMatchingCourse);
+        model.addAttribute("studentAccountsBelongingToCourse", studentsBelongingToCourse);
+
         return "course-view";
     }
-*/
-/*
-    @PostMapping(value = "/course/{id}")
+
+
+    private ArrayList<Account> findAccountTypeBelongingToCourse(Course course, String accountType){
+        ArrayList<Account> studentAccounts = findAccountsOfType(accountType);
+        ArrayList<String> studentsInCourseAsStringArray = saveUsernameStringAsList(course.getStudentUsernames());
+        ArrayList<Account> studentsBelongingToCourse = new ArrayList<>();
+        for(Account studentAccount: studentAccounts){
+            if(studentsInCourseAsStringArray.contains(studentAccount.getUsername()))
+                studentsBelongingToCourse.add(studentAccount);
+        }
+        return studentsBelongingToCourse;
+    }
+
+    @PostMapping(value = "/course/addStudent/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String updateCourse(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    public String addStudent(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
     {
-        Course course = this.courseService.updateCourse(id, courseModel);
-        model.addAttribute("course", course);
-        model.addAttribute("courseModel", new CourseModel());
+        Course course = courseService.getCourse(id);
+        /* Finds the current list of students */
+        String studentUsernames = course.getStudentUsernames();
+        /* Adds the new student */
+        studentUsernames += "," + courseModel.getStudentToUpdate();
+        courseModel.setStudentUsernames(studentUsernames);
+
+        courseService.updateCourse(id, courseModel);
+
+        return "index.html";
+    }
+
+    @PostMapping(value = "/course/removeStudent/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String removeStudent(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    {
+        Course course = courseService.getCourse(id);
+        /* Finds the current list of students */
+        String studentUsernames = course.getStudentUsernames();
+        /* Removes the targeted student */
+        String studentUsernamesWithoutRemovedStudent = studentUsernames.replace("," + courseModel.getStudentToUpdate(), "");
+        System.out.println(studentUsernamesWithoutRemovedStudent);
+        courseModel.setStudentUsernames(studentUsernamesWithoutRemovedStudent);
+
+        courseService.updateCourse(id, courseModel);
         return "course-view";
     }
-*/
+
     public ArrayList<Date> createLessonDates(Date startDate, ArrayList<Integer> weekdays, int numberLessonsToDistribute,
                                              int numberLessonsADay) {
         ArrayList<Date> lessonDates = new ArrayList<>();
@@ -174,13 +234,11 @@ public class CourseController {
                  * is added if the necessary lessons have been distributed. */
                 for (int g = 0; g < numberLessonsADay; g++) {
                     if (numberLessonsToDistribute > 0) {
-                        System.out.println(g);
                         lessonDates.add(new Date(currentDayDate.getTime() + lessonDurationMilliseconds * g));
                         numberLessonsToDistribute--;
                     }
                 }
             }
-            //System.out.println(dayCount);
             dayCount += 1;
         }
         return lessonDates;
@@ -218,11 +276,12 @@ public class CourseController {
         return studentAccounts;
     }
 
-    private void setFullNamesFromUsernamesString(List<Course> courseList){
+    private void setStudentsFullName(List<Course> courseList){
         /*  Every student username list in account is separated and added to an String array. Then the
          *  username is used to fetch the full name of the student belonging to the username. */
         for(Course course: courseList){
             ArrayList<String> fullNames = new ArrayList<>();
+            /* Saves the username in the string as an String array */
             ArrayList<String> listOfUsernames = saveUsernameStringAsList(course.getStudentUsernames());
             for(String username: listOfUsernames){
                 String firstName = accountRespository.findByUsername(username).getFirstName();
@@ -230,12 +289,23 @@ public class CourseController {
                 String fullName = firstName + " " + lastName;
                 fullNames.add(" " + fullName);
             }
+            /* Saves the arrayList as an single string */
             String studentFullNames = saveStringListAsSingleString(fullNames);
             /* The way saveStringListAsSingleString formats the list to an string is with an comma at the end of each
                object. The last of the commas is removed for appearance sake. */
             String studentFullNamesWithoutEndingComma = studentFullNames.substring(0, studentFullNames.length()-1);
 
             course.setStudentNamesString(studentFullNamesWithoutEndingComma);
+        }
+    }
+
+    private void setInstructorFullName(List<Course> courseList){
+        /*  Finds and sets the full name for every instructor in a courseList */
+        for(Course course: courseList){
+            String firstName = accountRespository.findByUsername(course.getInstructorUsername()).getFirstName();
+            String lastName = accountRespository.findByUsername(course.getInstructorUsername()).getLastName();
+            String fullName = firstName + " " + lastName;
+            course.setInstructorFullName(fullName);
         }
     }
 }

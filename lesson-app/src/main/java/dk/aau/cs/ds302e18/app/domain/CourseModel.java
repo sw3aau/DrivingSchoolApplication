@@ -19,6 +19,8 @@ public class CourseModel {
     private String instructorUsername;
     private boolean isSigned;
     private ArrayList<String> StudentNameList;
+    private boolean deleteAssociatedLessons;
+    private String studentToUpdate;
 
     public String getStudentUsernames() {
         return studentUsernames;
@@ -116,8 +118,25 @@ public class CourseModel {
         StudentNameList = studentNameList;
     }
 
+    public boolean isDeleteAssociatedLessons() {
+        return deleteAssociatedLessons;
+    }
+
+    public void setDeleteAssociatedLessons(boolean deleteAssociatedLessons) {
+        this.deleteAssociatedLessons = deleteAssociatedLessons;
+    }
+
+    public String getStudentToUpdate() {
+        return studentToUpdate;
+    }
+
+    public void setStudentToUpdate(String studentToUpdate) {
+        this.studentToUpdate = studentToUpdate;
+    }
+
     public Course translateModelToCourse(){
         Course course = new Course();
+        course.setInstructorUsername(this.instructorUsername);
         course.setStudentUsernames(this.studentUsernames);
         return course;
     }

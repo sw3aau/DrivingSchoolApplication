@@ -54,5 +54,10 @@ public class LessonService
         return this.restTemplate.exchange(url, HttpMethod.PUT, request, Lesson.class).getBody();
     }
 
-
+    public Lesson deleteLesson(long id)
+    {
+        String url = lessonServiceUrl + LESSONS + SLASH + id;
+        HttpEntity<String> request = new HttpEntity<>(null, null);
+        return this.restTemplate.exchange(url, HttpMethod.DELETE, request, Lesson.class).getBody();
+    }
 }

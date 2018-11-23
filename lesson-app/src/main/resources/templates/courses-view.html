@@ -60,20 +60,12 @@
                 <table id="table" class="table table-sm">
                     <thead>
                     <th scope="col">#Course</th>
-                    <th scope="col">List of students</th>
-                    <th scope="col">Option</th>
+                    <th scope="col">Created by instructors</th>
                     </thead>
                     <tbody>
                     <tr th:each="course : ${courses}">
                         <th scope="row"><a th:href="@{'/course/' + ${course.courseTableID}}" th:text="${course.courseTableID}"></a></th>
-                        <td th:text="${course.studentNamesString}"></td>
-                        <td>
-                            <form method="get" th:action="@{'/course/delete/' + ${course.courseTableID}}" th:object="${courseModel}">
-                                <input type="hidden" name="deleteCourse" id="deleteCourse"
-                                       th:value="${course.courseTableID}"/>
-                                <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
+                        <td th:text="${course.instructorFullName}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -83,6 +75,13 @@
             <div class="right">
                 <form method="post" action="#" th:action="'/course/addCourse'" th:object="${courseModel}">
                     <h4>Add new course</h4>
+                    <h6>Instructors</h6>
+                    <div class="container">
+                        <select th:name="instructorUsername">
+                            <option th:each="instructorAccount : ${instructorAccounts}" th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}" th:value="${instructorAccount.username}"></option>
+                        </select>
+                    </div>
+                    <h6>Students</h6>
                     <div class="container">
                         <label th:each="studentAccount : ${studentAccounts}" class="checkbox-inline">
                             <!-- An checkbox is generated for each student account, and the username of the student account of the checkbox is send
@@ -96,21 +95,6 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
-                <!-- Simple delete button for testing purposes -->
-                <!--form method="post" action="#" th:action="'/course/deleteCourse'" th:object="${courseModel}">
-                    <div class="form-row">
-                        <div class="col">
-                            <input th:id="id" th:name="id" type="text" class="form-control"
-                                   placeholder="Course to be deleted"
-                                   th:value="${course != null} ? ${course.id}"/>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form-->
-
-
                 </tr>
             </div>
         </div>
