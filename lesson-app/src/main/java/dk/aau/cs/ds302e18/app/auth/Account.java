@@ -15,11 +15,11 @@ public class Account
     private long id;
     @Column(name="USERNAME")
     private String username;
-    @Column(name = "FIRSTNAME", nullable = false)
+    @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
-    @Column(name = "LASTNAME", nullable = false)
+    @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
-    @Column(name = "PHONENUMBER", nullable = false, unique = true)
+    @Column(name = "PHONE_NUMBER", nullable = false, unique = true)
     private String phoneNumber;
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
