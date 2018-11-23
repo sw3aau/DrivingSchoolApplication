@@ -20,7 +20,7 @@ public class User {
     private String username;
     @Column(name="PASSWORD")
     private String password;
-    @Column(name = "ISACITVE", nullable = false)
+    @Column(name = "IS_ACTIVE", nullable = false)
     private boolean isActive;
 
 

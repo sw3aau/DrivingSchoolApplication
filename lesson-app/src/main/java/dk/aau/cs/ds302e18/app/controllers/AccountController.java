@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,9 +145,15 @@ public class AccountController
     public String getRegisterPage(@ModelAttribute Student student)
     {
         System.out.println(student.toString());
-        new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
-                student.getPhonenumber(), student.getEmail(), student.getBirthdate(), student.getAddress(),
-                student.getZipCode(), student.getCity());
+        try
+        {
+            new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
+                    student.getPhonenumber(), student.getEmail(), student.getBirthDay(), student.getAddress(),
+                    student.getZipCode(), student.getCity());
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
         return "login";
     }
 

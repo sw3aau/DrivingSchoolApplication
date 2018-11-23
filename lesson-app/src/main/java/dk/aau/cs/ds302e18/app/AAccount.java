@@ -9,19 +9,19 @@ public abstract class AAccount {
     private String lastName;
     private String phonenumber;
     private String email;
-    private String birthdate;
+    private String birthDay;
     private String address;
     private String zipCode;
     private String city;
     private String username;
     private String password;
 
-    public AAccount(String firstName, String lastName, String phonenumber, String email, String birthdate, String address, String zipCode, String city, String username) {
+    public AAccount(String firstName, String lastName, String phonenumber, String email, String birthDay, String address, String zipCode, String city, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phonenumber = phonenumber;
         this.email = email;
-        this.birthdate = birthdate;
+        this.birthDay = birthDay;
         this.address = address;
         this.zipCode = zipCode;
         this.city = city;
@@ -48,8 +48,8 @@ public abstract class AAccount {
         return email;
     }
 
-    public String getBirthdate() {
-        return birthdate;
+    public String getBirthDay() {
+        return birthDay;
     }
 
     public String getAddress() {
@@ -89,7 +89,7 @@ public abstract class AAccount {
     }
 
     public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
+        this.birthDay = birthdate;
     }
 
     public void setAddress(String address) {
@@ -120,7 +120,7 @@ public abstract class AAccount {
                 ", lastName='" + lastName + '\'' +
                 ", phonenumber=" + phonenumber +
                 ", email='" + email + '\'' +
-                ", birthdate='" + birthdate + '\'' +
+                ", birthdate='" + birthDay + '\'' +
                 ", address='" + address + '\'' +
                 ", zipCode=" + zipCode +
                 ", city='" + city + '\'' +
@@ -131,7 +131,7 @@ public abstract class AAccount {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userID, firstName, lastName, phonenumber, email, birthdate, address, zipCode, city, username, password);
+        return Objects.hash(userID, firstName, lastName, phonenumber, email, birthDay, address, zipCode, city, username, password);
     }
 }
 

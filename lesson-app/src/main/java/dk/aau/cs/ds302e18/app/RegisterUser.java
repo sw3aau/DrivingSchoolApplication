@@ -2,14 +2,14 @@ package dk.aau.cs.ds302e18.app;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RegisterUser
 {
+    Connection conn = null;
+
     private String username;
     private String password;
     private String firstName;
@@ -22,7 +22,7 @@ public class RegisterUser
     private String city;
 
     public RegisterUser(String username, String password, String firstName, String lastName, String phoneNumber,
-                        String email, String birthday, String address, String zipCode, String city)
+                        String email, String birthday, String address, String zipCode, String city) throws SQLException
     {
         this.username = username;
         this.password = password;
@@ -40,29 +40,73 @@ public class RegisterUser
         String mysqlUsername = reader.getString("spring.datasource.username");
         String mysqlPassword = reader.getString("spring.datasource.password");
 
-        int accountId = ThreadLocalRandom.current().nextInt(100,100000000);
-
         try
         {
             // create a mysql database connection
             String myDriver = "org.gjt.mm.mysql.Driver";
             Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(mysqlUrl, mysqlUsername, mysqlPassword);
+            conn = DriverManager.getConnection(mysqlUrl, mysqlUsername, mysqlPassword);
 
             Statement st = conn.createStatement();
 
+            // TODO: "re-type password" in the register account template does nothing
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
 
+            conn.setAutoCommit(false);
+
+            String insertAccountSQL = "INSERT INTO account"
+                    + "(address, birthday, city, email, first_name, last_name, phone_number, username, zip) VALUES"
+                    + "(?,?,?,?,?,?,?,?,?)";
+
+
+            String insertUserSQL = "INSERT INTO user"
+                    + "(is_active, username, password) VALUES"
+                    + "(?,?,?)";
+
+            String insertAuthUserGroupSQL = "INSERT INTO auth_user_group"
+                    + "(auth_group, username) VALUES"
+                    + "(?,?)";
+
+            PreparedStatement preparedStatementInsert = conn.prepareStatement(insertUserSQL);
+            preparedStatementInsert.setInt(1, 1);
+            preparedStatementInsert.setString(2, username);
+            preparedStatementInsert.setString(3, passwordEncoder.encode(password));
+            preparedStatementInsert.executeUpdate();
+
+            preparedStatementInsert = conn.prepareStatement(insertAccountSQL);
+            preparedStatementInsert.setString(1, address);
+            preparedStatementInsert.setString(2, birthday);
+            preparedStatementInsert.setString(3, city);
+            preparedStatementInsert.setString(4, email);
+            preparedStatementInsert.setString(5, firstName);
+            preparedStatementInsert.setString(6, lastName);
+            preparedStatementInsert.setString(7, phoneNumber);
+            preparedStatementInsert.setString(8, username);
+            preparedStatementInsert.setString(9, zipCode);
+            preparedStatementInsert.executeUpdate();
+
+            preparedStatementInsert = conn.prepareStatement(insertAuthUserGroupSQL);
+            preparedStatementInsert.setString(1, "ADMIN");
+            preparedStatementInsert.setString(2, username);
+            preparedStatementInsert.executeUpdate();
+
+            conn.commit();
+
             // note that i'm leaving "date_created" out of this insert statement
-            st.executeUpdate("INSERT INTO user (user_id, isacitve, username, password) "
-                    +"VALUES ('"+accountId+"', 1,'"+username+"','"+passwordEncoder.encode(password)+"')");
-            st.executeUpdate("INSERT INTO account (auth_user_account_id, address, birthday, city, email, firstname," +
+            /*st.executeUpdate("INSERT INTO user (isacitve, username, password) "
+                    +"VALUES (1,'"+username+"','"+passwordEncoder.encode(password)+"')");
+            st.executeUpdate("INSERT INTO account (address, birthday, city, email, firstname," +
                     " lastname, phonenumber, username, zip)"
-                    +"VALUES ('"+accountId+"', '"+address+"','"+birthday+"','"+city+"','"+email+"','"+firstName+"','"+lastName+"','"+phoneNumber+"','"+username+"','"+zipCode+"')");
-            st.executeUpdate("INSERT INTO auth_user_group (auth_user_group_id, auth_group, username) "
-                    +"VALUES ('"+accountId+"', 'ADMIN','"+username+"')");
+                    +"VALUES (address+','"+birthday+"','"+city+"','"+email+"','"+firstName+"','"+lastName+"','"+phoneNumber+"','"+username+"','"+zipCode+"')");
+            st.executeUpdate("INSERT INTO auth_user_group (auth_group, username) "
+                    +"VALUES ('ADMIN','"+username+"')");*/
 
             conn.close();
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getMessage());
+            conn.rollback();
         }
         catch (Exception e)
         {
