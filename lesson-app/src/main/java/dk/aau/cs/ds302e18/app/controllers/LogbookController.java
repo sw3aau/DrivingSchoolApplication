@@ -28,9 +28,14 @@ public class LogbookController {
         this.logbookService = logbookService;
     }
 
+    /**
+     * Retrieves all logbooks and selects the student's logbooks and models them for the html site
+     * @param model
+     * @return
+     */
     @GetMapping(value = {"/logbook/student"})
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getStudentLogbooks(Model model) {
+    public String getAllStudentLogbooks(Model model) {
         List<Logbook> logbookList = this.logbookService.getAllLogbooks();
         List<Logbook> studentLogbookList = new ArrayList<>();
 
@@ -50,6 +55,7 @@ public class LogbookController {
         return "logbook-student";
     }
 
+    
     @GetMapping(value = {"/logbook/instructor"})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getInstructorLogbookLessons(Model model) {
@@ -72,9 +78,15 @@ public class LogbookController {
         return "logbook-instructor";
     }
 
+    /**
+     * Retrieves details about a student's specific logbook and models it for the html site
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/logbook/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getLogbookSite(Model model, @PathVariable long id) {
+    public String getStudentLogbook(Model model, @PathVariable long id) {
         Logbook logbook = this.logbookService.getLogbook(id);
         System.out.println("loading logbooksite");
         List<Lesson> logbookLessonList = new ArrayList<>();
