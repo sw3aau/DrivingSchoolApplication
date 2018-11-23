@@ -27,6 +27,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
+
 @Controller
 @RequestMapping("/")
 public class LessonController
@@ -103,7 +105,6 @@ public class LessonController
                     studentLessons.add(lesson);
                 }
             }
-
         }
 
         model.addAttribute("lessons", lessons);
@@ -198,6 +199,22 @@ public class LessonController
             studentAccounts.add(accountRespository.findByUsername(studentAuth.getUsername()));
         }
         return studentAccounts;
+    }
+
+    @ModelAttribute("gravatar")
+    public String gravatar() {
+
+        //Models Gravatar
+        System.out.println(accountRespository.findByUsername(getAccountUsername()).getEmail());
+        String gravatar = ("http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail()));
+        return (gravatar);
+    }
+
+    public String getAccountUsername()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        return username;
     }
 
 
