@@ -36,6 +36,12 @@ public class AccountController
         this.accountRespository = accountRespository;
     }
 
+    @GetMapping(value = "/logout-success")
+    public String getLogoutPage(Model model)
+    {
+        return "logout";
+    }
+
 //public AccountController() {this.conn = new DBConnector().createConnectionObject();}
 
     @RequestMapping(value = "/account/exportCalendar", method = RequestMethod.GET)

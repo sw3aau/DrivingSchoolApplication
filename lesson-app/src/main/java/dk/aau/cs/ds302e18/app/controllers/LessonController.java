@@ -75,11 +75,6 @@ public class LessonController
 
         return "canvas";
     }
-    @GetMapping(value = "/logout-success")
-    public String getLogoutPage(Model model)
-    {
-        return "logout";
-    }
 
     @GetMapping(value = "/lessons")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
