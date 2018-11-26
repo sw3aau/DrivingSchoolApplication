@@ -22,6 +22,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
+
 /**
  * Controller responsible for handling actions towards the account
  */
@@ -34,12 +36,6 @@ public class AccountController
 
     public AccountController(AccountRespository accountRespository) {
         this.accountRespository = accountRespository;
-    }
-
-    @GetMapping(value = "/logout-success")
-    public String getLogoutPage(Model model)
-    {
-        return "logout";
     }
 
     @GetMapping(value = "/manage")
@@ -149,34 +145,14 @@ public class AccountController
         return "modify-account";
     }
 
-    @GetMapping(value = "/register")
-    public String getRegisterPage()
-    {
-        return "register-account";
-    }
+    @ModelAttribute("gravatar")
+    public String gravatar() {
 
-    @PostMapping(value = "/register")
-    public String getRegisterPage(@ModelAttribute Student student)
-    {
-        System.out.println(student.toString());
-        try
-        {
-            new RegisterUser(student.getUsername(), student.getPassword(), student.getFirstName(), student.getLastName(),
-                    student.getPhonenumber(), student.getEmail(), student.getBirthDay(), student.getAddress(),
-                    student.getZipCode(), student.getCity());
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return "login";
+        //Models Gravatar
+        System.out.println(accountRespository.findByUsername(getAccountUsername()).getEmail());
+        String gravatar = ("http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail()));
+        return (gravatar);
     }
-
-    @GetMapping(value = "/login")
-    public String getLoginPage(Model model)
-    {
-        return "login";
-    }
-
 
     public String getAccountUsername()
     {
@@ -184,6 +160,5 @@ public class AccountController
         String username = ((UserDetails) principal).getUsername();
         return username;
     }
-
 
 }
