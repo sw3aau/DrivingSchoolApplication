@@ -8,26 +8,26 @@
 <div layout:fragment="content">
     <div class="container main-content">
         <h3>Store View</h3>
-        <form method="post" action="#" th:action="${store != null} ? '/storeadmin/'+${store.courseTableID} : '/storeadmin'" th:object="${storeModel}">
+        <form method="post" action="#" th:action="${store != null} ? '/storeadmin/'+${store.id} : '/storeadmin'" th:object="${storeModel}">
 
             <div class="form-row">
                 <div class="col">
                     <h2>Course ID</h2>
-                    <input th:courseTableID="courseTableID" th:name="courseTableID" type="text" class="form-control" placeholder="courseTableID" th:value="${store != null} ? ${store.courseTableID}"/>
+                    <input th:id="courseId" th:name="courseId" type="text" class="form-control" placeholder="courseId" th:value="${store != null} ? ${store.courseId}"/>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="col">
                     <h2>Student Username</h2>
-                    <input th:courseTableID="studentUsername" th:name="studentUsername" type="text" class="form-control" placeholder="Student Username" th:value="${store != null} ? ${store.studentUsername}"/>
+                    <input th:id="studentUsername" th:name="studentUsername" type="text" class="form-control" placeholder="Student Username" th:value="${store != null} ? ${store.studentUsername}"/>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="col">
                     <h2>Lesson State (Pending/Approved/Declined)</h2>
-                    <input th:courseTableID="state" th:name="state" type="text" class="form-control" placeholder="State" th:value="${store != null} ? ${store.state}"/>
+                    <input th:id="state" th:name="state" type="text" class="form-control" placeholder="State" th:value="${store != null} ? ${store.state}"/>
                 </div>
             </div>
 

@@ -152,6 +152,4 @@ public class IndexController {
         String username = ((UserDetails) principal).getUsername();
         return username;
     }
-
-
 }

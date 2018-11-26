@@ -7,136 +7,135 @@
 </head>
 <body>
 
-    <div layout:fragment="content" align="center">
-        <div class="container main-content" align="center">
+<div layout:fragment="content" align="center">
+    <div class="container main-content" align="center">
 
-            <div class="col-lg-10">
+        <div class="col-lg-10">
 
-                <div class="row">
+            <div class="row">
 
-                    <div class="col-lg-4 col-md-6 mb-4 column">
-                        <div class="card h-100 ">
-                            <a href="#"><img class="card-img-top" src="https://s3.eu-west-2.amazonaws.com/p3-project/store/rsz_1adult-automotive-blur-13861.png " alt=""></a>
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="#">Car (B)</a>
-                                </h4>
-                                <h5>$2449</h5>
-                                <br class="card-text">Start Date : 20/11-2018</br>
-                                End Date : 20/12-2018</p>
-                            </div>
-                            <div class="card-footer">
-                                <form th:action="@{/apply}" method="post">
-                                    <input type="hidden" name="courseTableID" courseTableID="courseTableID" th:value="101"/>
-                                    <input type="hidden" name="applyStudentUsername" courseTableID="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
-                                    <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
-                                </form>
-                            </div>
+                <div class="col-lg-4 col-md-6 mb-4 column">
+                    <div class="card h-100 ">
+                        <a href="#"><img class="card-img-top" src="https://s3.eu-west-2.amazonaws.com/p3-project/store/rsz_1adult-automotive-blur-13861.png " alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Car (B)</a>
+                            </h4>
+                            <h5>$2449</h5>
+                            <br class="card-text">Start Date : 20/11-2018</br>
+                            End Date : 20/12-2018</p>
+                        </div>
+                        <div class="card-footer">
+                            <form th:action="@{/apply}" method="post">
+                                <input type="hidden" name="courseId" id="courseId" th:value="101"/>
+                                <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
+                                <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
+                            </form>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 mb-4 column">
-                        <div class="card h-100">
-                            <a href="#"><img class="card-img-top" src="https://s3.eu-west-2.amazonaws.com/p3-project/store/trailer.jpg" alt=""></a>
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="#">Large Trailer Car (BE)</a>
-                                </h4>
-                                <h5>$1994</h5>
-                                <br class="card-text">Start Date : 20/11-2018</br>
-                                End Date : 20/12-2018</p>
-                            </div>
-                            <div class="card-footer">
-                                <form th:action="@{/apply}" method="post">
-                                    <input type="hidden" name="courseTableID" courseTableID="courseTableID" th:value="102"/>
-                                    <input type="hidden" name="applyStudentUsername" courseTableID="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
-                                    <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 mb-4 column">
-                        <div class="card h-100">
-                            <a href="#"><img class="card-img-top" src="https://s3.eu-west-2.amazonaws.com/p3-project/store/bike.jpg" alt=""></a>
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="#">Bike (A)</a>
-                                </h4>
-                                <h5>$1859</h5>
-                                <br class="card-text">Start Date : 20/11-2018</br>
-                                End Date : 20/12-2018</p>
-                            </div>
-                            <div class="card-footer">
-                                <form th:action="@{/apply}" method="post">
-                                    <input type="hidden" name="courseTableID" courseTableID="courseTableID" th:value="103"/>
-                                    <input type="hidden" name="applyStudentUsername" courseTableID="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
-                                    <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 mb-4 column">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="#">Extra Lesson</a>
-                                </h4>
-                                <h5>$24.99</h5>
-                            </div>
-                            <div class="card-footer">
-                                <form th:action="@{/apply}" method="post">
-                                    <input type="hidden" name="courseTableID" courseTableID="courseTableID" th:value="111"/>
-                                    <input type="hidden" name="applyStudentUsername" courseTableID="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
-                                    <button type="submit" name="submit" value="value" class="btn btn-success">Apply for extra lesson!</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 mb-4 column">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="#">Ice Course Track</a>
-                                </h4>
-                                <h5>$50</h5>
-                            </div>
-                            <div class="card-footer">
-                                <form th:action="@{/apply}" method="post">
-                                    <input type="hidden" name="courseTableID" courseTableID="courseTableID" th:value="112"/>
-                                    <input type="hidden" name="applyStudentUsername" courseTableID="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
-                                    <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 mb-4 column">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="#">First Aid</a>
-                                </h4>
-                                <h5>$34.99</h5>
-                            </div>
-                            <div class="card-footer">
-                                <form th:action="@{/apply}" method="post">
-                                    <input type="hidden" name="courseTableID" courseTableID="courseTableID" th:value="113"/>
-                                    <input type="hidden" name="applyStudentUsername" courseTableID="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
-                                    <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-                <!-- /.row -->
+                <div class="col-lg-4 col-md-6 mb-4 column">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="https://s3.eu-west-2.amazonaws.com/p3-project/store/trailer.jpg" alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Large Trailer Car (BE)</a>
+                            </h4>
+                            <h5>$1994</h5>
+                            <br class="card-text">Start Date : 20/11-2018</br>
+                            End Date : 20/12-2018</p>
+                        </div>
+                        <div class="card-footer">
+                            <form th:action="@{/apply}" method="post">
+                                <input type="hidden" name="courseId" id="courseId" th:value="102"/>
+                                <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
+                                <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 column">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="https://s3.eu-west-2.amazonaws.com/p3-project/store/bike.jpg" alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Bike (A)</a>
+                            </h4>
+                            <h5>$1859</h5>
+                            <br class="card-text">Start Date : 20/11-2018</br>
+                            End Date : 20/12-2018</p>
+                        </div>
+                        <div class="card-footer">
+                            <form th:action="@{/apply}" method="post">
+                                <input type="hidden" name="courseId" id="courseId" th:value="103"/>
+                                <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
+                                <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 column">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Extra Lesson</a>
+                            </h4>
+                            <h5>$24.99</h5>
+                        </div>
+                        <div class="card-footer">
+                            <form th:action="@{/apply}" method="post">
+                                <input type="hidden" name="courseId" id="courseId" th:value="111"/>
+                                <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
+                                <button type="submit" name="submit" value="value" class="btn btn-success">Apply for extra lesson!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 column">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">Ice Course Track</a>
+                            </h4>
+                            <h5>$50</h5>
+                        </div>
+                        <div class="card-footer">
+                            <form th:action="@{/apply}" method="post">
+                                <input type="hidden" name="courseId" id="courseId" th:value="112"/>
+                                <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
+                                <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 column">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">First Aid</a>
+                            </h4>
+                            <h5>$34.99</h5>
+                        </div>
+                        <div class="card-footer">
+                            <form th:action="@{/apply}" method="post">
+                                <input type="hidden" name="courseId" id="courseId" th:value="113"/>
+                                <input type="hidden" name="applyStudentUsername" id="applyStudentUsername" th:value="${#authentication.getPrincipal().getUsername()}"/>
+                                <button type="submit" name="submit" value="value" class="btn btn-success">Apply for this Course!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-            <!-- /.col-lg-9 -->
+            <!-- /.row -->
 
-</div>
+        </div>
+        <!-- /.col-lg-9 -->
+
+    </div>
 
 </div>
 </body>
 </html>
-
