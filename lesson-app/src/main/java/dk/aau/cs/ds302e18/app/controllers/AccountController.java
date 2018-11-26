@@ -42,6 +42,12 @@ public class AccountController
         return "logout";
     }
 
+    @GetMapping(value = "/manage")
+    public String getManageAccount(Model model)
+    {
+        return "manage-account";
+    }
+
 //public AccountController() {this.conn = new DBConnector().createConnectionObject();}
 
     @RequestMapping(value = "/account/exportCalendar", method = RequestMethod.GET)

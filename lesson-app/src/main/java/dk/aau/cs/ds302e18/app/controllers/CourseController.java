@@ -313,4 +313,20 @@ public class CourseController {
             course.setInstructorFullName(fullName);
         }
     }
+
+    @ModelAttribute("gravatar")
+    public String gravatar() {
+
+        //Models Gravatar
+        System.out.println(accountRespository.findByUsername(getAccountUsername()).getEmail());
+        String gravatar = ("http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail()));
+        return (gravatar);
+    }
+
+    public String getAccountUsername()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        return username;
+    }
 }
