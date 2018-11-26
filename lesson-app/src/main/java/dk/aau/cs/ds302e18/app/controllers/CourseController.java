@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -184,12 +185,15 @@ public class CourseController {
         return studentsBelongingToCourse;
     }
 
-    @PostMapping(value = "/course/addStudent/{id}")
+    @RequestMapping(value = "/course/addStudent/{id}", method=RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String addStudent(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    public RedirectView addStudent(HttpServletRequest request, Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
     {
         Course course = courseService.getCourse(id);
+        /* Sets the instructor so it doesn't get changed */
+        courseModel.setInstructorUsername(course.getInstructorUsername());
         /* Finds the current list of students */
+        courseModel.setInstructorUsername(course.getInstructorUsername());
         String studentUsernames = course.getStudentUsernames();
         /* Adds the new student */
         studentUsernames += "," + courseModel.getStudentToUpdate();
@@ -197,23 +201,26 @@ public class CourseController {
 
         courseService.updateCourse(id, courseModel);
 
-        return "index.html";
+        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        return new RedirectView("redirect:/course/");
     }
 
-    @PostMapping(value = "/course/removeStudent/{id}")
+    @RequestMapping(value = "/course/removeStudent/{id}", method=RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String removeStudent(Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    public RedirectView removeStudent(HttpServletRequest request, Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
     {
         Course course = courseService.getCourse(id);
+        /* Sets the instructor so it doesn't get changed */
+        courseModel.setInstructorUsername(course.getInstructorUsername());
         /* Finds the current list of students */
         String studentUsernames = course.getStudentUsernames();
         /* Removes the targeted student */
         String studentUsernamesWithoutRemovedStudent = studentUsernames.replace("," + courseModel.getStudentToUpdate(), "");
-        System.out.println(studentUsernamesWithoutRemovedStudent);
         courseModel.setStudentUsernames(studentUsernamesWithoutRemovedStudent);
 
+        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
         courseService.updateCourse(id, courseModel);
-        return "course-view";
+        return new RedirectView("redirect:/course/");
     }
 
     public ArrayList<Date> createLessonDates(Date startDate, ArrayList<Integer> weekdays, int numberLessonsToDistribute,

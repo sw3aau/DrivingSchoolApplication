@@ -11,7 +11,7 @@ public class Course
     @Column(name="COURSE_TABLE_ID")
     private long courseTableID;
 
-    @Column(name="STUDENT_USERNAMES")
+    @Column(name="STUDENT_USERNAMES", nullable = false)
     private String studentUsernames;
 
     @Column(name="INSTRUCTOR_USERNAME")

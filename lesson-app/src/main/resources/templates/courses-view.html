@@ -87,8 +87,7 @@
                             <!-- An checkbox is generated for each student account, and the username of the student account of the checkbox is send
                                  to the courseModel as the studentUsernames variable as implied in th:name. -->
                             <input th:text="${studentAccount.firstName + ' ' + studentAccount.lastName}" type="checkbox" th:name="studentUsernames"
-                                   th:value="${studentAccount.username}">
-                                    <!-- course != null} ? ${course.studentUsernames -->
+                                   th:value="${studentAccount.username}" required="required" data-error="Selecting a student is required.">
                         </label>
                     </div>
                     <div class="form-row">
