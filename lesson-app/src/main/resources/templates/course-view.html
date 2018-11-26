@@ -57,7 +57,7 @@
 
                 <form method="get" th:action="@{'/course/delete/' + ${course.courseTableID}}"
                       th:object="${courseModel}">
-                    <h7 th:text="${'Course: #'+course.courseTableID}"></h7>
+                    <h2 th:text="${'Course: #'+course.courseTableID}"></h2>
                     <input th:text="${'Delete all associated lessons'}" type="checkbox"
                            th:name="deleteAssociatedLessons">
                     <input type="hidden" name="deleteCourse" id="deleteCourse"

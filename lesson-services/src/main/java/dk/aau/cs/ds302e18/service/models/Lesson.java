@@ -13,6 +13,10 @@ public class Lesson
     @Column(name="LESSON_ID")
     private long id;
 
+    @Column(name="COURSE_TYPE")
+    @Enumerated(EnumType.STRING)
+    private CourseType courseType;
+
     @Column(name="LESSON_TYPE")
     @Enumerated(EnumType.STRING)
     private LessonType lessonType;
@@ -34,6 +38,7 @@ public class Lesson
 
     @Column(name="COURSE_ID")
     private int courseId;
+
 
     public Lesson() {
         super();
@@ -117,5 +122,13 @@ public class Lesson
     public void setCourseId(int courseId)
     {
         this.courseId = courseId;
+    }
+
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 }

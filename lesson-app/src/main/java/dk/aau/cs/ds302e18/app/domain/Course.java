@@ -16,6 +16,7 @@ public class Course {
     private ArrayList<String> studentList;
     private String location;
     private String instructorName;
+    private CourseType courseType;
     private int lessonType;
     private List<String> StudentNameList;
     private String studentFullNames;
@@ -117,6 +118,14 @@ public class Course {
         this.lessonType = lessonType;
     }
 
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
+    }
+
     public List<String> getStudentNameList() {
         return StudentNameList;
     }
@@ -135,6 +144,7 @@ public class Course {
 
     public Course translateModelToCourse(){
         Course course = new Course();
+        course.setCourseType(this.courseType);
         course.setStudentUsernames(this.studentUsernames);
         return course;
     }

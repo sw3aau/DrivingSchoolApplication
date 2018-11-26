@@ -11,6 +11,9 @@ public class Course
     @Column(name="COURSE_TABLE_ID")
     private long courseTableID;
 
+    @Column(name="COURSE_TABLE_TYPE")
+    private CourseType courseTableType;
+
     @Column(name="STUDENT_USERNAMES", nullable = false)
     private String studentUsernames;
 
@@ -27,6 +30,14 @@ public class Course
 
     public void setCourseTableID(long courseTableID) {
         this.courseTableID = courseTableID;
+    }
+
+    public CourseType getCourseTableType() {
+        return courseTableType;
+    }
+
+    public void setCourseTableType(CourseType courseTableType) {
+        this.courseTableType = courseTableType;
     }
 
     public String getStudentUsernames() {

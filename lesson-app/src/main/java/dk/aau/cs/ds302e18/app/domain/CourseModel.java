@@ -15,6 +15,7 @@ public class CourseModel {
     private int numberLessonsADay;
     private String studentList;
     private LessonType lessonType;
+    private CourseType courseType;
     private String location;
     private String instructorUsername;
     private boolean isSigned;
@@ -78,6 +79,14 @@ public class CourseModel {
         this.lessonType = lessonType;
     }
 
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
+    }
+
     public long getCourseTableID() {
         return courseTableID;
     }
@@ -136,6 +145,7 @@ public class CourseModel {
 
     public Course translateModelToCourse(){
         Course course = new Course();
+        course.setCourseType(this.courseType);
         course.setInstructorUsername(this.instructorUsername);
         course.setStudentUsernames(this.studentUsernames);
         return course;

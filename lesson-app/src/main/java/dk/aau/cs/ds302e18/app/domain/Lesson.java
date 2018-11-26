@@ -6,6 +6,7 @@ public class Lesson
 {
     private long id;
     private LessonType lessonType;
+    private CourseType courseType;
     private String studentList;
     private String lessonInstructor;
     private Date lessonDate;
@@ -34,6 +35,14 @@ public class Lesson
     public void setLessonType(LessonType lessonType)
     {
         this.lessonType = lessonType;
+    }
+
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 
     public String getStudentList()

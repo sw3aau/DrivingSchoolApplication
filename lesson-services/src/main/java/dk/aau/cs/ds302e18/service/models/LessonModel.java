@@ -5,6 +5,7 @@ import java.util.Date;
 public class LessonModel
 {
     private LessonType lessonType;
+    private CourseType courseType;
     private String studentList;
     private String lessonInstructor;
     private Date lessonDate;
@@ -23,6 +24,14 @@ public class LessonModel
     public void setLessonType(LessonType lessonType)
     {
         this.lessonType = lessonType;
+    }
+
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 
     public String getStudentList()
@@ -88,6 +97,7 @@ public class LessonModel
     public Lesson translateModelToLesson(){
         Lesson lesson = new Lesson();
         lesson.setLessonType(this.lessonType);
+        lesson.setCourseType(this.courseType);
         lesson.setStudentList(this.studentList);
         lesson.setLessonInstructor(this.lessonInstructor);
         lesson.setLessonDate(this.lessonDate);
