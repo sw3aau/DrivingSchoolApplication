@@ -1,11 +1,10 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.DBConnector;
-import dk.aau.cs.ds302e18.app.auth.Account;
-import dk.aau.cs.ds302e18.app.auth.AccountRespository;
-import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
+import dk.aau.cs.ds302e18.app.auth.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -29,10 +28,13 @@ public class AccountController
 
     private final AccountRespository accountRespository;
     private final AuthGroupRepository authGroupRepository;
+    private final UserRepository userRepository;
 
-    public AccountController(AccountRespository accountRespository, AuthGroupRepository authGroupRepository) {
+    public AccountController(AccountRespository accountRespository, AuthGroupRepository authGroupRepository,
+                             UserRepository userRepository) {
         this.accountRespository = accountRespository;
         this.authGroupRepository = authGroupRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping(value = "/manage")
@@ -54,8 +56,6 @@ public class AccountController
                                              @RequestParam("City") String city,
                                              @RequestParam("Zip") int zip)
     {
-        System.out.println(firstName + lastName + email + phoneNumber + birthday + address + city + zip);
-
         Account account = new Account();
         account.setUsername(getAccountUsername());
         account.setId(accountRespository.findByUsername(getAccountUsername()).getId());
@@ -68,6 +68,22 @@ public class AccountController
         account.setCity(city);
         account.setZipCode(zip);
         this.accountRespository.save(account);
+        return new RedirectView("manage");
+    }
+
+    @RequestMapping(value = "/changeaccpassword", method = RequestMethod.POST)
+    public RedirectView changeAccountPassword(@RequestParam("Password") String password)
+    {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
+
+        String newPass = passwordEncoder.encode(password);
+
+        User user = new User();
+        user.setId(userRepository.findByUsername(getAccountUsername()).getId());
+        user.setUsername(getAccountUsername());
+        user.setPassword(newPass);
+        user.setActive(true);
+        this.userRepository.save(user);
         return new RedirectView("manage");
     }
 
