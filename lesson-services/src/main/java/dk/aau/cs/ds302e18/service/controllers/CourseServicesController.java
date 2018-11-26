@@ -23,67 +23,74 @@ public class CourseServicesController
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseServicesController.class);
 
-    private final CourseRepository repository;
+    private final CourseRepository courseRepository;
 
-    public CourseServicesController(CourseRepository repository){
+    public CourseServicesController(CourseRepository courseRepository){
         super();
-        this.repository = repository;
+        this.courseRepository = courseRepository;
     }
 
     /* Returns all the courses in the database in a list */
     @GetMapping
     public List<Course> getAllCourses(){
-        return new ArrayList<>(this.repository.findAll());
+        return new ArrayList<>(this.courseRepository.findAll());
     }
 
     /* Get = responsible for retrieving information only */
     @GetMapping("/{id}")
     public Course getCourse(@PathVariable Long id){
-        Optional<Course> course = this.repository.findById(id);
+        Optional<Course> course = this.courseRepository.findById(id);
         if(course.isPresent()){
             return course.get();
         }
         throw new CourseNotFoundException("Course not found with id: " + id);
     }
 
+    /* Get = responsible for retrieving information only */
+    @GetMapping("/getLastCourse")
+    public Course getLastCourseByID(){
+        Optional<Course> course = Optional.ofNullable(this.courseRepository.findFirstByOrderByCourseTableIDDesc());
+        if(course.isPresent()){
+            return course.get();
+        }
+        throw new CourseNotFoundException("Course not find last the last course.");
+    }
 
     /* Post = responsible for posting new information directly after it has been created to the website, and create fitting
     links to the new information. */
-    @PostMapping
-    public ResponseEntity<Course> addCourse(@RequestBody CourseModel model){
-        /* Translates the input entered in the add course menu into input that can be entered in the database. */
-        /* Returns an course that is read from the 8100 server through updateLesson. */
-        Course course = this.repository.save(model.translateModelToCourse());
-        /* The new course will be placed in the server 8100 , with an id that matches the entered courses ID. */
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
-        /* The connection to the new course is created. */
+    @PostMapping(value = "/addCourse")
+    public ResponseEntity<Course> addCourse(@RequestBody CourseModel courseModel){
+        Course course = this.courseRepository.save(courseModel.translateModelToCourse());
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getCourseTableID()).toUri();
         return ResponseEntity.created(location).body(course);
     }
 
 
+
+
     /* Put = responsible for updating existing database entries*/
     @PutMapping("/{id}")
-    public Course updateCourse(@PathVariable Long id, @RequestBody CourseModel model){
+    public Course updateCourse(@PathVariable Long id, @RequestBody CourseModel courseModel){
         /* Throw an error if the selected course do not exist. */
-        Optional<Course> existing = this.repository.findById(id);
+        Optional<Course> existing = this.courseRepository.findById(id);
         if(!existing.isPresent()){
             throw new CourseNotFoundException("Course not found with id: " + id);
         }
         /* Translates input from the interface into an course object */
-        Course course = model.translateModelToCourse();
+        Course course = courseModel.translateModelToCourse();
         /* Uses the ID the course already had to save the course */
-        course.setId(id);
-        return this.repository.save(course);
+        course.setCourseTableID(id);
+        return this.courseRepository.save(course);
     }
 
     /* NOT IMPLEMENTED: Delete = responsible for deleting database entries. */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.RESET_CONTENT)
     public void deleteCourse(@PathVariable Long id){
-        Optional<Course> existing = this.repository.findById(id);
+        Optional<Course> existing = this.courseRepository.findById(id);
         if(!existing.isPresent()){
             throw new CourseNotFoundException("Course not found with id: " + id);
         }
-        this.repository.deleteById(id);
+        this.courseRepository.deleteById(id);
     }
 }

@@ -15,7 +15,7 @@
                 <a th:href="@{/storeadmin/add}">Add New Course</a>
             </div>
         </div>
-        <table id="table" class="table table-striped table-sm">
+        <table courseTableID="table" class="table table-striped table-sm">
             <thead>
             <th scope="col">Application ID</th>
             <th scope="col">Course ID</th>
@@ -26,23 +26,23 @@
             </thead>
             <tbody>
             <tr th:each="store : ${storeadmin}">
-                <th scope="row"><a th:href="@{'/storeadmin/' + ${store.id}}" th:text="${store.id}"></a></th>
-                <td th:text="${store.courseId}"></td>
+                <th scope="row"><a th:href="@{'/storeadmin/' + ${store.courseTableID}}" th:text="${store.courseTableID}"></a></th>
+                <td th:text="${store.courseTableID}"></td>
                 <td th:text="${store.studentUsername}"></td>
                 <td>Pending</td>
                 <td>
                     <form method="POST" th:action="@{/accept}">
-                        <input type="hidden" name="appId" id="appId" th:value="${store.id}"/>
-                        <input type="hidden" name="courseIdAccept" id="courseIdAccept" th:value="${store.courseId}"/>
-                        <input type="hidden" name="studentUsernameAccept" id="studentUsernameAccept" th:value="${store.studentUsername}"/>
+                        <input type="hidden" name="appId" courseTableID="appId" th:value="${store.courseTableID}"/>
+                        <input type="hidden" name="courseIdAccept" courseTableID="courseIdAccept" th:value="${store.courseTableID}"/>
+                        <input type="hidden" name="studentUsernameAccept" courseTableID="studentUsernameAccept" th:value="${store.studentUsername}"/>
                         <button type="submit" name="submit" value="value" class="btn btn-success">Approve</button>
                     </form>
                 </td>
                 <td>
                     <form method="POST" th:action="@{/deny}">
-                        <input type="hidden" name="appIdDeny" id="appIdDeny" th:value="${store.id}"/>
-                        <input type="hidden" name="courseIdDeny" id="courseIdDeny" th:value="${store.courseId}"/>
-                        <input type="hidden" name="studentUsernameDeny" id="studentUsernameDeny" th:value="${store.studentUsername}"/>
+                        <input type="hidden" name="appIdDeny" courseTableID="appIdDeny" th:value="${store.courseTableID}"/>
+                        <input type="hidden" name="courseIdDeny" courseTableID="courseIdDeny" th:value="${store.courseTableID}"/>
+                        <input type="hidden" name="studentUsernameDeny" courseTableID="studentUsernameDeny" th:value="${store.studentUsername}"/>
                         <button type="submit" name="submit" value="value" class="btn btn-danger">Deny</button>
                     </form>
                 </td>

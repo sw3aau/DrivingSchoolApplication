@@ -60,6 +60,4 @@ public class LessonService
         HttpEntity<String> request = new HttpEntity<>(null, null);
         return this.restTemplate.exchange(url, HttpMethod.DELETE, request, Lesson.class).getBody();
     }
-
-
 }
