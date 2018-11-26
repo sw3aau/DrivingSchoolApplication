@@ -50,8 +50,8 @@
                                 <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
                             </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" th:href="@{/account/modify}">Change Details</a>
-                            <a class="dropdown-item" href="#">Change Password</a>
+                            <a class="dropdown-item" th:href="@{/manage}">My Account</a>
+                            <a class="dropdown-item" href="@{/manage#edit-password}">Change Password</a>
                             <a class="dropdown-item" th:href="@{/logout}">Logout</a>
                         </div>
                              </div>

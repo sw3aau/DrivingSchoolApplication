@@ -23,11 +23,12 @@
                             <div class="profile-user-box">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="profile-user-img"><img src="https://i.kym-cdn.com/photos/images/newsfeed/000/913/373/efd.jpg" alt="" class="thumb-lg rounded-circle"></div>
+                                        <div class="profile-user-img">
+                                            <img th:src="${gravatar}"  alt="" class="thumb-lg rounded-circle">
                                         <div class="">
-                                            <h4 class="mt-5 m-b-5 font-18 ellipsis">John Fuckboi</h4>
-                                            <p class="font-13"> User Fuck Specialist</p>
-                                            <p class="text-muted m-b-0"><small>Alibaba, Afghanistan</small></p>
+                                            <h4 class="mt-5 m-b-5 font-18 ellipsis"><p th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h4>
+                                            <p class="font-13" th:text="${userAuth}"></p>
+                                            <p class="text-muted m-b-0"><small th:text="${user.getCity()} + ', Denmark'"></small></p>
                                         </div>
                                     </div>
                                 </div>
@@ -51,8 +52,8 @@
 
                                     <div id="aboutme" class="tab-pane active">
                                         <div class="profile-desk">
-                                            <h4 class="text-uppercase font-weight-bold">John Deo</h4>
-                                            <div class="designation mb-4">Instructor (admin)</div>
+                                            <h4 class="text-uppercase font-weight-bold"  th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h4>
+                                            <div class="designation mb-4" th:text="${userAuth}"></div>
                                             <table class="table table-condensed">
                                                 <thead>
                                                 <tr>
@@ -75,38 +76,38 @@
                                     <!-- settings -->
                                     <div id="edit-profile" class="tab-pane">
                                         <div class="user-profile-content">
-                                            <form role="form">
+                                            <form role="form" action="#" method="POST" th:action="@{/changeaccdetails}">
                                                 <div class="form-group">
                                                     <label for="FirstName">First Name</label>
-                                                    <input type="text" value="John" id="FirstName" class="form-control">
+                                                    <input type="text" th:value="${user.getFirstName()}" id="FirstName" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="LastName">Last Name</label>
-                                                    <input type="text" value="Doe" id="LastName" class="form-control">
+                                                    <input type="text" th:value="${user.getLastName()}" id="LastName" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="Email">Email</label>
-                                                    <input type="email" value="first.last@example.com" id="Email" class="form-control">
+                                                    <input type="email" th:value="${user.getEmail()}" id="Email" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="PhoneNumber">Phone Number</label>
-                                                    <input type="text" value="+45 20304050" id="PhoneNumber" class="form-control">
+                                                    <input type="text" th:value="${user.getPhoneNumber()}" id="PhoneNumber" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="Birthday">Birthday</label>
-                                                    <input type="text" value="10/01-2018" id="Birthday" class="form-control">
+                                                    <input type="text" th:value="${user.getBirthday()}" id="Birthday" class="form-control">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="Username">Address</label>
-                                                    <input type="text" value="john" id="Username" class="form-control">
+                                                    <label for="Address">Address</label>
+                                                    <input type="text" th:value="${user.getAddress()}" id="Address" class="form-control">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="Password">City</label>
-                                                    <input type="password" placeholder="6 - 15 Characters" id="Password" class="form-control">
+                                                    <label for="City">City</label>
+                                                    <input type="text" th:value="${user.getCity()}" id="City" class="form-control">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="RePassword">Zip</label>
-                                                    <input type="password" placeholder="6 - 15 Characters" id="RePassword" class="form-control">
+                                                    <label for="Zip">Zip</label>
+                                                    <input type="text" th:value="${user.getZipCode()}" id="Zip" class="form-control">
                                                 </div>
                                                 <button class="btn btn-primary" type="submit">Save</button>
                                             </form>

@@ -5,6 +5,8 @@ import dk.aau.cs.ds302e18.app.RegisterUser;
 import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.auth.Account;
 import dk.aau.cs.ds302e18.app.auth.AccountRespository;
+import dk.aau.cs.ds302e18.app.auth.AuthGroup;
+import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
 import dk.aau.cs.ds302e18.app.domain.StudentModel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,21 +32,39 @@ import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 @Controller
 public class AccountController
 {
-    //private Connection conn;
 
     private final AccountRespository accountRespository;
+    private final AuthGroupRepository authGroupRepository;
 
-    public AccountController(AccountRespository accountRespository) {
+    public AccountController(AccountRespository accountRespository, AuthGroupRepository authGroupRepository) {
         this.accountRespository = accountRespository;
+        this.authGroupRepository = authGroupRepository;
     }
 
     @GetMapping(value = "/manage")
     public String getManageAccount(Model model)
     {
+        model.addAttribute("user", accountRespository.findByUsername(getAccountUsername()));
+        model.addAttribute("userAuth",
+                authGroupRepository.findByUsername(getAccountUsername()).get(0).getAuthGroup());
         return "manage-account";
     }
 
-//public AccountController() {this.conn = new DBConnector().createConnectionObject();}
+    @ModelAttribute("gravatar")
+    public String gravatar() {
+
+        //Models Gravatar
+        System.out.println(accountRespository.findByUsername(getAccountUsername()).getEmail());
+        String gravatar = ("http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail()));
+        return (gravatar);
+    }
+
+    public String getAccountUsername()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        return username;
+    }
 
     @RequestMapping(value = "/account/exportCalendar", method = RequestMethod.GET)
     @ResponseBody
@@ -98,67 +118,6 @@ public class AccountController
 
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         FileCopyUtils.copy(inputStream, response.getOutputStream());
-    }
-
-
-    /* public void editAccount(String address, String birthday, String email, String firstname, String city,
-                             String lastname, String phonenumber, String username, int zip ) {
-         try {
-             Statement st = conn.createStatement();
-
-             st.executeUpdate("UPDATE `account` SET `address` = '"+address+"',  `birthday` = '"+birthday+"',   " +
-                     "`email` = '"+email+"', `firstname` = '"+firstname+"', `lastname`='"+lastname+"', `city`='"+city+"', " +
-                     " `phonenumber` = "+phonenumber+", `zip`="+zip+" WHERE `username` = '"+username+"'");
-
-         } catch (Exception e) {
-             e.printStackTrace();
-         }
-     }*/
-    @GetMapping(value = "/account/modify")
-    public String getModifyPage()
-    {
-        return "modify-account";
-    }
-
-    @PostMapping(value = "/account/modify")
-    public String postModifyPage(@ModelAttribute StudentModel studentModel){
-        System.out.println(studentModel.getUsername());
-        System.out.println(studentModel.getEmail());
-        System.out.println(studentModel.getLastName());
-        System.out.println(studentModel.toString());
-
-
-
-        Account acount = accountRespository.findByUsername(studentModel.getUsername());
-
-        acount.setAddress(studentModel.getAddress());
-        acount.setBirthday(studentModel.getBirthdate());
-        acount.setCity(studentModel.getCity());
-        acount.setEmail(studentModel.getEmail());
-        acount.setFirstName(studentModel.getFirstName());
-        acount.setLastName(studentModel.getLastName());
-        acount.setPhoneNumber(studentModel.getPhonenumber());
-        acount.setUsername(studentModel.getUsername());
-        acount.setZipCode(studentModel.getZipCode());
-        accountRespository.save(acount);
-        System.out.println(acount);
-        return "modify-account";
-    }
-
-    @ModelAttribute("gravatar")
-    public String gravatar() {
-
-        //Models Gravatar
-        System.out.println(accountRespository.findByUsername(getAccountUsername()).getEmail());
-        String gravatar = ("http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail()));
-        return (gravatar);
-    }
-
-    public String getAccountUsername()
-    {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-        return username;
     }
 
 }
