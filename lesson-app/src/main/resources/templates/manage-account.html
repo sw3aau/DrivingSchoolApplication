@@ -26,7 +26,7 @@
                                         <div class="profile-user-img">
                                             <img th:src="${gravatar}"  alt="" class="thumb-lg rounded-circle">
                                         <div class="">
-                                            <h4 class="mt-5 m-b-5 font-18 ellipsis"><p th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h4>
+                                            <h4 class="mt-5 m-b-5 font-18 ellipsis"><p th:text="${user.getFirstName() + ' ' + user.getLastName() + ' ( ' + user.getUsername() + ' )'}"></h4>
                                             <p class="font-13" th:text="${userAuth}"></p>
                                             <p class="text-muted m-b-0"><small th:text="${user.getCity()} + ', Denmark'"></small></p>
                                         </div>
@@ -109,7 +109,7 @@
                                                     <label for="Zip">Zip</label>
                                                     <input type="text" th:value="${user.getZipCode()}" id="Zip" class="form-control">
                                                 </div>
-                                                <button class="btn btn-primary" type="submit">Save</button>
+                                                <button class="btn btn-primary" type="submit">Change Account Details</button>
                                             </form>
                                         </div>
                                     </div>  
@@ -117,16 +117,13 @@
                                     <!-- Change Password -->
                                     <div id="edit-password" class="tab-pane">
                                         <div class="user-profile-content">
-                                            <form role="form">
+                                            <form role="form" action="#" method="POST" th:action="@{/changeaccpassword}">
                                                 <div class="form-group">
+                                                    <h2 th:text="${user.getUsername()}"></h2></br>
                                                     <label for="Password">Password</label>
                                                     <input type="password" placeholder="6 - 15 Characters" id="Password" class="form-control">
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="RePassword">Re-Password</label>
-                                                    <input type="password" placeholder="6 - 15 Characters" id="RePassword" class="form-control">
-                                                </div>
-                                                <button class="btn btn-primary" type="submit">Save</button>
+                                                <button class="btn btn-primary" type="submit">Change Password</button>
                                             </form>
                                         </div>
                                     </div>  
