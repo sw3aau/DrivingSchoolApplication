@@ -24,6 +24,18 @@ public class LessonModel
 
     private long courseId;
 
+    private CourseType courseType;
+
+    public CourseType getCourseType()
+    {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType)
+    {
+        this.courseType = courseType;
+    }
+
     public boolean isSigned()
     {
         return isSigned;

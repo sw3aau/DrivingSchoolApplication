@@ -21,6 +21,17 @@ public class CourseModel {
     private ArrayList<String> StudentNameList;
     private boolean deleteAssociatedLessons;
     private String studentToUpdate;
+    private CourseType courseType;
+
+    public CourseType getCourseType()
+    {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType)
+    {
+        this.courseType = courseType;
+    }
 
     public String getStudentUsernames() {
         return studentUsernames;

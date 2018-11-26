@@ -11,6 +11,10 @@ public class Course
     @Column(name="COURSE_TABLE_ID")
     private long courseTableID;
 
+    @Column(name="COURSE_TYPE")
+    @Enumerated(EnumType.ORDINAL)
+    private CourseType courseType;
+
     @Column(name="STUDENT_USERNAMES", nullable = false)
     private String studentUsernames;
 

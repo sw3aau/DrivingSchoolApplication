@@ -6,6 +6,17 @@ public class CourseModel {
     private String instructorUsername;
     private String studentToDelete;
     private long courseTableID;
+    private CourseType courseType;
+
+    public CourseType getCourseType()
+    {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType)
+    {
+        this.courseType = courseType;
+    }
 
     public String getInstructorUsername() {
         return instructorUsername;

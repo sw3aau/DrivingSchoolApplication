@@ -14,6 +14,17 @@ public class LessonModel
     //It lesson needs to be changed, a new lesson must be created.
     private boolean isSigned;
     private int courseId;
+    private CourseType courseType;
+
+    public CourseType getCourseType()
+    {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType)
+    {
+        this.courseType = courseType;
+    }
 
     public LessonType getLessonType()
     {
