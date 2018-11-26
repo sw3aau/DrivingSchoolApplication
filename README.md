@@ -1,7 +1,5 @@
 # Driving School Application
 
-[![N|Solid](https://s3.eu-west-2.amazonaws.com/p3-project/sembrik/Untitled-1.png)](#)
-
 [![Build Status](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true)]()
 
 Driving School Application is a third semester project for B.Sc Students at Aalborg University, Denmark. The application is running Spring, connetected between an interface and backendserver with REST. Some of the features supported : 

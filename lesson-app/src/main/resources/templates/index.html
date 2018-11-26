@@ -1,12 +1,13 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" layout:decorate="~{layout}"lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}" lang="en">
 <head>
     <title>Home</title>
 
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <link rel="stylesheet" type="text/css"
+          href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css"/>
     <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
     <script>
-        window.addEventListener("load", function(){
+        window.addEventListener("load", function () {
             window.cookieconsent.initialise({
                 "palette": {
                     "popup": {
@@ -22,7 +23,8 @@
                 "content": {
                     "href": "/gdpr"
                 }
-            })});
+            })
+        });
     </script>
 
     <style>
@@ -34,6 +36,7 @@
             border-collapse: collapse;
             margin-left: 3%;
         }
+
         .rightpane {
             width: 45%;
             height: available;
@@ -46,49 +49,49 @@
 </head>
 <body>
 
-    <div layout:fragment="content">
-        <div class="jumbotron main-content">
-            <h1>Welcome to Driving CMS System</h1>
-        </div>
-        <div class="leftpane">
-            <h1>Today's lessons</h1>
-            <table courseTableID="todayLessonTable" class="table table-sm" width="500">
-                <thead>
-                <th scope="col">Lesson Date</th>
-                <th scope="col">Course ID</th>
-                <th scope="col">Lesson Instructor</th>
-                <th scope="col">Lesson location</th>
-                </thead>
-                <tbody>
-                <tr th:each="lesson : ${todayLessonList}">
-                    <td th:text="${lesson.lessonDate}"></td>
-                    <td th:text="${lesson.getCourseId()}"></td>
-                    <td th:text="${lesson.getLessonInstructor()}"></td>
-                    <td th:text="${lesson.getLessonLocation()}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="rightpane">
-            <h1>Upcoming lessons</h1>
-            <table courseTableID="upcomingLessonTable" class="table table-sm" width="500">
-                <thead>
-                <th scope="col">Lesson Date</th>
-                <th scope="col">Course ID</th>
-                <th scope="col">Lesson Instructor</th>
-                <th scope="col">Lesson location</th>
-                </thead>
-                <tbody>
-                <tr th:each="lesson : ${upcomingLessonList}">
-                    <td th:text="${lesson.lessonDate}"></td>
-                    <td th:text="${lesson.getCourseId()}"></td>
-                    <td th:text="${lesson.getLessonInstructor()}"></td>
-                    <td th:text="${lesson.getLessonLocation()}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+<div layout:fragment="content">
+    <div class="jumbotron main-content">
+        <h1>Welcome to Driving CMS System</h1>
     </div>
+    <div class="leftpane">
+        <h1>Today's lessons</h1>
+        <table id="todayLessonTable" class="table table-sm" width="500">
+            <thead>
+            <th scope="col">Lesson Date</th>
+            <th scope="col">Course ID</th>
+            <th scope="col">Lesson Instructor</th>
+            <th scope="col">Lesson location</th>
+            </thead>
+            <tbody>
+            <tr th:each="lesson : ${todayLessonList}">
+                <td th:text="${lesson.lessonDate}"></td>
+                <td th:text="${lesson.getCourseId()}"></td>
+                <td th:text="${lesson.getLessonInstructor()}"></td>
+                <td th:text="${lesson.getLessonLocation()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="rightpane">
+        <h1>Upcoming lessons</h1>
+        <table id="upcomingLessonTable" class="table table-sm" width="500">
+            <thead>
+            <th scope="col">Lesson Date</th>
+            <th scope="col">Course ID</th>
+            <th scope="col">Lesson Instructor</th>
+            <th scope="col">Lesson location</th>
+            </thead>
+            <tbody>
+            <tr th:each="lesson : ${upcomingLessonList}">
+                <td th:text="${lesson.lessonDate}"></td>
+                <td th:text="${lesson.getCourseId()}"></td>
+                <td th:text="${lesson.getLessonInstructor()}"></td>
+                <td th:text="${lesson.getLessonLocation()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>

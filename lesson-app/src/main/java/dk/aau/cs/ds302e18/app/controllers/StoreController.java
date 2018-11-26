@@ -1,5 +1,6 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
+import dk.aau.cs.ds302e18.app.auth.AccountRespository;
 import dk.aau.cs.ds302e18.app.domain.Store;
 import dk.aau.cs.ds302e18.app.domain.StoreModel;
 import dk.aau.cs.ds302e18.app.service.StoreService;
@@ -18,16 +19,20 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
+
 @Controller
 @RequestMapping
 public class StoreController
 {
     private final StoreService storeService;
+    private final AccountRespository accountRespository;
 
-    public StoreController(StoreService storeService)
+    public StoreController(StoreService storeService, AccountRespository accountRespository)
     {
         super();
         this.storeService = storeService;
+        this.accountRespository = accountRespository;
     }
 
     /**
@@ -219,5 +224,22 @@ public class StoreController
         // Returning index after you've applied
         return "index";
     }
+
+    @ModelAttribute("gravatar")
+    public String gravatar() {
+
+        //Models Gravatar
+        System.out.println(accountRespository.findByUsername(getAccountUsername()).getEmail());
+        String gravatar = ("http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail()));
+        return (gravatar);
+    }
+
+    public String getAccountUsername()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        return username;
+    }
+
 }
 

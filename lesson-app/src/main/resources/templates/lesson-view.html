@@ -12,20 +12,24 @@
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <h3>Lesson View</h3>
-        <form method="post" action="#" th:action="${lesson != null} ? '/lessons/'+${lesson.courseId} : '/lessons'" th:object="${lessonModel}">
+        <h3>Lesson Manager</h3>
+        <form method="post" action="#" th:action="${lesson != null} ? '/lessons/'+${lesson.id} : '/lessons'" th:object="${lessonModel}">
             <div class="form-row">
                 <div class="col">
-                    <input th:id="lessonType" th:name="lessonType" type="text" class="form-control" placeholder="Lesson Type" th:value="${lesson != null} ? ${lesson.lessonType}"/>
+                    <h2>Lesson Type</h2>
+                    <select class="form-control" id="lessonType" name="lessonType">
+                        <option value="THEORY_LESSON" selected="selected">Theory Lesson</option>
+                        <option value="PRACTICAL_LESSON">Practical Lesson</option>
+                    </select>
                 </div>
                 <div class="col">
-                    <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/>
-
-
+                    <h2>Student List</h2>
+                    <input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Seperated by comma (username1,username2)" th:value="${lesson != null} ? ${lesson.studentList}"/>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Search Students</button>
                     <!--input th:id="studentList" th:name="studentList" type="text" class="form-control" placeholder="Students" th:value="${lesson != null} ? ${lesson.studentList}"/-->
                 </div>
             </div>
-
+            <h2>Date</h2></br>
             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                 <input th:id="lessonDate" th:name="lessonDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
@@ -49,18 +53,26 @@
                 });
 
             </script>
-			
-			
+
+
             <div class="form-row">
                 <div class="col">
-                    <input th:id="lessonInstructor" th:name="lessonInstructor" type="text" class="form-control" placeholder="Instructor" th:value="${lesson != null} ? ${lesson.lessonInstructor}"/>
+                    <h2>Instructor</h2>
+                    <select th:name="lessonInstructor">
+                        <option th:each="instructorAccount : ${instructorAccountList}" th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}" th:value="${instructorAccount.username}"></option>
+                    </select>
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="col">
-                    <input th:id="lessonLocation" th:name="lessonLocation" type="text" class="form-control" placeholder="Location" th:value="${lesson != null} ? ${lesson.lessonLocation}"/>
+                    <h2>Location</h2>
+                    <select class="form-control" id="lessonLocation" name="lessonLocation">
+                        <option value="Selma Lager Løfsvej 300" selected="selected">Selma Lager Løfsvej 300</option>
+                        <option value="Strandvejen 12">Strandvejen 12</option>
+                        <option value="Rendsburggade 14">Rendsburggade 14</option>
+                        <option value="Other Location">Other Location</option>
+                    </select>
                 </div>
             </div>
+
             <div class="form-row">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
@@ -69,6 +81,35 @@
     </div>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Student List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table id="availableStudents" class="table table-sm" width="450">
+                        <thead>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Username</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${userAccountlist}">
+                            <td th:text="${user.firstName}"></td>
+                            <td th:text="${user.lastName}"></td>
+                            <td th:text="${user.username}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

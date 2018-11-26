@@ -1,0 +1,48 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}" lang="en">
+<head>
+    <title>Home</title>
+
+    <style>
+        .centerpane {
+            width: 85%;
+            height: available;
+            float: left;
+            background-color: #ffffff;
+            border-collapse: collapse;
+            margin-left: 3%;
+            margin-right: 3%;
+            margin-top: 7%;
+        }
+    </style>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="centerpane">
+        <h1>Logbook lessons (Student)</h1>
+
+        <table id="todayLessonTable" class="table table-sm">
+            <thead>
+            <th scope="col">Lesson Date</th>
+            <th scope="col">Course ID</th>
+            <th scope="col">Lesson Instructor</th>
+            <th scope="col">Lesson location</th>
+            </thead>
+            <tbody>
+            <tr th:each="lesson : ${logbookLessonList}">
+                <td th:text="${lesson.lessonDate}"></td>
+                <td th:text="${lesson.getCourseId()}"></td>
+                <td th:text="${lesson.getLessonInstructor()}"></td>
+                <td th:text="${lesson.getLessonLocation()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script th:src="@{/js/table.js}"></script>
+</div>
+
+</body>
+</html>
+
