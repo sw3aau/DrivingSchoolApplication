@@ -36,17 +36,37 @@
             text-align: center;
         }
 
-        .checkbox-inline {
-            display: inline-block;
-            width: 30%;
+        .block-button {
+            display: block;
         }
 
-        .h7 {
-            margin: 0;
+        .form-group input[type="checkbox"] {
+            display: none;
+        }
+
+        .form-group input[type="checkbox"] + .btn-group > label span {
+            width: 20px;
+        }
+
+        .form-group input[type="checkbox"] + .btn-group > label span:first-child {
+            display: none;
+        }
+        .form-group input[type="checkbox"] + .btn-group > label span:last-child {
             display: inline-block;
+        }
+
+        .form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
+            display: inline-block;
+        }
+        .form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
+            display: none;
         }
 
     </style>
+    <!-- Sources to checkbox bootstrap -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
 
@@ -54,17 +74,22 @@
     <div class="container main-content">
         <div class="split left">
             <div class="left">
-
-                <form method="get" th:action="@{'/course/delete/' + ${course.courseTableID}}"
+                <h2 th:text="${'Course: #'+course.courseTableID}" style="padding-bottom: 2%"></h2>
+                <h3 style="padding-bottom: 1%">Manage students</h3>
+                <form method="post" th:action="@{'/course/addStudent/' + ${course.courseTableID}}" style="padding-bottom: 0.8%"
                       th:object="${courseModel}">
-                    <h7 th:text="${'Course: #'+course.courseTableID}"></h7>
-                    <input th:text="${'Delete all associated lessons'}" type="checkbox"
-                           th:name="deleteAssociatedLessons">
-                    <input type="hidden" name="deleteCourse" id="deleteCourse"
-                           th:value="${course.courseTableID}"/>
-                    <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
+                    <input name="studentToUpdate" id="studentToAdd"/>
+                    <button type="submit" name="submit" value="value" class="btn btn-primary">Add student</button>
                 </form>
-
+                <form method="post" th:action="@{'/course/removeStudent/' + ${course.courseTableID}}" style="padding-bottom: 1%"
+                      onsubmit="return confirm('Are you sure you want to submit this form?');"
+                      th:object="${courseModel}">
+                    <input name="studentToUpdate" id="studentToRemove"/>
+                    <button type="submit" name="submit" value="value" class="btn btn-danger">Remove student</button>
+                </form>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="margin-bottom: 3%" >
+                    Search Students
+                </button>
                 <table id="studentTable" class="table table-sm">
                     <thead>
                     <th scope="col">List of students</th>
@@ -79,16 +104,28 @@
         </div>
         <div class="split right">
             <div class="right">
-                <form method="post" th:action="@{'/course/addStudent/' + ${course.courseTableID}}"
+                <form method="get" th:action="@{'/course/delete/' + ${course.courseTableID}}"
                       th:object="${courseModel}">
-                    <input name="studentToUpdate" id="studentToAdd"/>
-                    <button type="submit" name="submit" value="value" class="btn btn-primary">Add student</button>
+                    <h3 style="padding-bottom: 1%">Delete Course</h3>
+                    <div class="[ form-group ]">
+                        <input type="checkbox" name="deleteAssociatedLessons" id="fancy-checkbox-danger" autocomplete="off" />
+                        <div class="[ btn-group ]">
+                            <label for="fancy-checkbox-danger" class="[ btn btn-danger ]">
+                                <span class="[ glyphicon glyphicon-ok ]"></span>
+                                <span> </span>
+                            </label>
+                            <label for="fancy-checkbox-danger" class="[ btn btn-danger active ]">
+                                Delete Associated Lessons
+                            </label>
+                        </div>
+                    </div>
+                    <input type="hidden" name="deleteCourse" id="deleteCourse"
+                           th:value="${course.courseTableID}"/>
+                    <div class="block-button" >
+                        <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
+                    </div>
                 </form>
-                <form method="post" th:action="@{'/course/removeStudent/' + ${course.courseTableID}}"
-                      th:object="${courseModel}">
-                    <input name="studentToUpdate" id="studentToRemove"/>
-                    <button type="submit" name="submit" value="value" class="btn btn-danger">Remove student</button>
-                </form>
+                <h3 style="padding-bottom: 1%" >Lessons in Course</h3>
                 <table id="lessonsTable" class="table table-sm">
                     <thead>
                     <th scope="col">#</th>
@@ -110,7 +147,6 @@
                     </tr>
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Search Students</button>
             </div>
         </div>
         <a th:href="@{/lessons}">Return to All Lessons</a>
@@ -118,7 +154,8 @@
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script th:src="@{/js/table.js}"></script>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

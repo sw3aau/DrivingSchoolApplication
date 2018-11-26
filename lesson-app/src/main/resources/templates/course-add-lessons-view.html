@@ -81,7 +81,6 @@
                     <input th:id="numberLessons" th:name="numberLessons" type="text" class="form-control" placeholder="Number lessons" th:value="${course != null} ? ${course.numberLessons}"/>
                 </div>
             </div>
-
             <div class="form-row">
                 <div class = "col">
                     <input thid="numberLessonsADay" th:name="numberLessonsADay" type="text" class="form-control" placeholder="Number Lessons a day" th:value="${course != null} ? ${course.numberLessonsADay}"/>
@@ -92,14 +91,6 @@
                     <input thid="location" th:name="location" type="text" class="form-control" placeholder="Location" th:value="${course != null} ? ${course.location}"/>
                 </div>
             </div>
-            <div class="form-row">
-                <div class = "col">
-                    <select th:name="instructorUsername">
-                        <option th:each="instructorAccount : ${instructorAccounts}" th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}" th:value="${instructorAccount.username}"></option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>

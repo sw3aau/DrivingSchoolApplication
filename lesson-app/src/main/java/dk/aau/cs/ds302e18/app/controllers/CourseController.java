@@ -98,10 +98,10 @@ public class CourseController {
             LessonModel lesson = new LessonModel();
             lesson.setSigned(isSigned);
             lesson.setLessonDate(lessonDate);
-            lesson.setLessonInstructor(courseModel.getInstructorUsername());
             lesson.setLessonLocation(courseModel.getLocation());
             Course latestCreatedCourse = courseService.getLastCourseByID();
             lesson.setStudentList(latestCreatedCourse.getStudentUsernames());
+            lesson.setLessonInstructor(latestCreatedCourse.getInstructorUsername());
             lesson.setCourseId(latestCreatedCourse.getCourseTableID());
             lesson.setLessonType(LessonType.THEORY_LESSON);
 
@@ -207,7 +207,7 @@ public class CourseController {
 
     @RequestMapping(value = "/course/removeStudent/{id}", method=RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public RedirectView removeStudent(HttpServletRequest request, Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    public RedirectView removeStudent(HttpServletRequest request, @PathVariable long id, @ModelAttribute CourseModel courseModel)
     {
         Course course = courseService.getCourse(id);
         /* Sets the instructor so it doesn't get changed */

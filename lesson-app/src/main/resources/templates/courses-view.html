@@ -42,16 +42,29 @@
         }
 
     </style>
+    <!-- Sources for select -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
 </head>
 <body>
-
 <div layout:fragment="content">
     <div class="container main-content">
         <div class="split left">
             <div class="left">
                 <div class="row">
                     <div class="col-7">
-                        <h3>Courses</h3>
+                        <h1>Courses</h1>
                     </div>
                     <div class="col">
                         <a th:href="@{/course/courseAddLessons}">Add lessons to a course</a>
@@ -64,7 +77,8 @@
                     </thead>
                     <tbody>
                     <tr th:each="course : ${courses}">
-                        <th scope="row"><a th:href="@{'/course/' + ${course.courseTableID}}" th:text="${course.courseTableID}"></a></th>
+                        <th scope="row"><a th:href="@{'/course/' + ${course.courseTableID}}"
+                                           th:text="${course.courseTableID}"></a></th>
                         <td th:text="${course.instructorFullName}"></td>
                     </tr>
                     </tbody>
@@ -74,24 +88,27 @@
         <div class="split right">
             <div class="right">
                 <form method="post" action="#" th:action="'/course/addCourse'" th:object="${courseModel}">
-                    <h4>Add new course</h4>
-                    <h6>Instructors</h6>
+                    <h3>Add new course</h3>
+                    <h4>Instructors <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="Instructor that will be assigned the theory part of the course"></span></h4>
                     <div class="container">
-                        <select th:name="instructorUsername">
-                            <option th:each="instructorAccount : ${instructorAccounts}" th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}" th:value="${instructorAccount.username}"></option>
+                        <select class="selectpicker" data-style="btn-info" data-live-search="true"
+                                th:name="instructorUsername">
+                            <option th:each="instructorAccount : ${instructorAccounts}"
+                                    th:text="${instructorAccount.firstName + ' ' + instructorAccount.lastName}"
+                                    th:value="${instructorAccount.username}"></option>
                         </select>
                     </div>
-                    <h6>Students</h6>
+                    <h4>Students <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="Students that will be participating in the course. Click on several students to select more than one."></span></h4>
                     <div class="container">
-                        <label th:each="studentAccount : ${studentAccounts}" class="checkbox-inline">
-                            <!-- An checkbox is generated for each student account, and the username of the student account of the checkbox is send
-                                 to the courseModel as the studentUsernames variable as implied in th:name. -->
-                            <input th:text="${studentAccount.firstName + ' ' + studentAccount.lastName}" type="checkbox" th:name="studentUsernames"
-                                   th:value="${studentAccount.username}" required="required" data-error="Selecting a student is required.">
-                        </label>
+                        <select class="selectpicker" data-style="btn-info" multiple data-max-options="3" data-live-search="true"
+                                th:name="studentUsernames">
+                            <option th:each="studentAccount : ${studentAccounts}"
+                                    th:text="${studentAccount.firstName + ' ' + studentAccount.lastName}"
+                                    th:value="${studentAccount.username}"></option>
+                        </select>
                     </div>
                     <div class="form-row">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-lg " style="margin-left: 10%">Submit</button>
                     </div>
                 </form>
                 </tr>
