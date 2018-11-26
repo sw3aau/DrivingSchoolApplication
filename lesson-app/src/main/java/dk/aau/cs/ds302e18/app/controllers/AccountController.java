@@ -1,28 +1,22 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.DBConnector;
-import dk.aau.cs.ds302e18.app.RegisterUser;
-import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.auth.Account;
 import dk.aau.cs.ds302e18.app.auth.AccountRespository;
-import dk.aau.cs.ds302e18.app.auth.AuthGroup;
 import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
-import dk.aau.cs.ds302e18.app.domain.StudentModel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
@@ -48,6 +42,33 @@ public class AccountController
         model.addAttribute("userAuth",
                 authGroupRepository.findByUsername(getAccountUsername()).get(0).getAuthGroup());
         return "manage-account";
+    }
+
+    @RequestMapping(value = "/changeaccdetails", method = RequestMethod.POST)
+    public RedirectView changeAccountDetails(@RequestParam("FirstName") String firstName,
+                                             @RequestParam("LastName") String lastName,
+                                             @RequestParam("Email") String email,
+                                             @RequestParam("PhoneNumber") String phoneNumber,
+                                             @RequestParam("Birthday") String birthday,
+                                             @RequestParam("Address") String address,
+                                             @RequestParam("City") String city,
+                                             @RequestParam("Zip") int zip)
+    {
+        System.out.println(firstName + lastName + email + phoneNumber + birthday + address + city + zip);
+
+        Account account = new Account();
+        account.setUsername(getAccountUsername());
+        account.setId(accountRespository.findByUsername(getAccountUsername()).getId());
+        account.setFirstName(firstName);
+        account.setLastName(lastName);
+        account.setEmail(email);
+        account.setPhoneNumber(phoneNumber);
+        account.setBirthday(birthday);
+        account.setAddress(address);
+        account.setCity(city);
+        account.setZipCode(zip);
+        this.accountRespository.save(account);
+        return new RedirectView("manage");
     }
 
     @ModelAttribute("gravatar")
