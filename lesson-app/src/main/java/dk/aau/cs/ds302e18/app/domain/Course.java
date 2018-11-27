@@ -1,5 +1,7 @@
 package dk.aau.cs.ds302e18.app.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +10,9 @@ public class Course {
     private long courseTableID;
     private String studentUsernames;
     private String instructorUsername;
+    private CourseType courseType;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startDate;
     private ArrayList<Integer> weekdays;
     private int numberLessons;
@@ -16,7 +20,7 @@ public class Course {
     private ArrayList<String> studentList;
     private String location;
     private String instructorName;
-    private int lessonType;
+    private LessonType lessonType;
     private List<String> StudentNameList;
     private String studentFullNames;
     private String instructorFullName;
@@ -109,11 +113,11 @@ public class Course {
         this.instructorName = instructorName;
     }
 
-    public int getLessonType() {
+    public LessonType getLessonType() {
         return lessonType;
     }
 
-    public void setLessonType(int lessonType) {
+    public void setLessonType(LessonType lessonType) {
         this.lessonType = lessonType;
     }
 
@@ -133,9 +137,27 @@ public class Course {
         this.studentFullNames = studentNamesString;
     }
 
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
+    }
+
+    public String getStudentFullNames() {
+        return studentFullNames;
+    }
+
+    public void setStudentFullNames(String studentFullNames) {
+        this.studentFullNames = studentFullNames;
+    }
+
     public Course translateModelToCourse(){
         Course course = new Course();
         course.setStudentUsernames(this.studentUsernames);
+        course.setCourseTableID(this.courseTableID);
+        course.setCourseType(this.courseType);
         return course;
     }
 }

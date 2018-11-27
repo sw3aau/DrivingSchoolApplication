@@ -90,13 +90,12 @@ public class CourseController {
     public ModelAndView courseAddLessons(@ModelAttribute CourseModel courseModel) {
         ArrayList<Date> lessonDates = createLessonDates(courseModel.getStartDate(), courseModel.getWeekdays(), courseModel.getNumberLessons(), courseModel.getNumberLessonsADay());
         /* All added lessons will be initialized as unsigned */
-        boolean isSigned = false;
 
         /* For every lesson date, a lesson will be created */
         for (int j = 0; j < lessonDates.size(); j++) {
             Date lessonDate = lessonDates.get(j);
             LessonModel lesson = new LessonModel();
-            lesson.setSigned(isSigned);
+            lesson.setLessonState(LessonState.PENDING);
             lesson.setLessonDate(lessonDate);
             lesson.setLessonInstructor(courseModel.getInstructorUsername());
             lesson.setLessonLocation(courseModel.getLocation());

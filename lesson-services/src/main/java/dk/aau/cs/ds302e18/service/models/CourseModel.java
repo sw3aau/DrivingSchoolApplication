@@ -6,6 +6,7 @@ public class CourseModel {
     private String instructorUsername;
     private String studentToDelete;
     private long courseTableID;
+    private CourseType courseType;
 
     public String getInstructorUsername() {
         return instructorUsername;
@@ -39,10 +40,19 @@ public class CourseModel {
         this.courseTableID = courseTableID;
     }
 
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
+    }
+
     public Course translateModelToCourse(){
         Course course = new Course();
         course.setStudentUsernames(this.studentUsernames);
         course.setInstructorUsername(this.instructorUsername);
+        course.setCourseType(this.courseType);
         return course;
     }
 }
