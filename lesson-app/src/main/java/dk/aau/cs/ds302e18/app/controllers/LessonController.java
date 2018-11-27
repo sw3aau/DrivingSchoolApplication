@@ -10,6 +10,7 @@ import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
 import dk.aau.cs.ds302e18.app.domain.SignatureCanvas;
+import dk.aau.cs.ds302e18.app.service.CourseService;
 import dk.aau.cs.ds302e18.app.service.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,13 +43,16 @@ public class LessonController
     private final LessonService lessonService;
     private final AccountRespository accountRespository;
     private final AuthGroupRepository authGroupRepository;
+    private final CourseService courseService;
 
 
-    public LessonController(LessonService lessonService, AccountRespository accountRespository, AuthGroupRepository authGroupRepository) {
+    public LessonController(LessonService lessonService, AccountRespository accountRespository,
+                            AuthGroupRepository authGroupRepository, CourseService courseService) {
         super();
         this.lessonService = lessonService;
         this.accountRespository = accountRespository;
         this.authGroupRepository = authGroupRepository;
+        this.courseService = courseService;
     }
 
 
@@ -117,6 +121,9 @@ public class LessonController
         ArrayList<Account> instrutorAccounts = findAccountsOfType("ADMIN");
         model.addAttribute("instructorAccountList", instrutorAccounts);
 
+        List<Course> courses = this.courseService.getAllCourseRequests();
+        model.addAttribute("courseList", courses);
+
         return "lesson-view";
     }
 
@@ -127,12 +134,14 @@ public class LessonController
     {
         /* The newly added lesson object is retrieved from the 8100 server.  */
         Lesson lesson = this.lessonService.addLesson(lessonModel);
+
         if (lesson.getStudentList().isEmpty() | lesson.getLessonInstructor().isEmpty() | lesson.getLessonLocation().isEmpty())
         {
             if (lesson.getLessonType() != LessonType.THEORY_LESSON || lesson.getLessonType() != LessonType.PRACTICAL_LESSON)
             {
                 throw new RuntimeException();
             }
+
             model.addAttribute("lesson", lesson);
 
             request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
@@ -145,7 +154,25 @@ public class LessonController
     public String getLesson(Model model, @PathVariable long id)
     {
         Lesson lesson = this.lessonService.getLesson(id);
+
+        ArrayList<Account> userAccounts = findAccountsOfType("USER");
+        model.addAttribute("userAccountlist", userAccounts);
+
+        ArrayList<Account> instrutorAccounts = findAccountsOfType("ADMIN");
+        model.addAttribute("instructorAccountList", instrutorAccounts);
+
         model.addAttribute("lesson", lesson);
+
+        List<Course> courses = this.courseService.getAllCourseRequests();
+        model.addAttribute("courseList", courses);
+
+        String lessonYear = String.valueOf(Math.addExact(1900,lesson.getLessonDate().getYear()));
+        String calendar = ("" + lessonYear+"-"+lesson.getLessonDate().getMonth()+
+                "-"+lesson.getLessonDate().getDate()+" "+lesson.getLessonDate().getHours()+
+                ":"+lesson.getLessonDate().getMinutes());
+
+        model.addAttribute("calendarDate", calendar);
+
         return "lesson-view";
     }
 
@@ -157,10 +184,7 @@ public class LessonController
         Lesson lesson = this.lessonService.updateLesson(id, lessonModel);
         model.addAttribute("lesson", lesson);
         model.addAttribute("lessonModel", new LessonModel());
-        if (lesson.getLessonType() != LessonType.THEORY_LESSON || lesson.getLessonType() != LessonType.PRACTICAL_LESSON)
-        {
-            throw new RuntimeException();
-        }
+
         return "lesson-view";
     }
 

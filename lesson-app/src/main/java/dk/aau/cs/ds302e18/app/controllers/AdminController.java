@@ -35,7 +35,7 @@ public class AdminController
     {
         ArrayList<AccountViewModel> accountViewModelList = new ArrayList<>();
 
-        for (long i = 1; i < this.userRepository.findAll().size(); i++)
+        for (long i = 1; i <= this.userRepository.findAll().size(); i++)
         {
             AccountViewModel accountViewModel = new AccountViewModel();
             accountViewModel.setUsername(this.userRepository.getOne(i).getUsername());
