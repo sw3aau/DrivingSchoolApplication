@@ -6,11 +6,11 @@ import javax.persistence.*;
 /* Ensures that the table Account exists in the database and has the following columns.
    Also provides setters and getters. */
 @Entity
-@Table(name="Account")
+@Table(name="ACCOUNT_DETAIL")
 public class Account
 {
     @Id
-    @Column(name="AUTH_USER_ACCOUNT_ID")
+    @Column(name="ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name="USERNAME", nullable = false)
