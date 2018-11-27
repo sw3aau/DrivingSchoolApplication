@@ -13,8 +13,6 @@ public class Logbook {
     private long courseID;
     @Column(name="LOGBOOK_STUDENT")
     private String student;
-    @Column(name="LOGBOOK_LESSONLIST")
-    private String lessonList;
     @Column(name="LOGBOOK_ISACTIVE")
     private boolean isActive;
 
@@ -44,14 +42,6 @@ public class Logbook {
 
     public void setStudent(String student) {
         this.student = student;
-    }
-
-    public String getLessonList() {
-        return lessonList;
-    }
-
-    public void setLessonList(String lessonList) {
-        this.lessonList = lessonList;
     }
 
     public boolean isActive() {

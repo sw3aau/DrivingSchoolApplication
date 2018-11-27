@@ -38,12 +38,6 @@ public class LogbookService {
         return this.restTemplate.exchange(url, HttpMethod.POST, request, Logbook.class).getBody();
     }
 
-    public Logbook updateLogbook(long id, LogbookModel logbookModel) {
-        String url = logbookServiceUrl + LOGBOOK + SLASH + id;
-        HttpEntity<LogbookModel> request = new HttpEntity<>(logbookModel, null);
-        return this.restTemplate.exchange(url, HttpMethod.PUT, request, Logbook.class).getBody();
-    }
-
     public Logbook deleteLogbook(long id) {
         String url = logbookServiceUrl + LOGBOOK + SLASH + id;
         HttpEntity<LogbookModel> request = new HttpEntity<>(null, null);

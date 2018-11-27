@@ -4,7 +4,6 @@ public class Logbook {
     private long id;
     private long courseID;
     private String student;
-    private String lessonList;
     private boolean isActive;
 
     public Logbook() {
@@ -33,14 +32,6 @@ public class Logbook {
 
     public void setStudent(String student) {
         this.student = student;
-    }
-
-    public String getLessonList() {
-        return lessonList;
-    }
-
-    public void setLessonList(String lessonList) {
-        this.lessonList = lessonList;
     }
 
     public boolean isActive() {

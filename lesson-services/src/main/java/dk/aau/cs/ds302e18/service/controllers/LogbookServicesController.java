@@ -49,18 +49,6 @@ public class LogbookServicesController {
         return ResponseEntity.created(location).body(logbook);
     }
 
-    //Updates a logbook in the repository
-    @PutMapping("/{id}")
-    public Logbook updateLogbook(@PathVariable Long id, @RequestBody LogbookModel model){
-        Optional<Logbook> optionalLogbook = this.logbookRepository.findById(id);
-        if(optionalLogbook.isPresent()){
-            Logbook logbook = model.translateModelToLogbook();
-            logbook.setId(id);
-            return this.logbookRepository.save(logbook);
-        }
-        throw new LogbookNotFoundException("Logbook: " + id + " not found.");
-    }
-
     //Deletes a logbook in the repository by id
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

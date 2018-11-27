@@ -21,7 +21,7 @@
 <div layout:fragment="content">
     <div class="container main-content">
         <h1><span th:text="${username}"></span>, here are all logbooks:</h1>
-        <h3>You can select a logbook or course to view, by clicking on it's ID.</h3>
+        <h3>You can select a logbook to view, by clicking on it's ID.</h3>
     </div>
 
     <div class="centerpane">
@@ -36,7 +36,7 @@
             <tbody>
             <tr th:each="logbook : ${allLogbookList}">
                 <th scope="row"><a th:href="@{'/logbook/' + ${logbook.getId()}}" th:text="${logbook.getId()}"></a></th>
-                <th scope="row"><a th:href="@{'/couse/' + ${logbook.getCourseID()}}" th:text="${logbook.getCourseID()}"></a></th>
+                <td th:text="${logbook.getCourseID()}"></td>
                 <td th:text="${logbook.getStudent()}"></td>
                 <td th:text="${logbook.isActive()}"></td>
                 <td>
