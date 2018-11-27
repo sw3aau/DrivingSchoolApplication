@@ -21,7 +21,6 @@ public class User {
     @Column(name = "IS_ACTIVE", nullable = false)
     private boolean isActive;
 
-
     public long getId()
     {
         return id;

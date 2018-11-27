@@ -173,7 +173,6 @@ public class CourseController {
         return "course-view";
     }
 
-
     private ArrayList<Account> findAccountTypeBelongingToCourse(Course course, String accountType){
         ArrayList<Account> studentAccounts = findAccountsOfType(accountType);
         ArrayList<String> studentsInCourseAsStringArray = saveUsernameStringAsList(course.getStudentUsernames());
@@ -330,10 +329,9 @@ public class CourseController {
         return (gravatar);
     }
 
-    public String getAccountUsername()
+    private String getAccountUsername()
     {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-        return username;
+        UserDetails principal = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal.getUsername();
     }
 }

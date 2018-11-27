@@ -74,7 +74,7 @@ public class AuthController
 
         AuthGroup authGroup = new AuthGroup();
         authGroup.setUsername(username);
-        authGroup.setAuthGroup("USER");
+        authGroup.setAuthGroup("STUDENT");
 
         accountRespository.save(account);
         authGroupRepository.save(authGroup);
@@ -92,9 +92,8 @@ public class AuthController
 
     public String getAccountUsername()
     {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-        return username;
+        UserDetails principal = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal.getUsername();
     }
 
 
