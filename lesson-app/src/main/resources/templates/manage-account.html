@@ -121,7 +121,7 @@
                                                 <div class="form-group">
                                                     <h2 th:text="${user.getUsername()}"></h2></br>
                                                     <label for="Password">Password</label>
-                                                    <input type="password" placeholder="6 - 15 Characters" id="Password" class="form-control" name="Password">
+                                                    <input type="password" pattern=".{6,15}" placeholder="6 - 15 Characters" id="Password" class="form-control" name="Password" required>
                                                 </div>
                                                 <button class="btn btn-primary" type="submit">Change Password</button>
                                             </form>
