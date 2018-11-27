@@ -41,6 +41,16 @@
         }
 
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+ <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </head>
 <body>
 
@@ -49,24 +59,24 @@
         <div class="split left">
             <div class="left">
                 <h2 th:text="${'Course: #'+course.courseTableID}" style="padding-bottom: 1%"></h2>
-                <h3 style="padding-bottom: 1%">Manage students</h3>
+                <h3 style="padding-bottom: 1%">Manage Students</h3>
                 <form method="post" th:action="@{'/course/addStudent/' + ${course.courseTableID}}" style="padding-bottom: 0.8%"
                       th:object="${courseModel}">
-                    <input name="studentToUpdate" id="studentToAdd"/>
-                    <button type="submit" name="submit" value="value" class="btn btn-primary">Add student</button>
+                    <input name="studentToUpdate" id="studentToAdd" placeholder=" Student Username"/>
+                    <button type="submit" name="submit" value="value" class="btn btn-primary">Add Student</button>
                 </form>
                 <form method="post" th:action="@{'/course/removeStudent/' + ${course.courseTableID}}" style="padding-bottom: 1%"
                       onsubmit="return confirm('Are you sure you want to remove this student?');"
                       th:object="${courseModel}">
-                    <input name="studentToUpdate" id="studentToRemove"/>
-                    <button type="submit" name="submit" value="value" class="btn btn-danger">Remove student</button>
+                    <input name="studentToUpdate" id="studentToRemove" placeholder=" Student Username"/>
+                    <button type="submit" name="submit" value="value" class="btn btn-danger">Remove Student</button>
                 </form>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="margin-bottom: 3%" >
                     Search Students
                 </button>
                 <table id="studentTable" class="table table-sm">
                     <thead>
-                    <th scope="col">List of students</th>
+                    <th scope="col">List of Students</th>
                     </thead>
                     <tbody>
                     <tr th:each="student : ${studentAccountsBelongingToCourse}">
@@ -80,9 +90,9 @@
             <div class="right">
                 <form method="get" th:action="@{'/course/delete/' + ${course.courseTableID}}"
                       th:object="${courseModel}" onsubmit="return confirm('Are you sure you want to delete this course?');">
-                    <h3 style="padding-bottom: 1%">Delete Course</h3>
-                    <input th:text="${'Delete all associated lessons'}" type="checkbox"
-                           th:name="deleteAssociatedLessons" style="margin-bottom: 1%">
+                    <h3 style="padding-bottom: 1%">Delete Course <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="Delete course. If 'delete all associated lesssons' is checked, the lessons associated with the course will be deleted. This also includes lessons in the logbook."></span></h3>
+                    <input th:text="${' Delete All Associated Lessons'}" type="checkbox"
+                           th:name="deleteAssociatedLessons" style="margin-bottom: 1.3%">
                     <input type="hidden" name="deleteCourse" id="deleteCourse"
                            th:value="${course.courseTableID}"/>
                     <div class="block-button" >
@@ -123,7 +133,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Student List</h5>
+                    <h3 class="modal-title" id="exampleModalLongTitle">Student List</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
