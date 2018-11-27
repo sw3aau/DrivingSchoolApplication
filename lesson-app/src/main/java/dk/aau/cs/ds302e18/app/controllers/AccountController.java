@@ -56,9 +56,9 @@ public class AccountController
                                              @RequestParam("City") String city,
                                              @RequestParam("Zip") int zip)
     {
-        Account account = new Account();
-        account.setUsername(getAccountUsername());
-        account.setId(accountRespository.findByUsername(getAccountUsername()).getId());
+        // Retrieve account from the repository
+        Account account = accountRespository.findByUsername(getAccountUsername());
+
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setEmail(email);
@@ -74,15 +74,19 @@ public class AccountController
     @RequestMapping(value = "/account/edit/password", method = RequestMethod.POST)
     public RedirectView changeAccountPassword(@RequestParam("Password") String password)
     {
+        // Get current user by username
+        User user = userRepository.findByUsername(getAccountUsername());
+
+        // Initialize BCryptPasswordEncoder with strength 11
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
 
-        String newPass = passwordEncoder.encode(password);
+        // Encode and store the password in the variable
+        String encodedPassword = passwordEncoder.encode(password);
 
-        User user = new User();
-        user.setId(userRepository.findByUsername(getAccountUsername()).getId());
-        user.setUsername(getAccountUsername());
-        user.setPassword(newPass);
-        user.setActive(true);
+        // Replace the user's password with the new encoded password
+        user.setPassword(encodedPassword);
+
+        // Save the user back into the repository
         this.userRepository.save(user);
         return new RedirectView("redirect:/account/edit");
     }
