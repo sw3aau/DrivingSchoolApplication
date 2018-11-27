@@ -65,7 +65,7 @@ public class CourseController {
     @PostMapping(value = "/course/addCourse")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
-        System.out.println( courseModel.getInstructorUsername());
+        System.out.println(courseModel.getCourseType());
         courseService.addCourse(courseModel);
         return new ModelAndView("redirect:/course/courseAddLessons");
     }
