@@ -37,7 +37,7 @@ public class AccountController
         this.userRepository = userRepository;
     }
 
-    @GetMapping(value = "/manage")
+    @GetMapping(value = "/account/manage")
     public String getManageAccount(Model model)
     {
         model.addAttribute("user", accountRespository.findByUsername(getAccountUsername()));
@@ -46,7 +46,7 @@ public class AccountController
         return "manage-account";
     }
 
-    @RequestMapping(value = "/changeaccdetails", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/edit/details", method = RequestMethod.POST)
     public RedirectView changeAccountDetails(@RequestParam("FirstName") String firstName,
                                              @RequestParam("LastName") String lastName,
                                              @RequestParam("Email") String email,
@@ -71,7 +71,7 @@ public class AccountController
         return new RedirectView("manage");
     }
 
-    @RequestMapping(value = "/changeaccpassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/edit/password", method = RequestMethod.POST)
     public RedirectView changeAccountPassword(@RequestParam("Password") String password)
     {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
@@ -156,5 +156,4 @@ public class AccountController
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         FileCopyUtils.copy(inputStream, response.getOutputStream());
     }
-
 }
