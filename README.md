@@ -16,6 +16,7 @@ Following guide will explain how to get the website running. The website was wri
 ### Prerequisites
 
 [Java 8](https://www.java.com/en/download/)
+
 [Maven](https://maven.apache.org/download.cgi) (Is provided natively by most IDE's)
 
 ### Installing
