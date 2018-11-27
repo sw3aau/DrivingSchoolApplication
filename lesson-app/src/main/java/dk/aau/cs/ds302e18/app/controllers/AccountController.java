@@ -37,7 +37,7 @@ public class AccountController
         this.userRepository = userRepository;
     }
 
-    @GetMapping(value = "/account/manage")
+    @GetMapping(value = "/account/edit")
     public String getManageAccount(Model model)
     {
         model.addAttribute("user", accountRespository.findByUsername(getAccountUsername()));
@@ -68,7 +68,7 @@ public class AccountController
         account.setCity(city);
         account.setZipCode(zip);
         this.accountRespository.save(account);
-        return new RedirectView("manage");
+        return new RedirectView("redirect:/account/edit");
     }
 
     @RequestMapping(value = "/account/edit/password", method = RequestMethod.POST)
@@ -84,7 +84,7 @@ public class AccountController
         user.setPassword(newPass);
         user.setActive(true);
         this.userRepository.save(user);
-        return new RedirectView("manage");
+        return new RedirectView("redirect:/account/edit");
     }
 
     @ModelAttribute("gravatar")
