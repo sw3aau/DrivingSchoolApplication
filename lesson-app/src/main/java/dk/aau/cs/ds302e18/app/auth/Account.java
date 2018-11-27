@@ -11,7 +11,7 @@ public class Account
 {
     @Id
     @Column(name="AUTH_USER_ACCOUNT_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name="USERNAME", nullable = false)
     private String username;
