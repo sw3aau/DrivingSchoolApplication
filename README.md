@@ -16,26 +16,26 @@ Following guide will explain how to get the website running. The website was wri
 ### Prerequisites
 
 [Java 8](https://www.java.com/en/download/)
-[Maven] (https://maven.apache.org/download.cgi) (Is provided natively by most IDE's)
+[Maven](https://maven.apache.org/download.cgi) (Is provided natively by most IDE's)
 
 ### Installing
 
 First clone the repository.
 
 ```sh
-$ git clone https://github.com/SW3-ds302e18-2018/DrivingSchoolApplication.git
+git clone https://github.com/SW3-ds302e18-2018/DrivingSchoolApplication.git
 ```
 
 Go to the directory.
 
 ```sh
-$ cd DrivingSchoolApplication
+cd DrivingSchoolApplication
 ```
 
 Compile the project using maven.
 
 ```sh
-$ mvn compile
+mvn compile
 ```
 
 ## Built With
