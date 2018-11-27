@@ -1,12 +1,10 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
-import dk.aau.cs.ds302e18.app.auth.Account;
-import dk.aau.cs.ds302e18.app.auth.AccountRespository;
-import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
-import dk.aau.cs.ds302e18.app.auth.UserRepository;
+import dk.aau.cs.ds302e18.app.auth.*;
 import dk.aau.cs.ds302e18.app.domain.AccountViewModel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -86,6 +84,41 @@ public class AdminController
         account.setCity(city);
         account.setZipCode(zip);
         this.accountRespository.save(account);
+        return new RedirectView("admin");
+    }
+
+    @RequestMapping(value = "/adminChangePassword", method = RequestMethod.POST)
+    public RedirectView resetAccountPassword(
+            @RequestParam("Username") String username,
+            @RequestParam("Password") String password
+    )
+    {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
+
+        String newPass = passwordEncoder.encode(password);
+
+        User user = new User();
+        user.setId(userRepository.findByUsername(username).getId());
+        user.setUsername(username);
+        user.setPassword(newPass);
+        user.setActive(true);
+        this.userRepository.save(user);
+        return new RedirectView("admin");
+    }
+
+    @RequestMapping(value = "/adminChangeRole", method = RequestMethod.POST)
+    public RedirectView changeRole(
+            @RequestParam("Username") String username,
+            @RequestParam("Role") String role
+    )
+    {
+        System.out.println(username+role);
+
+        AuthGroup authGroup = new AuthGroup();
+        authGroup.setId(userRepository.findByUsername(username).getId());
+        authGroup.setAuthGroup(role);
+        authGroup.setUsername(username);
+        this.authGroupRepository.save(authGroup);
         return new RedirectView("admin");
     }
 
