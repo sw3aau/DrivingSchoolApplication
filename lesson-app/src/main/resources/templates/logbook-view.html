@@ -1,26 +1,28 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}" lang="en">
 <head>
     <title>Home</title>
     <style>
         .centerpane {
-            width: 70%;
+            width: 60%;
+            height: available;
+            max-height: 350px;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
     </style>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <h1>Here are your lessons in logbook <span th:text="${logbookId}"></span>:</h1>
+        <h1><span th:text="${username}"></span>, here are the lessons in logbook <span th:text="${logbookId}"></span>:</h1>
         <h3>You can select a lesson or course to view, by clicking on it's ID.</h3>
     </div>
-    <div class="centerpane">
+        <div class="centerpane">
         <table id="logbookLessonsTable" class="table table-hover table-sm bordered">
             <thead>
             <th scope="col">Lesson ID</th>

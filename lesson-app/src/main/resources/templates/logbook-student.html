@@ -1,10 +1,13 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
 <head>
     <title>Home</title>
     <style>
         .centerpane {
-            width: 70%;
+            width: 60%;
+            height: available;
+            max-height: 350px;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -16,7 +19,7 @@
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <h1><span th:text="${studentUsername}"></span>, here are your logbooks:</h1>
+        <h1><span th:text="${username}"></span>, here are your logbooks:</h1>
         <h3>You can select a logbook or course to view, by clicking on it's ID.</h3>
     </div>
     <div class="centerpane">
@@ -30,7 +33,8 @@
             <tbody>
             <tr th:each="logbook : ${studentLogbookList}">
                 <th scope="row"><a th:href="@{'/logbook/' + ${logbook.getId()}}" th:text="${logbook.getId()}"></a></th>
-                <th scope="row"><a th:href="@{'/couse/' + ${logbook.getCourseID()}}" th:text="${logbook.getCourseID()}"></a></th>
+                <th scope="row"><a th:href="@{'/couse/' + ${logbook.getCourseID()}}"
+                                   th:text="${logbook.getCourseID()}"></a></th>
                 <td th:text="${logbook.getStudent()}"></td>
                 <td th:text="${logbook.isActive()}"></td>
             </tr>
