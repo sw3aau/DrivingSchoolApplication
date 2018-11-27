@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <div sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
         <table id="tableAdmin" class="table table-striped table-sm">
             <thead>
             <th scope="col">#</th>

@@ -18,7 +18,7 @@
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/lessons}">Lessons</a>
                         </li>
-                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item" sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
                             <a class="nav-link" th:href="@{/course}">Course</a>
                         </li>
                         <li class="nav-item">
@@ -30,7 +30,7 @@
                         <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                             <a class="nav-link" th:href="@{/storeadmin}">Store Manager</a>
                         </li>
-                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item" sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
                             <a class="nav-link" th:href="@{/admin}">User Manager</a>
                         </li>
                         <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">

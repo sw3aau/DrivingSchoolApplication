@@ -81,7 +81,7 @@ public class LessonController
     }
 
     @GetMapping(value = "/lessons")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
     public String getLessons(Model model)
     {
         /* Creates an list of lessons from the return value of getAllLessons in LessonService(which is an function that gets lessons
@@ -112,7 +112,7 @@ public class LessonController
     }
 
     @GetMapping(value = "/lessons/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String getAddLessonForm(Model model)
     {
         ArrayList<Account> userAccounts = findAccountsOfType("USER");
@@ -129,7 +129,7 @@ public class LessonController
 
     /* Posts a newly added lesson in the lessons list on the website */
     @PostMapping(value = "/lessons")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public ModelAndView addLesson(HttpServletRequest request, Model model, @ModelAttribute LessonModel lessonModel)
     {
         /* The newly added lesson object is retrieved from the 8100 server.  */
@@ -150,7 +150,7 @@ public class LessonController
     }
 
     @GetMapping(value = "/lessons/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String getLesson(Model model, @PathVariable long id)
     {
         Lesson lesson = this.lessonService.getLesson(id);
@@ -177,7 +177,7 @@ public class LessonController
     }
 
     @PostMapping(value = "/lessons/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String updateLesson(Model model, @PathVariable long id, @ModelAttribute LessonModel lessonModel)
     {
         /* Returns an lesson that is read from the 8100 server through updateCourse. */

@@ -44,7 +44,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/course")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String getCourses(Model model)
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
@@ -150,7 +150,7 @@ public class CourseController {
 
 
     @GetMapping(value = "/course/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String getCourse(Model model, @PathVariable long id)
     {
         Course course = this.courseService.getCourse(id);
