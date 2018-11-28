@@ -116,7 +116,7 @@ public class AccountController
         // Create FileWriter object, it will not append to the file
         FileWriter fileWriter = new FileWriter(file,false);
 
-        // Create headers which Google Calendar accepts
+        // Create CSV headers which Google Calendar accepts
         fileWriter.write("Subject, Start date, Start time\n");
 
         // TODO: Potentially shift this towards "services" instead of directly on controller

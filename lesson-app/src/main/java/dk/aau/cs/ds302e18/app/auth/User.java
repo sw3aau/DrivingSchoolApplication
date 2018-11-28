@@ -5,8 +5,10 @@ import dk.aau.cs.ds302e18.app.Student;
 import javax.persistence.*;
 import java.util.ArrayList;
 
-/* Ensures that the table User exists in the database and has the following columns.
-   Also provides setters and getters. */
+/**
+ * Contains authentication information about the user,
+ * such as the username, password and whether the account is active
+ */
 @Entity
 @Table(name="ACCOUNT")
 public class User {
