@@ -1,10 +1,7 @@
 package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.auth.AccountRespository;
-import dk.aau.cs.ds302e18.app.domain.Course;
-import dk.aau.cs.ds302e18.app.domain.CourseType;
-import dk.aau.cs.ds302e18.app.domain.Store;
-import dk.aau.cs.ds302e18.app.domain.StoreModel;
+import dk.aau.cs.ds302e18.app.domain.*;
 import dk.aau.cs.ds302e18.app.service.CourseService;
 import dk.aau.cs.ds302e18.app.service.StoreService;
 import org.springframework.http.HttpStatus;
@@ -88,10 +85,6 @@ public class StoreController
             if ((course.getCourseType() == CourseType.TYPE_BE_CAR_TRAILER)) BEType.add(course);
             if ((course.getCourseType() == CourseType.TYPE_A_BIKE)) AType.add(course);
         }
-
-        System.out.println(BType);
-        System.out.println(BEType);
-        System.out.println(AType);
 
         model.addAttribute("b_car_list", BType);
         model.addAttribute("be_car_list", BEType);
@@ -182,7 +175,8 @@ public class StoreController
     @RequestMapping(value="/accept", method=RequestMethod.POST)
     public RedirectView acceptAppState(@RequestParam("appId") long appId, @RequestParam("courseIdAccept") long courseId,
                                        @RequestParam("studentUsernameAccept") String studentUsername, Model model,
-                                       @ModelAttribute StoreModel storeModel) {
+                                       @ModelAttribute StoreModel storeModel,
+                                       @ModelAttribute CourseModel courseModel) {
         // Predefining byte to state 1 (accepted application)
         Byte b = 1;
 
@@ -193,8 +187,22 @@ public class StoreController
 
         // Creating the storemodel with the set values above, and updaing it.
         Store store = this.storeService.acceptStoreRequest(appId, storeModel);
+
+        Course course = courseService.getCourse(courseId);
+
+        courseModel.setInstructorUsername(course.getInstructorUsername());
+        courseModel.setCourseType(course.getCourseType());
+
+        String studentUsernames = course.getStudentUsernames();
+        /* Adds the new student */
+        studentUsernames += "," + studentUsername;
+        courseModel.setStudentUsernames(studentUsernames);
+
+        courseService.updateCourse(courseId, courseModel);
+
         model.addAttribute("store", store);
         model.addAttribute("storeModel", new StoreModel());
+
         return new RedirectView("storeadmin");
     }
 
