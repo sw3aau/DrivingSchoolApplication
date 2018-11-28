@@ -16,9 +16,8 @@ public class LessonModel
     //This is to prevent lessons from changing type after compeletion.
     //It lesson needs to be changed, a new lesson must be created.
     private boolean isSigned;
-    private long courseId;
+    private int courseId;
     private CourseType courseType;
-    private LessonState lessonState;
 
     public CourseType getCourseType()
     {
