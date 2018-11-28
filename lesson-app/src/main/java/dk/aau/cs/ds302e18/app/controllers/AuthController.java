@@ -74,7 +74,7 @@ public class AuthController
 
         AuthGroup authGroup = new AuthGroup();
         authGroup.setUsername(username);
-        authGroup.setAuthGroup("USER");
+        authGroup.setAuthGroup("STUDENT");
 
         accountRespository.save(account);
         authGroupRepository.save(authGroup);

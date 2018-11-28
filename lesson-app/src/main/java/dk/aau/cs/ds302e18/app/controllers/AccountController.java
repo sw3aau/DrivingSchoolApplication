@@ -2,6 +2,7 @@ package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.DBConnector;
 import dk.aau.cs.ds302e18.app.auth.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

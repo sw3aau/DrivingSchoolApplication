@@ -17,6 +17,10 @@ public class Course
     @Column(name="INSTRUCTOR_USERNAME")
     private String instructorUsername;
 
+    @Column(name="COURSE_TYPE")
+    @Enumerated(EnumType.STRING)
+    private CourseType courseType;
+
     public Course() {
         super();
     }
@@ -43,5 +47,13 @@ public class Course
 
     public void setInstructorUsername(String instructorUsername) {
         this.instructorUsername = instructorUsername;
+    }
+
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 }

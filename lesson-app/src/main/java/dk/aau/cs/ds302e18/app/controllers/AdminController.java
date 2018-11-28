@@ -2,6 +2,7 @@ package dk.aau.cs.ds302e18.app.controllers;
 
 import dk.aau.cs.ds302e18.app.auth.*;
 import dk.aau.cs.ds302e18.app.domain.AccountViewModel;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,11 +32,12 @@ public class AdminController
     }
 
     @GetMapping(value = "/admin")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String getAdminPage(Model model)
     {
         ArrayList<AccountViewModel> accountViewModelList = new ArrayList<>();
 
-        for (long i = 1; i < this.userRepository.findAll().size(); i++)
+        for (long i = 1; i <= this.userRepository.findAll().size(); i++)
         {
             AccountViewModel accountViewModel = new AccountViewModel();
             accountViewModel.setUsername(this.userRepository.getOne(i).getUsername());
@@ -52,6 +54,7 @@ public class AdminController
     }
 
     @GetMapping(value = "/admin/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAdminPageForUser(Model model, @PathVariable String username)
     {
         model.addAttribute("user", accountRespository.findByUsername(username));
@@ -62,6 +65,7 @@ public class AdminController
 
 
     @RequestMapping(value = "/adminChangeDetails", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView changeAccountDetailsAdmin(@RequestParam("Username") String username,
                                                   @RequestParam("FirstName") String firstName,
                                              @RequestParam("LastName") String lastName,
@@ -88,6 +92,7 @@ public class AdminController
     }
 
     @RequestMapping(value = "/adminChangePassword", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView resetAccountPassword(
             @RequestParam("Username") String username,
             @RequestParam("Password") String password
@@ -107,6 +112,7 @@ public class AdminController
     }
 
     @RequestMapping(value = "/adminChangeRole", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView changeRole(
             @RequestParam("Username") String username,
             @RequestParam("Role") String role

@@ -37,7 +37,7 @@ public class LogbookController {
      * @return
      */
     @GetMapping(value = {"/logbook/student"})
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
     public String getStudentLogbookLessons(Model model) {
         List<Lesson> lessonList = this.lessonService.getAllLessons();
         //Creates a list, to store the user's lessons in the logbook
@@ -69,7 +69,7 @@ public class LogbookController {
      * @return
      */
     @GetMapping(value = {"/logbook/instructor"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String getInstructorLogbookLessons(Model model) {
         List<Lesson> lessonList = this.lessonService.getAllLessons();
         //Creates a list, to store the user's lessons in the logbook

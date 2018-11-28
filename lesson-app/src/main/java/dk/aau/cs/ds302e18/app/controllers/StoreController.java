@@ -56,7 +56,7 @@ public class StoreController
     }
 
     @GetMapping(value = "/store")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
     public String getStore(Model model)
     {
         // Fetching all requests in a list
@@ -107,7 +107,7 @@ public class StoreController
      * @return
      */
     @GetMapping(value = "/storeadmin/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
     public String getStore(Model model, @PathVariable long id)
     {
         Store store = this.storeService.getStoreRequest(id);
