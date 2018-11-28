@@ -47,6 +47,17 @@ public class AccountController
         return "manage-account";
     }
 
+    /**
+     * @param firstName The first name of the user
+     * @param lastName The last name of the user
+     * @param email The email of the user
+     * @param phoneNumber The phone number of the user
+     * @param birthday The birthday of the user
+     * @param address The address of the user
+     * @param city The city of the user
+     * @param zip The zip of the user
+     * @return The site to be redirected to
+     */
     @RequestMapping(value = "/account/edit/details", method = RequestMethod.POST)
     public RedirectView changeAccountDetails(@RequestParam("FirstName") String firstName,
                                              @RequestParam("LastName") String lastName,
@@ -106,6 +117,10 @@ public class AccountController
         return ((UserDetails) principal).getUsername();
     }
 
+    /**
+     * @param response The response to be returned to the user as a file
+     * @throws IOException If the MySQL errors
+     */
     @RequestMapping(value = "/account/exportCalendar", method = RequestMethod.GET)
     @ResponseBody
     public void exportCalendar(HttpServletResponse response) throws IOException
