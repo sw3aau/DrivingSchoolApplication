@@ -83,7 +83,7 @@ public class StoreController
 
         for (Course course: courses)
         {
-            System.out.println(cour()    );
+            System.out.println();
             if ((course.getCourseType() == CourseType.TYPE_B_CAR)) BType.add(course);
             if ((course.getCourseType() == CourseType.TYPE_BE_CAR_TRAILER)) BEType.add(course);
             if ((course.getCourseType() == CourseType.TYPE_A_BIKE)) AType.add(course);
