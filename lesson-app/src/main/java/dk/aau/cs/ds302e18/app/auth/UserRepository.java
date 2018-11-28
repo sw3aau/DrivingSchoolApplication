@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
    The repository can now be called through the objects from the UserRepository class. */
 public interface UserRepository extends JpaRepository<User, Long>{
     User findByUsername(String username);
+    User findById(long id);
 }

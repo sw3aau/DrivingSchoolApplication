@@ -8,6 +8,16 @@ public class CourseModel {
     private long courseTableID;
     private CourseType courseType;
 
+    public CourseType getCourseType()
+    {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType)
+    {
+        this.courseType = courseType;
+    }
+
     public String getInstructorUsername() {
         return instructorUsername;
     }
@@ -38,14 +48,6 @@ public class CourseModel {
 
     public void setCourseTableID(long courseTableID) {
         this.courseTableID = courseTableID;
-    }
-
-    public CourseType getCourseType() {
-        return courseType;
-    }
-
-    public void setCourseType(CourseType courseType) {
-        this.courseType = courseType;
     }
 
     public Course translateModelToCourse(){

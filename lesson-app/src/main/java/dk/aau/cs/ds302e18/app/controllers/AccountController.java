@@ -38,7 +38,7 @@ public class AccountController
         this.userRepository = userRepository;
     }
 
-    @GetMapping(value = "/manage")
+    @GetMapping(value = "/account/edit")
     public String getManageAccount(Model model)
     {
         model.addAttribute("user", accountRespository.findByUsername(getAccountUsername()));
@@ -47,7 +47,7 @@ public class AccountController
         return "manage-account";
     }
 
-    @RequestMapping(value = "/changeaccdetails", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/edit/details", method = RequestMethod.POST)
     public RedirectView changeAccountDetails(@RequestParam("FirstName") String firstName,
                                              @RequestParam("LastName") String lastName,
                                              @RequestParam("Email") String email,
@@ -57,9 +57,9 @@ public class AccountController
                                              @RequestParam("City") String city,
                                              @RequestParam("Zip") int zip)
     {
-        Account account = new Account();
-        account.setUsername(getAccountUsername());
-        account.setId(accountRespository.findByUsername(getAccountUsername()).getId());
+        // Retrieve account from the repository
+        Account account = accountRespository.findByUsername(getAccountUsername());
+
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setEmail(email);
@@ -69,23 +69,27 @@ public class AccountController
         account.setCity(city);
         account.setZipCode(zip);
         this.accountRespository.save(account);
-        return new RedirectView("manage");
+        return new RedirectView("redirect:/account/edit");
     }
 
-    @RequestMapping(value = "/changeaccpassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/edit/password", method = RequestMethod.POST)
     public RedirectView changeAccountPassword(@RequestParam("Password") String password)
     {
+        // Get current user by username
+        User user = userRepository.findByUsername(getAccountUsername());
+
+        // Initialize BCryptPasswordEncoder with strength 11
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(11);
 
-        String newPass = passwordEncoder.encode(password);
+        // Encode and store the password in the variable
+        String encodedPassword = passwordEncoder.encode(password);
 
-        User user = new User();
-        user.setId(userRepository.findByUsername(getAccountUsername()).getId());
-        user.setUsername(getAccountUsername());
-        user.setPassword(newPass);
-        user.setActive(true);
+        // Replace the user's password with the new encoded password
+        user.setPassword(encodedPassword);
+
+        // Save the user back into the repository
         this.userRepository.save(user);
-        return new RedirectView("manage");
+        return new RedirectView("redirect:/account/edit");
     }
 
     @ModelAttribute("gravatar")
@@ -93,15 +97,13 @@ public class AccountController
 
         //Models Gravatar
         System.out.println(accountRespository.findByUsername(getAccountUsername()).getEmail());
-        String gravatar = ("http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail()));
-        return (gravatar);
+        return "http://0.gravatar.com/avatar/"+md5Hex(accountRespository.findByUsername(getAccountUsername()).getEmail());
     }
 
     public String getAccountUsername()
     {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-        return username;
+        return ((UserDetails) principal).getUsername();
     }
 
     @RequestMapping(value = "/account/exportCalendar", method = RequestMethod.GET)
@@ -157,5 +159,4 @@ public class AccountController
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         FileCopyUtils.copy(inputStream, response.getOutputStream());
     }
-
 }
