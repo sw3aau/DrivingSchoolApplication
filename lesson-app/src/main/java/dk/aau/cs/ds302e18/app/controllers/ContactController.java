@@ -28,6 +28,8 @@ public class ContactController {
         return "contact-formular";
     }
 
+    // All fields in the contact page must be filled out when sending the contact page, where the requestedparameters
+    // will be taken from the users input and account settings
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
     public RedirectView acceptContactState(@RequestParam("firstName") String firstName, @RequestParam("email") String email,
                                            @RequestParam("message") String message) {

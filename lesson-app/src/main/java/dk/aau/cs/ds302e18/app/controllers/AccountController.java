@@ -46,7 +46,7 @@ public class AccountController
                 authGroupRepository.findByUsername(getAccountUsername()).get(0).getAuthGroup());
         return "manage-account";
     }
-
+    // request the data from the user to update the users account settings by accessing the accountRepository
     @RequestMapping(value = "/changeaccdetails", method = RequestMethod.POST)
     public RedirectView changeAccountDetails(@RequestParam("FirstName") String firstName,
                                              @RequestParam("LastName") String lastName,

@@ -1,5 +1,8 @@
 package dk.aau.cs.ds302e18.app.domain;
 
+/*A model of the class Student, which is used with Spring to get the data from the student.
+ Even though some set methods might say they are not used in Intellj, in spring they will be used even though
+ Intellj tells its not used. */
 public class StudentModel {
     private int userID;
     private String firstName;
