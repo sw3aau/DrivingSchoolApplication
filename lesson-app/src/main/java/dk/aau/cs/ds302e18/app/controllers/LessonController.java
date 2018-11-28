@@ -5,8 +5,6 @@ import dk.aau.cs.ds302e18.app.auth.AccountRespository;
 import dk.aau.cs.ds302e18.app.auth.AuthGroup;
 import dk.aau.cs.ds302e18.app.auth.AuthGroupRepository;
 import dk.aau.cs.ds302e18.app.domain.*;
-import dk.aau.cs.ds302e18.app.RegisterUser;
-import dk.aau.cs.ds302e18.app.Student;
 import dk.aau.cs.ds302e18.app.domain.Lesson;
 import dk.aau.cs.ds302e18.app.domain.LessonModel;
 import dk.aau.cs.ds302e18.app.domain.SignatureCanvas;
@@ -24,7 +22,6 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

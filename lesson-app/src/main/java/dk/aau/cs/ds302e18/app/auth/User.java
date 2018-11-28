@@ -1,9 +1,6 @@
 package dk.aau.cs.ds302e18.app.auth;
 
-import dk.aau.cs.ds302e18.app.Student;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 
 /**
  * Contains authentication information about the user,
