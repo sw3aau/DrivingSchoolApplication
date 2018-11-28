@@ -35,23 +35,32 @@ public class AdminController
     @PreAuthorize("hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')")
     public String getAdminPage(Model model)
     {
-        ArrayList<AccountViewModel> accountViewModelList = new ArrayList<>();
+        List<AccountViewModel> accountViewModelList = new ArrayList<>();
 
-        for (long i = 1; i <= this.userRepository.findAll().size(); i++)
+        List<User> userArrayList = this.userRepository.findAll();
+        System.out.println("Use REPO" + userArrayList.size());
+        List<Account> accounts = this.accountRespository.findAll();
+        System.out.println("ACCOUNT REPO" + accounts.size());
+        List<AuthGroup> authGroups = this.authGroupRepository.findAll();
+        System.out.println("AUTH GROUP"+  authGroups.size());
+
+        System.out.println(userArrayList.size());
+
+        for (int i = 0; i < userArrayList.size(); i++)
         {
             AccountViewModel accountViewModel = new AccountViewModel();
-            accountViewModel.setUsername(this.userRepository.getOne(i).getUsername());
-            accountViewModel.setFirstName(this.accountRespository.getOne(i).getFirstName());
-            accountViewModel.setLastName(this.accountRespository.getOne(i).getLastName());
-            accountViewModel.setAuthGroup(this.authGroupRepository.getOne(i).getAuthGroup());
+            accountViewModel.setUsername(userArrayList.get(i).getUsername());
+            accountViewModel.setFirstName(accounts.get(i).getFirstName());
+            accountViewModel.setLastName(accounts.get(i).getLastName());
+            accountViewModel.setAuthGroup(authGroups.get(i).getAuthGroup());
             accountViewModelList.add(accountViewModel);
             System.out.println(accountViewModel.toString());
         }
 
         model.addAttribute("GetAllAccounts", accountViewModelList);
-        System.out.println(accountViewModelList);
         return "admin";
     }
+
 
     @GetMapping(value = "/admin/{username}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

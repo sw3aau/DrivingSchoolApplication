@@ -52,11 +52,9 @@ public class CourseController {
         setInstructorFullName(courses);
         courses.sort(new SortByCourseID());
 
-        ArrayList<Account> studentAccounts = findAccountsOfType("USER");
-        ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
 
-        model.addAttribute("instructorAccounts", instructorAccounts);
-        model.addAttribute("studentAccounts", studentAccounts);
+        model.addAttribute("instructorAccounts", findInstructors());
+        model.addAttribute("studentAccounts", findStudents());
         model.addAttribute("courses", courses);
         return "courses-view";
     }
@@ -78,7 +76,7 @@ public class CourseController {
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
         setStudentsFullName(courses);
-        ArrayList<Account> instructorAccounts = findAccountsOfType("ADMIN");
+        List<Account> instructorAccounts = findInstructors();
 
         model.addAttribute("instructorAccounts", instructorAccounts);
         model.addAttribute("courses", courses);
@@ -91,6 +89,8 @@ public class CourseController {
         ArrayList<Date> lessonDates = createLessonDates(courseModel.getStartDate(), courseModel.getWeekdays(), courseModel.getNumberLessons(), courseModel.getNumberLessonsADay());
         /* All added lessons will be initialized as unsigned */
 
+        Course latestCreatedCourse = courseService.getLastCourseByID();
+
         /* For every lesson date, a lesson will be created */
         for (int j = 0; j < lessonDates.size(); j++) {
             Date lessonDate = lessonDates.get(j);
@@ -98,7 +98,6 @@ public class CourseController {
             lesson.setLessonState(LessonState.PENDING);
             lesson.setLessonDate(lessonDate);
             lesson.setLessonLocation(courseModel.getLocation());
-            Course latestCreatedCourse = courseService.getLastCourseByID();
             lesson.setLessonInstructor(latestCreatedCourse.getInstructorUsername());
             lesson.setStudentList(latestCreatedCourse.getStudentUsernames());
             lesson.setCourseId(latestCreatedCourse.getCourseTableID());
@@ -161,8 +160,8 @@ public class CourseController {
                 lessonsMatchingCourse.add(lesson);
         }
 
-        ArrayList<Account> studentAccounts = findAccountsOfType("USER");
-        ArrayList<Account> studentsBelongingToCourse = findAccountTypeBelongingToCourse(course, "USER");
+        List<Account> studentAccounts = findStudents();
+        List<Account> studentsBelongingToCourse = findAccountTypeBelongingToCourse(course, "STUDENT");
         /* Finds all user accounts and adds those that belongs to the course in a separate arrayList */
         model.addAttribute("course", course);
         model.addAttribute("studentAccounts", studentAccounts);
@@ -173,10 +172,10 @@ public class CourseController {
     }
 
 
-    private ArrayList<Account> findAccountTypeBelongingToCourse(Course course, String accountType){
-        ArrayList<Account> studentAccounts = findAccountsOfType(accountType);
-        ArrayList<String> studentsInCourseAsStringArray = saveUsernameStringAsList(course.getStudentUsernames());
-        ArrayList<Account> studentsBelongingToCourse = new ArrayList<>();
+    private List<Account> findAccountTypeBelongingToCourse(Course course, String accountType){
+        List<Account> studentAccounts = findStudents();
+        List<String> studentsInCourseAsStringArray = saveUsernameStringAsList(course.getStudentUsernames());
+        List<Account> studentsBelongingToCourse = new ArrayList<>();
         for(Account studentAccount: studentAccounts){
             if(studentsInCourseAsStringArray.contains(studentAccount.getUsername()))
                 studentsBelongingToCourse.add(studentAccount);
@@ -272,20 +271,6 @@ public class CourseController {
         return studentList;
     }
 
-    private ArrayList<Account> findAccountsOfType(String accountType){
-        List<AuthGroup> users = authGroupRepository.findAll();
-        ArrayList<AuthGroup> studentsAuthList = new ArrayList<>();
-        for(AuthGroup user: users){
-            if(user.getAuthGroup().equals(accountType)){
-                studentsAuthList.add(user);
-            }
-        }
-        ArrayList<Account> studentAccounts = new ArrayList<>();
-        for(AuthGroup studentAuth : studentsAuthList){
-            studentAccounts.add(accountRespository.findByUsername(studentAuth.getUsername()));
-        }
-        return studentAccounts;
-    }
 
     private void setStudentsFullName(List<Course> courseList){
         /*  Every student username list in account is separated and added to an String array. Then the
@@ -334,5 +319,35 @@ public class CourseController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
         return username;
+    }
+
+    private List<Account> findStudents(){
+
+        List<AuthGroup> authGroups = this.authGroupRepository.findAll();
+        List<Account> accountList = this.accountRespository.findAll();
+
+        List<Account> studentAccounts = new ArrayList<>();
+
+        for (int i = 0; i < accountList.size(); i++)
+        {
+            if (authGroups.get(i).getAuthGroup().contains("STUDENT")) studentAccounts.add(accountList.get(i));
+        }
+
+        return studentAccounts;
+    }
+
+    private List<Account> findInstructors(){
+
+        List<AuthGroup> authGroups = this.authGroupRepository.findAll();
+        List<Account> accountList = this.accountRespository.findAll();
+
+        List<Account> instructorAccounts = new ArrayList<>();
+
+        for (int i = 0; i < accountList.size(); i++)
+        {
+            if (authGroups.get(i).getAuthGroup().contains("INSTRUCTOR")) instructorAccounts.add(accountList.get(i));
+        }
+
+        return instructorAccounts;
     }
 }
