@@ -52,7 +52,6 @@ public class CourseController {
         setInstructorFullName(courses);
         courses.sort(new SortByCourseID());
 
-
         model.addAttribute("instructorAccounts", findInstructors());
         model.addAttribute("studentAccounts", findStudents());
         model.addAttribute("courses", courses);
@@ -288,7 +287,7 @@ public class CourseController {
             /* Saves the arrayList as an single string */
             String studentFullNames = saveStringListAsSingleString(fullNames);
             /* The way saveStringListAsSingleString formats the list to an string is with an comma at the end of each
-               object. The last of the commas is removed for appearance sake. */
+                       object. The last of the commas is removed for appearance sake. */
             String studentFullNamesWithoutEndingComma = studentFullNames.substring(0, studentFullNames.length()-1);
 
             course.setStudentNamesString(studentFullNamesWithoutEndingComma);
