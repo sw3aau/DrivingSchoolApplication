@@ -28,30 +28,6 @@ public class LessonModel
         this.courseType = courseType;
     }
 
-    private CourseType courseType;
-
-    public CourseType getCourseType()
-    {
-        return courseType;
-    }
-
-    public void setCourseType(CourseType courseType)
-    {
-        this.courseType = courseType;
-    }
-
-    private CourseType courseType;
-
-    public CourseType getCourseType()
-    {
-        return courseType;
-    }
-
-    public void setCourseType(CourseType courseType)
-    {
-        this.courseType = courseType;
-    }
-
     public boolean isSigned()
     {
         return signed;
