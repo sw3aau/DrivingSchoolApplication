@@ -5,13 +5,13 @@
 
     <style>
         .centerpane {
-            width: 60%;
+            width: 85%;
             height: available;
-            max-height: 350px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            border-collapse: collapse;
+            margin-left: 3%;
+            margin-right: 3%;
+            margin-top: 7%;
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 
 <div layout:fragment="content">
     <div class="container main-content">
-        <h1><span th:text="${username}"></span>, here are the finished lessons within the time period:</h1>
+        <h3><span th:text="${username}"></span>, here are the finished lessons within the time period:</h3>
         <h5>There are <span th:text="${salaryLessonTotal}"></span> lessons with <span
                 th:text="${uniqueCourseIdTotal}"></span> unique course ids.
             <span th:text="${courseTypeBLessonTotal}"></span> of them are type B.
