@@ -11,9 +11,12 @@ public class Course {
     private String studentUsernames;
     private String instructorUsername;
     private CourseType courseType;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date courseStartDate;
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date startDate;
+    private Date startingPoint;
     private ArrayList<Integer> weekdays;
     private int numberLessons;
     private int numberLessonsADay;
@@ -57,12 +60,20 @@ public class Course {
         this.studentUsernames = studentUsernames;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getCourseStartDate() {
+        return courseStartDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setCourseStartDate(Date courseStartDate) {
+        this.courseStartDate = courseStartDate;
+    }
+
+    public Date getStartingPoint() {
+        return startingPoint;
+    }
+
+    public void setStartingPoint(Date startingPoint) {
+        this.startingPoint = startingPoint;
     }
 
     public ArrayList<Integer> getWeekdays() {
@@ -155,6 +166,7 @@ public class Course {
 
     public Course translateModelToCourse(){
         Course course = new Course();
+        course.setCourseStartDate(this.courseStartDate);
         course.setStudentUsernames(this.studentUsernames);
         course.setCourseTableID(this.courseTableID);
         course.setCourseType(this.courseType);

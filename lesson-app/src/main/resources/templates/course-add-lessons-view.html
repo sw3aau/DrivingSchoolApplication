@@ -38,8 +38,8 @@
         <form method="post" action="#" th:action="'/course/courseAddLessons'" th:object="${courseModel}">
             <h4> Lessons Will Be Distributed After Date <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="From what date the lessons will be distributed. So if startdate is an monday and Tuesday is chosen in weekdays, every tuesday from the startdate will be distributed lessons."></span></h4>
             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                <input th:id="startDate" th:name="startDate" type="text" class="form-control datetimepicker-input"
-                       data-target="#datetimepicker1" th:value="${course != null} ? ${course.startDate}"/>
+                <input th:id="startingPoint" th:name="startingPoint" type="text" class="form-control datetimepicker-input"
+                       data-target="#datetimepicker1" th:value="${course != null} ? ${course.startingPoint}"/>
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>

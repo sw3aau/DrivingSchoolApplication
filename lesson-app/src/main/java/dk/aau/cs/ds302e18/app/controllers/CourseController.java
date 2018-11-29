@@ -48,7 +48,6 @@ public class CourseController {
     public String getCourses(Model model)
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
-        setStudentsFullName(courses);
         setInstructorFullName(courses);
         courses.sort(new SortByCourseID());
 
@@ -63,7 +62,7 @@ public class CourseController {
     @PostMapping(value = "/course/addCourse")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView addCourse(@ModelAttribute CourseModel courseModel) {
-        System.out.println(courseModel.getCourseType());
+        System.out.println("The value is: " + courseModel.getStudentUsernames());
         courseService.addCourse(courseModel);
         return new ModelAndView("redirect:/course/courseAddLessons");
     }
@@ -75,7 +74,6 @@ public class CourseController {
     public String getCourseAddLessonsForm(Model model)
     {
         List<Course> courses = this.courseService.getAllCourseRequests();
-        setStudentsFullName(courses);
         List<Account> instructorAccounts = findInstructors();
 
         model.addAttribute("instructorAccounts", instructorAccounts);
@@ -86,10 +84,9 @@ public class CourseController {
     @PostMapping(value = "/course/courseAddLessons")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView courseAddLessons(@ModelAttribute CourseModel courseModel) {
-        ArrayList<Date> lessonDates = createLessonDates(courseModel.getStartDate(), courseModel.getWeekdays(), courseModel.getNumberLessons(), courseModel.getNumberLessonsADay());
-        /* All added lessons will be initialized as unsigned */
+        ArrayList<Date> lessonDates = createLessonDates(courseModel.getStartingPoint(), courseModel.getWeekdays(), courseModel.getNumberLessons(), courseModel.getNumberLessonsADay());
 
-        Course latestCreatedCourse = courseService.getLastCourseByID();
+        Course lastCourseOrderedByID = courseService.getLastCourseOrderedByID();
 
         /* For every lesson date, a lesson will be created */
         for (int j = 0; j < lessonDates.size(); j++) {
@@ -98,12 +95,22 @@ public class CourseController {
             lesson.setLessonState(LessonState.PENDING);
             lesson.setLessonDate(lessonDate);
             lesson.setLessonLocation(courseModel.getLocation());
-            lesson.setLessonInstructor(latestCreatedCourse.getInstructorUsername());
-            lesson.setStudentList(latestCreatedCourse.getStudentUsernames());
-            lesson.setCourseId(latestCreatedCourse.getCourseTableID());
+            lesson.setLessonInstructor(lastCourseOrderedByID.getInstructorUsername());
+            lesson.setStudentList(lastCourseOrderedByID.getStudentUsernames());
+            lesson.setCourseId(lastCourseOrderedByID.getCourseTableID());
             lesson.setLessonType(LessonType.THEORY_LESSON);
 
             lessonService.addLesson(lesson);
+
+            /* Updates the created course start_date with the date of the first lesson created. */
+            if(j==0){
+                CourseModel updatedCourse = new CourseModel();
+                updatedCourse.setStudentUsernames(lastCourseOrderedByID.getStudentUsernames());
+                updatedCourse.setInstructorUsername(lastCourseOrderedByID.getInstructorUsername());
+                updatedCourse.setCourseType(lastCourseOrderedByID.getCourseType());
+                updatedCourse.setCourseStartDate(lessonDate);
+                courseService.updateCourse(lastCourseOrderedByID.getCourseTableID(), updatedCourse);
+            }
         }
         return new ModelAndView("redirect:/lessons");
     }
@@ -127,25 +134,6 @@ public class CourseController {
         courseService.deleteCourse(id);
         return new ModelAndView("redirect:/course/");
     }
-
-    /* Posts a newly added lesson in the lessons list on the website */
-    @PostMapping(value = "/course")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView addCourse(HttpServletRequest request, Model model, @ModelAttribute CourseModel courseModel)
-    {
-        /* The newly added course object is retrieved from the 8100 server.  */
-        Course course = this.courseService.addCourse(courseModel);
-        if (course.getStudentUsernames().isEmpty() | course.getCourseTableID() == 0)
-        {
-            throw new RuntimeException();
-        }
-        model.addAttribute("course", course);
-
-        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-        return new ModelAndView("redirect:/course/" + course.getCourseTableID());
-    }
-
-
 
 
     @GetMapping(value = "/course/{id}")
@@ -185,14 +173,19 @@ public class CourseController {
 
     @RequestMapping(value = "/course/addStudent/{id}", method=RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public RedirectView addStudent(HttpServletRequest request, Model model, @PathVariable long id, @ModelAttribute CourseModel courseModel)
+    public RedirectView addStudent(HttpServletRequest request, @PathVariable long id, @ModelAttribute CourseModel courseModel)
     {
         Course course = courseService.getCourse(id);
+        /* Sets courseType and courseStartDate from the course current values so they stay unchanged. */
+        courseModel.setCourseType(course.getCourseType());
+        courseModel.setCourseStartDate(course.getCourseStartDate());
         /* Sets the instructor so it doesn't get changed */
         courseModel.setInstructorUsername(course.getInstructorUsername());
-        /* Finds the current list of students */
-        courseModel.setInstructorUsername(course.getInstructorUsername());
+        /* Finds the current list of students. If the entry is "empty", then remove it before adding the first student. */
         String studentUsernames = course.getStudentUsernames();
+        if(studentUsernames.equals("empty")){
+            studentUsernames = "";
+        }
         /* Adds the new student */
         studentUsernames += "," + courseModel.getStudentToUpdate();
         courseModel.setStudentUsernames(studentUsernames);
@@ -271,29 +264,6 @@ public class CourseController {
         return studentList;
     }
 
-
-    private void setStudentsFullName(List<Course> courseList){
-        /*  Every student username list in account is separated and added to an String array. Then the
-         *  username is used to fetch the full name of the student belonging to the username. */
-        for(Course course: courseList){
-            ArrayList<String> fullNames = new ArrayList<>();
-            /* Saves the username in the string as an String array */
-            ArrayList<String> listOfUsernames = saveUsernameStringAsList(course.getStudentUsernames());
-            for(String username: listOfUsernames){
-                String firstName = accountRespository.findByUsername(username).getFirstName();
-                String lastName = accountRespository.findByUsername(username).getLastName();
-                String fullName = firstName + " " + lastName;
-                fullNames.add(" " + fullName);
-            }
-            /* Saves the arrayList as an single string */
-            String studentFullNames = saveStringListAsSingleString(fullNames);
-            /* The way saveStringListAsSingleString formats the list to an string is with an comma at the end of each
-               object. The last of the commas is removed for appearance sake. */
-            String studentFullNamesWithoutEndingComma = studentFullNames.substring(0, studentFullNames.length()-1);
-
-            course.setStudentNamesString(studentFullNamesWithoutEndingComma);
-        }
-    }
 
     private void setInstructorFullName(List<Course> courseList){
         /*  Finds and sets the full name for every instructor in a courseList */

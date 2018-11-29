@@ -1,6 +1,7 @@
 package dk.aau.cs.ds302e18.service.models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="COURSE")
@@ -16,6 +17,9 @@ public class Course
 
     @Column(name="INSTRUCTOR_USERNAME")
     private String instructorUsername;
+
+    @Column(name = "COURSE_START_DATE")
+    private Date courseStartDate;
 
     @Column(name="COURSE_TYPE")
     @Enumerated(EnumType.STRING)
@@ -47,6 +51,14 @@ public class Course
 
     public void setInstructorUsername(String instructorUsername) {
         this.instructorUsername = instructorUsername;
+    }
+
+    public Date getCourseStartDate() {
+        return courseStartDate;
+    }
+
+    public void setCourseStartDate(Date courseStartDate) {
+        this.courseStartDate = courseStartDate;
     }
 
     public CourseType getCourseType() {
