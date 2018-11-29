@@ -60,7 +60,6 @@ public class AuthController
         user.setActive(true);
         user.setUsername(username);
         user.setPassword(newPass);
-
         Account account = new Account();
         account.setUsername(username);
         account.setEmail(email);

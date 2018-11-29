@@ -51,7 +51,6 @@ public class CourseController {
         setInstructorFullName(courses);
         courses.sort(new SortByCourseID());
 
-
         model.addAttribute("instructorAccounts", findInstructors());
         model.addAttribute("studentAccounts", findStudents());
         model.addAttribute("courses", courses);
@@ -263,7 +262,6 @@ public class CourseController {
         }
         return studentList;
     }
-
 
     private void setInstructorFullName(List<Course> courseList){
         /*  Finds and sets the full name for every instructor in a courseList */
