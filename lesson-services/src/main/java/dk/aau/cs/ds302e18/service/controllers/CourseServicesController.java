@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,6 @@ import java.util.Optional;
 @RequestMapping("/course")
 public class CourseServicesController
 {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseServicesController.class);
 
     private final CourseRepository courseRepository;
 
@@ -48,7 +47,7 @@ public class CourseServicesController
 
     /* Get = responsible for retrieving information only */
     @GetMapping("/getLastCourse")
-    public Course getLastCourseByID(){
+    public Course getLastCourseOrderedByID(){
         Optional<Course> course = Optional.ofNullable(this.courseRepository.findFirstByOrderByCourseTableIDDesc());
         if(course.isPresent()){
             return course.get();
@@ -60,7 +59,25 @@ public class CourseServicesController
     links to the new information. */
     @PostMapping(value = "/addCourse")
     public ResponseEntity<Course> addCourse(@RequestBody CourseModel courseModel){
-        Course course = this.courseRepository.save(courseModel.translateModelToCourse());
+        Course course = new Course();
+        course.setInstructorUsername(courseModel.getInstructorUsername());
+        course.setCourseType(courseModel.getCourseType());
+        if(courseModel.getStudentUsernames() == null) {
+            course.setStudentUsernames("empty");
+        }else {
+            course.setStudentUsernames(courseModel.getStudentUsernames());
+        }
+        if(courseModel.getCourseStartDate() == null){
+            /* Default date when no first lesson has been created is set to 2000. A date "should" be set immediately after when the initial
+             * theory lessons are created in addCourseLessons, but in case an error has occurred the default date is set, to prevent
+             * crashes when accessing the rest of the program caused by accessing an null database. An instructor can then chose
+             * to delete the faulty course through the websites delete course functionality. */
+            Date defaultDate = new Date(101,0,0);
+            course.setCourseStartDate(defaultDate);
+        } else {
+            course.setCourseStartDate(courseModel.getCourseStartDate());
+        }
+        course = this.courseRepository.save(course);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getCourseTableID()).toUri();
         return ResponseEntity.created(location).body(course);
     }

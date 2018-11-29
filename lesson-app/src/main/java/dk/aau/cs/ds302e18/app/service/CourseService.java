@@ -47,7 +47,7 @@ public class CourseService
         return this.restTemplate.exchange(url, HttpMethod.GET, request, Course.class).getBody();
     }
 
-    public Course getLastCourseByID() {
+    public Course getLastCourseOrderedByID() {
         String url = courseServiceUrl + REQUESTS + SLASH + "getLastCourse";
         HttpEntity<String> request = new HttpEntity<>(null, null);
         return this.restTemplate.exchange(url, HttpMethod.GET, request, Course.class).getBody();

@@ -8,8 +8,11 @@ import java.util.Date;
 public class CourseModel {
     private String studentUsernames;
     private long courseTableID;
+    private CourseType courseType;
+    private Date courseStartDate;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date startDate;
+    private Date startingPoint;
     private ArrayList<Integer> weekdays;
     private int numberLessons;
     private int numberLessonsADay;
@@ -21,7 +24,7 @@ public class CourseModel {
     private ArrayList<String> StudentNameList;
     private boolean deleteAssociatedLessons;
     private String studentToUpdate;
-    private CourseType courseType;
+
 
     public String getStudentUsernames() {
         return studentUsernames;
@@ -31,12 +34,12 @@ public class CourseModel {
         this.studentUsernames = studentUsernames;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartingPoint() {
+        return startingPoint;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartingPoint(Date startingPoint) {
+        this.startingPoint = startingPoint;
     }
 
     public ArrayList<Integer> getWeekdays() {
@@ -49,6 +52,14 @@ public class CourseModel {
 
     public int getNumberLessons() {
         return numberLessons;
+    }
+
+    public Date getCourseStartDate() {
+        return courseStartDate;
+    }
+
+    public void setCourseStartDate(Date courseStartDate) {
+        this.courseStartDate = courseStartDate;
     }
 
     public void setNumberLessons(int numberLessons) {
@@ -155,7 +166,7 @@ public class CourseModel {
         return "CourseModel{" +
                 "studentUsernames='" + studentUsernames + '\'' +
                 ", courseTableID=" + courseTableID +
-                ", startDate=" + startDate +
+                ", startingPoint=" + startingPoint +
                 ", weekdays=" + weekdays +
                 ", numberLessons=" + numberLessons +
                 ", numberLessonsADay=" + numberLessonsADay +
